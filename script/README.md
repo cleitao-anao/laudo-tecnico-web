@@ -252,7 +252,9 @@ O script **ainda não funciona no WinPE**. O que já existe no código para o PE
 
 ### Próximo passo: app profissional
 
-A ideia é substituir o script por um **aplicativo próprio**, compilado, que dispense o PowerShell e o `Add-Type`. O que isso resolve:
+A ideia é substituir o script por um **aplicativo próprio**, compilado, que dispense o PowerShell e o `Add-Type`. O projeto do novo aplicativo nativo está sendo desenvolvido em: **[IgVilhena/diagnostico-tecnico-cantao](https://github.com/IgVilhena/diagnostico-tecnico-cantao)**.
+
+O que isso resolve:
 
 - **Funcionar no WinPE**, sem depender de compilador nem de cmdlets.
 - Executável único, mais rápido para abrir e sem `iniciar.bat`.

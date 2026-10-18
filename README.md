@@ -1,9 +1,12 @@
-# Cantão Informática - Sistema de Laudo & Diagnóstico Técnico
+# laudo-tecnico-web
 
-Sistema integrado desenvolvido para padronizar, registrar e agilizar o fluxo de trabalho diário na **Cantão Informática**. O ecossistema é composto por:
+Sistema de laudo técnico digital e diagnóstico técnico para assistência de informática e eletrônica.
 
-1. **Laudo Técnico Digital (Web/Front-end):** Interface interativa para preenchimento de entrada, diagnóstico do técnico e conferência/testes com suporte a exportação/importação JSON e impressão perfeita em 1 página A4.
-2. **Suite de Automação de Diagnóstico (`script/`):** Script avançado em PowerShell para testes de hardware, captura de telas (screenshots), testes de periféricos e geração automática de laudos e JSON integráveis.
+O ecossistema é composto por:
+
+1. **Laudo Técnico Digital (Web/Front-end):** Interface interativa para preenchimento de entrada, diagnóstico do técnico e conferência/testes com suporte a backup oculto dentro do PDF, link compartilhável, importação/exportação e impressão perfeita em 1 página A4.
+2. **Suite de Automação de Diagnóstico (`script/`):** Script avançado em PowerShell para testes de bancada e automação de hardware.
+3. **App de Diagnóstico (Em desenvolvimento):** O novo aplicativo nativo de diagnóstico técnico está sendo desenvolvido no repositório: [diagnostico-tecnico-cantao](https://github.com/IgVilhena/diagnostico-tecnico-cantao).
 
 ---
 
@@ -38,7 +41,7 @@ A tabela do sistema espelha as etapas reais de atendimento na assistência:
 Script PowerShell usado na bancada. Fica na raiz de um **pen drive (Ventoy)** junto das ferramentas portáteis e da pasta `OS/`, e é iniciado pelo `iniciar.bat`.
 
 > [!IMPORTANT]
-> Funciona no **Windows 10/11**. No **WinPE (Strelec) ainda não funciona**. Existe um **app profissional** planejado para substituir o script e resolver isso.
+> Funciona no **Windows 10/11**. No **WinPE (Strelec) ainda não funciona**. O **novo app de diagnóstico** está sendo desenvolvido em [diagnostico-tecnico-cantao](https://github.com/IgVilhena/diagnostico-tecnico-cantao) para substituir o script e rodar nativamente.
 
 Guia completo (menus, atalhos, estrutura do pen drive, **explicação do `config.json`**, WinPE): **[script/README.md](script/README.md)**.
 
