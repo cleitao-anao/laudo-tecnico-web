@@ -662,7 +662,9 @@ button {
         margin-bottom: 4px !important;
     }
 
-    select[data-print-hide-text] {
+    select[data-print-hide-text],
+    input::placeholder,
+    textarea::placeholder {
         color: transparent !important;
     }
 
