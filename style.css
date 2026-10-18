@@ -466,17 +466,6 @@ button {
 }
 
 /* BotÃµes de aÃ§Ã£o na app-bar */
-.btn-exportar {
-    background: rgba(33, 150, 243, 0.15) !important;
-    color: #64b5f6 !important;
-    border-color: rgba(33, 150, 243, 0.25) !important;
-}
-
-.btn-exportar:hover {
-    background: rgba(33, 150, 243, 0.3) !important;
-    color: #90caf9 !important;
-}
-
 .btn-importar {
     background: rgba(255, 152, 0, 0.15) !important;
     color: #ffb74d !important;
