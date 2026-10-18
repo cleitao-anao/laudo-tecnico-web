@@ -719,9 +719,17 @@ function limparCelula(td) {
 function novoLaudo() {
   abrirModal('Iniciar um novo laudo? Todos os dados preenchidos na tela serão apagados.', (confirmou) => {
     if (confirmou) {
+      recriarArmazenamentos(0);
+      limparTodosOsCampos();
+      defeitosObs = {};
+      document.getElementById('dataField').value = dataDeHoje();
+      conferirData();
       localStorage.removeItem('laudo');
       localStorage.removeItem('defeitosObs');
-      location.reload();
+      atualizarResumo();
+      salvar();
+      salvarObs();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   });
 }
@@ -1248,7 +1256,11 @@ window.addEventListener('load', () => {
   aplicarTemaSalvo();
 
   const dados = JSON.parse(localStorage.getItem('laudo'));
-  if (dados) aplicarDados(dados);
+  if (dados) {
+    aplicarDados(dados);
+  } else {
+    limparTodosOsCampos();
+  }
   preencherDataSeVazia();
 
   document.getElementById('avisosPendencia').addEventListener('click', e => {
