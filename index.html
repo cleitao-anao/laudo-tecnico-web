@@ -47,8 +47,9 @@
     <div class="app-bar-group">
       <span class="app-bar-label">Ações</span>
       <button class="btn-exportar" onclick="exportarJSON()"><i class="fa-solid fa-download"></i> Exportar</button>
-      <input type="file" id="importFile" accept=".json,.txt,application/json,text/plain" hidden onchange="importarJSON(event)">
+      <input type="file" id="importFile" accept=".pdf,.json,.txt,application/pdf,application/json,text/plain" hidden onchange="importarJSON(event)">
       <button class="btn-importar" onclick="document.getElementById('importFile').click()"><i class="fa-solid fa-upload"></i> Importar</button>
+      <button class="btn-link" onclick="compartilharLink()"><i class="fa-solid fa-link"></i> Link</button>
       <button class="btn-imprimir" onclick="imprimir()"><i class="fa-solid fa-print"></i> Imprimir</button>
       <button class="btn-novo" onclick="novoLaudo()"><i class="fa-solid fa-file-circle-plus"></i> Novo laudo</button>
       
@@ -489,6 +490,9 @@
   </table>
   </div>
 
+  <!-- DADOS OCULTOS DO LAUDO PARA O PDF -->
+  <div id="laudoPdfDados" aria-hidden="true"></div>
+
   <!-- MENU FLUTUANTE (canto inferior direito) -->
   <div class="fab no-print" id="fab">
     <div class="fab-menu" id="fabMenu">
@@ -509,6 +513,7 @@
       <div class="fab-separador"></div>
 
       <button type="button" class="fab-item" onclick="fabAcao(imprimir)"><i class="fa-solid fa-print"></i> Imprimir</button>
+      <button type="button" class="fab-item" onclick="fabAcao(compartilharLink)"><i class="fa-solid fa-link"></i> Link</button>
       <button type="button" class="fab-item" onclick="fabAcao(exportarJSON)"><i class="fa-solid fa-download"></i> Exportar</button>
       <button type="button" class="fab-item" onclick="fabAcao(() => document.getElementById('importFile').click())"><i class="fa-solid fa-upload"></i> Importar</button>
       <button type="button" class="fab-item" onclick="fabAcao(novoLaudo)"><i class="fa-solid fa-file-circle-plus"></i> Novo laudo</button>
@@ -533,6 +538,8 @@
     </div>
   </div>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js"></script>
   <script src="script.js"></script>
 
 </body>

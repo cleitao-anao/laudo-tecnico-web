@@ -207,22 +207,114 @@ function quantidadeDeArmazenamentos(dados) {
   return numeros.length > 0 ? Math.max(...numeros) - 1 : null;
 }
 
+// Coleta apenas os campos realmente preenchidos (reduz o JSON em ~80% para PDF, Link e Exportar)
+function coletarDadosEnxutos() {
+  const dados = {
+    _enxuto: 1,
+    _modo: localStorage.getItem('modo_equipamento') || 'notebook'
+  };
+  if (armazenamentoCount > 0) {
+    dados._armazenamentoCount = armazenamentoCount;
+  }
+
+  document.querySelectorAll('.save').forEach(el => {
+    const id = idDoCampo(el);
+    if (!id) return;
+    if (el.type === 'checkbox') {
+      if (el.checked) dados[id] = true;
+    } else if (el.tagName === 'SELECT') {
+      if (!selectVazio(el)) dados[id] = el.value;
+    } else if (ehCampoDeValor(el)) {
+      if (el.value.trim() !== '') dados[id] = el.value;
+    } else {
+      if (el.innerText.trim() !== '') dados[id] = el.innerHTML;
+    }
+  });
+
+  const obsPreenchidas = {};
+  Object.keys(defeitosObs).forEach(item => {
+    if (temObs(item)) obsPreenchidas[item] = defeitosObs[item];
+  });
+  if (Object.keys(obsPreenchidas).length > 0) {
+    dados.defeitosObs = obsPreenchidas;
+  }
+
+  return dados;
+}
+
+// Verifica se já existe algum dado preenchido pelo usuário na tela (ignorando a data automática)
+function temDadosPreenchidos() {
+  if (Object.keys(defeitosObs).some(temObs)) return true;
+  return Array.from(document.querySelectorAll('.save')).some(el => {
+    if (el.id === 'dataField') return false;
+    if (el.type === 'checkbox') return el.checked;
+    if (el.tagName === 'SELECT') return !selectVazio(el);
+    if (ehCampoDeValor(el)) return el.value.trim() !== '';
+    return el.innerText.trim() !== '';
+  });
+}
+
+function limparTodosOsCampos() {
+  document.querySelectorAll('.save').forEach(el => {
+    if (el.type === 'checkbox') {
+      el.checked = false;
+    } else if (el.tagName === 'SELECT') {
+      el.selectedIndex = 0;
+      el.dataset.anterior = el.value;
+    } else if (ehCampoDeValor(el)) {
+      el.value = '';
+    } else {
+      el.innerHTML = '';
+    }
+  });
+}
+
 // Usado ao abrir a página (dados do localStorage) e ao importar um JSON
 function aplicarDados(dados) {
   const armazenamentos = quantidadeDeArmazenamentos(dados);
-  if (armazenamentos !== null) recriarArmazenamentos(armazenamentos);
+  if (armazenamentos !== null) {
+    recriarArmazenamentos(armazenamentos);
+  } else if (dados._enxuto) {
+    recriarArmazenamentos(0);
+  }
+  if (dados._enxuto) {
+    limparTodosOsCampos();
+  }
   document.querySelectorAll('.save').forEach(el => {
     const id = idDoCampo(el);
     if (id && dados[id] !== undefined) escreverCampo(el, dados[id]);
   });
 }
 
+function carregarDadosNoLaudo(dadosJSON) {
+  if (dadosJSON._enxuto) {
+    defeitosObs = dadosJSON.defeitosObs ? { ...dadosJSON.defeitosObs } : {};
+    salvarObs();
+  } else if (dadosJSON.defeitosObs) {
+    defeitosObs = dadosJSON.defeitosObs;
+    salvarObs();
+  }
+
+  // _modo vem do Exportar, PDF, Link ou do diagnostico.ps1
+  if (['pc', 'notebook', 'tv'].includes(dadosJSON._modo)) {
+    mudarModo(dadosJSON._modo);
+  }
+
+  if (dadosJSON.campo_data === undefined) document.getElementById('dataField').value = '';
+  aplicarDados(dadosJSON);
+  preencherDataSeVazia();
+  atualizarResumo();
+  salvar();
+}
+
 function salvar() {
   localStorage.setItem('laudo', JSON.stringify(coletarDados()));
+  atualizarDadosPdf();
 }
 
 function salvarObs() {
   localStorage.setItem('defeitosObs', JSON.stringify(defeitosObs));
+  atualizarDadosPdf();
 }
 
 // Liga o salvamento automático e a atualização da tela em um campo .save
@@ -511,6 +603,7 @@ function mudarModo(modo) {
   });
 
   localStorage.setItem('modo_equipamento', modo);
+  atualizarDadosPdf();
 }
 
 function toggleDarkMode() {
@@ -654,6 +747,168 @@ function validarObrigatorios() {
   return true;
 }
 
+// =====================================================================
+// CODIFICAÇÃO COMPACTA (PDF OCULTO E LINK COMPARTILHÁVEL)
+// =====================================================================
+
+const MARCADOR_PDF_INICIO = 'LAUDOSTART';
+const MARCADOR_PDF_FIM = 'LAUDOEND';
+
+// Converte bytes para string apenas alfanumérica (A-Z, a-z, 0-9),
+// evitando hifens ou símbolos que leitores de PDF ou apps de mensagem possam quebrar.
+function bytesParaTextoSeguro(bytes) {
+  let binario = '';
+  for (let i = 0; i < bytes.length; i++) {
+    binario += String.fromCharCode(bytes[i]);
+  }
+  return btoa(binario)
+    .replace(/Z/g, 'ZZ')
+    .replace(/\+/g, 'ZA')
+    .replace(/\//g, 'ZB')
+    .replace(/=/g, 'ZC');
+}
+
+function textoSeguroParaBytes(texto) {
+  const base64 = texto.replace(/Z([ZABC])/g, (_, c) => ({ Z: 'Z', A: '+', B: '/', C: '=' }[c]));
+  const binario = atob(base64);
+  const bytes = new Uint8Array(binario.length);
+  for (let i = 0; i < binario.length; i++) {
+    bytes[i] = binario.charCodeAt(i);
+  }
+  return bytes;
+}
+
+function codificarLaudoSincrono(dados) {
+  const bytesUtf8 = new TextEncoder().encode(JSON.stringify(dados));
+  return '0' + bytesParaTextoSeguro(bytesUtf8);
+}
+
+async function codificarLaudo(dados) {
+  const bytesUtf8 = new TextEncoder().encode(JSON.stringify(dados));
+  if (typeof CompressionStream !== 'undefined') {
+    try {
+      const cs = new CompressionStream('deflate-raw');
+      const writer = cs.writable.getWriter();
+      writer.write(bytesUtf8);
+      writer.close();
+      const comprimido = new Uint8Array(await new Response(cs.readable).arrayBuffer());
+      return '1' + bytesParaTextoSeguro(comprimido);
+    } catch (e) {
+      // Cai no retorno sem compressão abaixo
+    }
+  }
+  return '0' + bytesParaTextoSeguro(bytesUtf8);
+}
+
+async function decodificarLaudo(codigo) {
+  const limpo = String(codigo).replace(/\s+/g, '');
+  const tipo = limpo[0];
+  const carga = limpo.slice(1);
+  const bytes = textoSeguroParaBytes(carga);
+
+  if (tipo === '1') {
+    const ds = new DecompressionStream('deflate-raw');
+    const writer = ds.writable.getWriter();
+    writer.write(bytes);
+    writer.close();
+    const descomprimido = new Uint8Array(await new Response(ds.readable).arrayBuffer());
+    return JSON.parse(new TextDecoder().decode(descomprimido));
+  }
+  if (tipo === '0') {
+    return JSON.parse(new TextDecoder().decode(bytes));
+  }
+  throw new Error('Formato de laudo desconhecido.');
+}
+
+function formatarMarcadorPdf(codigo) {
+  const bloco = MARCADOR_PDF_INICIO + codigo + MARCADOR_PDF_FIM;
+  // Espaços a cada 60 caracteres ajudam o motor de PDF a quebrar linhas sem cortar glifos
+  return (bloco.match(/.{1,60}/g) || [bloco]).join(' ');
+}
+
+let _versaoPdf = 0;
+
+function atualizarDadosPdf() {
+  const container = document.getElementById('laudoPdfDados');
+  if (!container) return;
+
+  const dados = coletarDadosEnxutos();
+  // Garante valor imediato síncrono caso o usuário clique em Imprimir no mesmo instante
+  container.textContent = formatarMarcadorPdf(codificarLaudoSincrono(dados));
+
+  const minhaVersao = ++_versaoPdf;
+  codificarLaudo(dados).then(codigoComprimido => {
+    if (minhaVersao === _versaoPdf) {
+      container.textContent = formatarMarcadorPdf(codigoComprimido);
+    }
+  }).catch(() => {});
+}
+
+function extrairCodigoDeTexto(texto) {
+  const semEspacos = String(texto).replace(/\s+/g, '');
+  const match = semEspacos.match(/LAUDOSTART([A-Za-z0-9]+)LAUDOEND/);
+  return match ? match[1] : null;
+}
+
+async function extrairCodigoDoPdf(arrayBuffer) {
+  // 1. Extração via PDF.js (lê a camada de texto real gerada pelo window.print)
+  if (window.pdfjsLib) {
+    try {
+      const pdf = await window.pdfjsLib.getDocument({
+        data: new Uint8Array(arrayBuffer),
+        disableFontFace: true,
+        isEvalSupported: false,
+      }).promise;
+
+      let textoTotal = '';
+      for (let num = 1; num <= pdf.numPages; num++) {
+        const pagina = await pdf.getPage(num);
+        const conteudo = await pagina.getTextContent();
+        textoTotal += conteudo.items.map(item => item.str).join(' ') + ' ';
+      }
+      const codigo = extrairCodigoDeTexto(textoTotal);
+      if (codigo) return codigo;
+    } catch (err) {
+      console.warn('Falha ao ler PDF com pdf.js, tentando leitura direta:', err);
+    }
+  }
+
+  // 2. Fallback: busca direta nos bytes / streams FlateDecode do PDF
+  const textoCru = new TextDecoder('latin1').decode(arrayBuffer);
+  const direto = extrairCodigoDeTexto(textoCru);
+  if (direto) return direto;
+
+  if (typeof DecompressionStream !== 'undefined') {
+    const bytes = new Uint8Array(arrayBuffer);
+    const regexStream = /stream\r?\n/g;
+    let m;
+    while ((m = regexStream.exec(textoCru)) !== null) {
+      const inicio = m.index + m[0].length;
+      const fim = textoCru.indexOf('endstream', inicio);
+      if (fim === -1) break;
+      try {
+        const fatia = bytes.subarray(inicio, fim);
+        const ds = new DecompressionStream('deflate');
+        const writer = ds.writable.getWriter();
+        writer.write(fatia);
+        writer.close();
+        const descomprimido = await new Response(ds.readable).text();
+        const achado = extrairCodigoDeTexto(descomprimido);
+        if (achado) return achado;
+      } catch (e) {
+        // Ignora streams que não são texto ou têm outro filtro
+      }
+    }
+  }
+
+  return null;
+}
+
+
+// =====================================================================
+// IMPRESSÃO, LINK COMPARTILHÁVEL, EXPORTAR E IMPORTAR
+// =====================================================================
+
 // Marca o que não deve sair no papel (selects vazios, OBS e nomes em branco)
 function prepararImpressao() {
   document.querySelectorAll('select:not(#colunaSelect)').forEach(sel => {
@@ -667,6 +922,11 @@ function prepararImpressao() {
   document.querySelectorAll('.input-tecnico').forEach(inp => {
     inp.toggleAttribute('data-print-hide', inp.value.trim() === '');
   });
+
+  const container = document.getElementById('laudoPdfDados');
+  if (container && !container.textContent) {
+    atualizarDadosPdf();
+  }
 }
 
 function imprimir() {
@@ -683,6 +943,85 @@ function imprimir() {
   setTimeout(() => {
     document.title = tituloOriginal;
   }, 1000);
+}
+
+async function copiarParaTransferencia(texto) {
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    try {
+      await navigator.clipboard.writeText(texto);
+      return true;
+    } catch (e) {
+      // Continua para o fallback abaixo
+    }
+  }
+  const temp = document.createElement('textarea');
+  temp.value = texto;
+  temp.style.position = 'fixed';
+  temp.style.opacity = '0';
+  document.body.appendChild(temp);
+  temp.select();
+  const ok = document.execCommand('copy');
+  temp.remove();
+  return ok;
+}
+
+async function compartilharLink() {
+  try {
+    const dados = coletarDadosEnxutos();
+    const codigo = await codificarLaudo(dados);
+    const url = new URL(window.location.href);
+    url.hash = 'laudo=' + codigo;
+    const linkFinal = url.toString();
+
+    await copiarParaTransferencia(linkFinal);
+
+    // Em celulares com HTTPS, abre também o menu nativo de compartilhamento
+    if (navigator.share && window.matchMedia('(pointer: coarse)').matches && url.protocol.startsWith('http')) {
+      const os = nomeDeArquivoSeguro(document.getElementById('osField').value, 'OS');
+      const cliente = nomeDeArquivoSeguro(document.getElementById('clienteField').value, 'Cliente');
+      try {
+        await navigator.share({
+          title: `${os} - Diagnóstico - ${cliente}`,
+          url: linkFinal,
+        });
+        return;
+      } catch (err) {
+        if (err.name === 'AbortError') return;
+      }
+    }
+
+    abrirModal('Link do laudo copiado para a área de transferência! Basta colar e enviar.');
+  } catch (err) {
+    console.error('Erro ao gerar link:', err);
+    abrirModal('Não foi possível gerar o link compartilhável.');
+  }
+}
+
+async function verificarLinkCompartilhado() {
+  const hash = window.location.hash;
+  if (!hash || !hash.startsWith('#laudo=')) return;
+
+  const codigo = decodeURIComponent(hash.slice('#laudo='.length).trim());
+  // Limpa o hash da barra de endereços para não recarregar o link ao atualizar a página
+  history.replaceState(null, '', window.location.pathname + window.location.search);
+  if (!codigo) return;
+
+  try {
+    const dadosLink = await decodificarLaudo(codigo);
+    if (temDadosPreenchidos()) {
+      abrirModal(
+        'Você abriu um link de laudo compartilhado, mas já existem dados preenchidos na tela. Deseja substituir o laudo atual pelo do link?',
+        (confirmou) => {
+          if (confirmou) carregarDadosNoLaudo(dadosLink);
+        }
+      );
+    } else {
+      carregarDadosNoLaudo(dadosLink);
+    }
+  } catch (err) {
+    console.error('Erro ao ler link do laudo:', err);
+    abrirModal('O link do laudo está incompleto ou inválido.');
+  }
 }
 
 // Compartilha o laudo pela tela de compartilhar do sistema. Só em telas de toque
@@ -708,9 +1047,7 @@ async function compartilharArquivo(conteudo, nomeArquivo) {
 }
 
 async function exportarJSON() {
-  const dadosJSON = coletarDados();
-  dadosJSON.defeitosObs = defeitosObs;
-  dadosJSON._modo = localStorage.getItem('modo_equipamento') || 'notebook';
+  const dadosJSON = coletarDadosEnxutos();
 
   const os = nomeDeArquivoSeguro(document.getElementById('osField').value, 'OS');
   const cliente = nomeDeArquivoSeguro(document.getElementById('clienteField').value, 'Cliente');
@@ -746,43 +1083,55 @@ async function exportarJSON() {
     // Ignora o erro se o usuário apenas clicou em "Cancelar" na janela
     if (err.name !== 'AbortError') {
       console.error('Erro ao salvar:', err);
-      alert('Não foi possível salvar o arquivo.');
+      abrirModal('Não foi possível salvar o arquivo.');
     }
   }
 }
 
-function importarJSON(event) {
+async function importarJSON(event) {
   const file = event.target.files[0];
   if (!file) return;
+  event.target.value = '';
+
+  const ehPdf = file.type === 'application/pdf' || /\.pdf$/i.test(file.name);
+
+  if (ehPdf) {
+    try {
+      const buffer = await file.arrayBuffer();
+      const codigo = await extrairCodigoDoPdf(buffer);
+      if (!codigo) {
+        abrirModal('Não foram encontrados dados de laudo neste PDF. Certifique-se de que o PDF foi gerado pelo botão Imprimir deste sistema.');
+        return;
+      }
+      const dadosJSON = await decodificarLaudo(codigo);
+      carregarDadosNoLaudo(dadosJSON);
+      abrirModal('Dados do PDF carregados com sucesso!');
+    } catch (error) {
+      console.error('Erro ao importar PDF:', error);
+      abrirModal('Erro ao ler os dados do arquivo PDF.');
+    }
+    return;
+  }
 
   const reader = new FileReader();
-  reader.onload = function (e) {
+  reader.onload = async function (e) {
     try {
-      const dadosJSON = JSON.parse(e.target.result);
+      const texto = String(e.target.result || '').trim();
+      let dadosJSON;
 
-      if (dadosJSON.defeitosObs) {
-        defeitosObs = dadosJSON.defeitosObs;
-        salvarObs();
+      const codigoEmbutido = extrairCodigoDeTexto(texto);
+      if (codigoEmbutido) {
+        dadosJSON = await decodificarLaudo(codigoEmbutido);
+      } else {
+        dadosJSON = JSON.parse(texto);
       }
 
-      // _modo vem do Exportar ou do diagnostico.ps1
-      if (['pc', 'notebook', 'tv'].includes(dadosJSON._modo)) {
-        mudarModo(dadosJSON._modo);
-      }
-
-      if (dadosJSON.campo_data === undefined) document.getElementById('dataField').value = '';
-      aplicarDados(dadosJSON);
-      preencherDataSeVazia();
-      atualizarResumo();
-      salvar();
-      alert('Dados carregados com sucesso!');
+      carregarDadosNoLaudo(dadosJSON);
+      abrirModal('Dados carregados com sucesso!');
     } catch (error) {
-      alert('Erro ao ler o arquivo JSON. O arquivo pode estar corrompido.');
+      abrirModal('Erro ao ler o arquivo. O arquivo pode estar corrompido.');
       console.error(error);
     }
-
-    // Permite importar o mesmo arquivo de novo
-    event.target.value = '';
   };
   reader.readAsText(file);
 }
@@ -796,6 +1145,10 @@ let _modalCallback = null;
 
 function abrirModal(msg, callback) {
   document.getElementById('modalMsg').textContent = msg;
+  const btnCancel = document.querySelector('#modalAviso .modal-btn-cancel');
+  const btnConfirm = document.querySelector('#modalAviso .modal-btn-confirm');
+  if (btnCancel) btnCancel.hidden = !callback;
+  if (btnConfirm) btnConfirm.textContent = callback ? 'Confirmar' : 'OK';
   document.getElementById('modalAviso').classList.add('show');
   _modalCallback = callback;
 }
@@ -968,7 +1321,10 @@ window.addEventListener('load', () => {
   });
 
   atualizarResumo();
+  verificarLinkCompartilhado();
 });
+
+window.addEventListener('hashchange', verificarLinkCompartilhado);
 
 // ====== BARRA DE FORMATAÇÃO (Parecer Técnico e OBS dos defeitos) ======
 (function () {
