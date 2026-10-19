@@ -1,0 +1,85 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Integração Diagnóstico → Laudo</title>
+<pre id="result">RUNNING</pre>
+<iframe id="app" src="../index.html" style="width:1100px;height:800px"></iframe>
+<script>
+const frame = document.getElementById('app');
+frame.onload = async () => {
+  let checks = 0;
+  const check = (ok, name) => { if (!ok) throw new Error(name); checks++; };
+  try {
+    const w = frame.contentWindow;
+    const read = id => w.coletarDados()[id];
+    const fixture = async name => {
+      const response = await fetch('/Diaginostico%20Tecnico/artifacts/' + name);
+      if (!response.ok) throw new Error('Execute os testes C# para gerar os links de exemplo.');
+      return (await response.text()).split('#laudo=')[1];
+    };
+    const code = await fixture('link-fixture.txt');
+    const finalCode = await fixture('link-final-fixture.txt');
+    const data = await w.decodificarLaudo(code);
+    check(data.campo_1 === 'João & Cia 🔧', 'Deflate do C# decodificado no navegador, com Unicode');
+    w.carregarDadosNoLaudo({ _enxuto: true, campo_os: '123', campo_1: 'Cliente', campo_data: '10/10/2026',
+      campo_104: 'Com defeito', check_104: true, _armazenamentoCount: 2,
+      campo_arm2_7: 'Funcionando', campo_arm3_4: 'Com defeito', defeitosObs: { TECLADO: 'Observação do balcão' } });
+    w.carregarDadosNoLaudo(data);
+    check(read('campo_102') === 'Funcionando', 'Análise preenche Técnico');
+    check(read('campo_104') === 'Com defeito', 'Análise preserva Testes');
+    check(read('check_104') === true, 'Conferência anterior preservada');
+    check(read('campo_data') === '10/10/2026', 'Data de entrada preservada');
+    check(read('campo_2') === 'Notebook do cliente', 'Equipamento digitado preservado');
+    check(read('campo_arm2_7') === 'Funcionando' && read('campo_arm3_4') === 'Com defeito', 'Dados existentes dos discos extras preservados');
+    check(JSON.parse(w.localStorage.getItem('defeitosObs')).TECLADO === 'Observação do balcão', 'Observações do balcão preservadas');
+    const parecer = read('PARECERTECNICOField');
+    const final = await w.decodificarLaudo(finalCode);
+    w.carregarDadosNoLaudo(final);
+    check(read('campo_104') === 'Funcionando' && read('campo_102') === 'Funcionando', 'Teste final atualiza somente Testes');
+    check(read('PARECERTECNICOField') === parecer, 'Parecer técnico preservado');
+    w.carregarDadosNoLaudo({ ...final, campo_1: '', campo_2: '' });
+    check(read('campo_1') === 'João & Cia 🔧' && read('campo_2') === 'Notebook do cliente', 'Cabeçalho vazio não apaga dados');
+    w.history.replaceState(null, '', '#laudo=' + finalCode);
+    await w.verificarLinkCompartilhado();
+    check(w.document.getElementById('modalMsg').textContent.includes('serão preservadas'), 'Mesmo número de OS informa mesclagem');
+    w.fecharModal(false);
+    check(w.location.hash.includes('#laudo='), 'Cancelamento permite tentar novamente');
+    const other = await w.codificarLaudo({ ...final, campo_os: '999' });
+    w.history.replaceState(null, '', '#laudo=' + other);
+    await w.verificarLinkCompartilhado();
+    check(read('campo_os') === '123', 'OS diferente exige confirmação');
+    w.fecharModal(true);
+    check(read('campo_os') === '999' && read('campo_102') !== 'Funcionando', 'Nova OS não herda análise anterior');
+    check(read('check_104') === false && read('PARECERTECNICOField') === '', 'Nova OS não herda conferência ou parecer');
+    check(w.location.hash === '', 'Link consumido removido após confirmação');
+    w.history.replaceState(null, '', '#laudo=%broken');
+    await w.verificarLinkCompartilhado();
+    check(w.document.getElementById('modalMsg').textContent.includes('inválido') && read('campo_os') === '999', 'Link inválido tratado sem alterar dados');
+    w.fecharModal(true);
+    const legacy = await w.codificarLaudo({ _enxuto: 1, campo_os: 'ANTIGA', campo_1: 'Legado' });
+    w.history.replaceState(null, '', '#laudo=' + legacy);
+    await w.verificarLinkCompartilhado(); w.fecharModal(true);
+    check(read('campo_os') === 'ANTIGA' && read('campo_1') === 'Legado', 'Links existentes continuam funcionando');
+
+    // Contrato campos-laudo.json: as duas cópias são iguais e todo campo/opção existe nesta página
+    const [mapa, mapaApp] = await Promise.all(['/laudo-tecnico-web/campos-laudo.json', '/Diaginostico%20Tecnico/src/campos-laudo.json']
+      .map(async u => { const r = await fetch(u); if (!r.ok) throw new Error('Não encontrado: ' + u); return r.json(); }));
+    check(JSON.stringify(mapa) === JSON.stringify(mapaApp), 'Cópia do app igual a campos-laudo.json (copie o arquivo do laudo para Diaginostico Tecnico/src)');
+    const campo = id => w.document.querySelector(`[data-id="${id}"]`) || w.document.getElementById(id);
+    if (!campo('campo_arm2_4')) w.adicionarArmazenamento();
+    const extras = Object.values(mapa.armazenamentoExtra).filter(v => typeof v === 'object')
+      .map(v => JSON.parse(JSON.stringify(v).replaceAll('{n}', '2')));
+    for (const id of [...Object.values(mapa.cabecalho), ...Object.values(mapa.responsavel)]) check(campo(id), 'Campo do contrato existe: ' + id);
+    for (const linha of [...Object.values(mapa.linhas), ...extras]) {
+      for (const id of [linha.tecnico, linha.testes].filter(Boolean)) {
+        const el = campo(id);
+        check(el, 'Campo do contrato existe: ' + id);
+        if (!linha.opcoes) continue;
+        const opcoes = [...el.options].map(o => o.textContent);
+        for (const valor of mapa.opcoes[linha.opcoes]) check(opcoes.includes(valor), `Opção "${valor}" existe em ${id}`);
+      }
+      if (linha.check) check(campo(linha.check) && campo(linha.check).type === 'checkbox', 'Checkbox do contrato existe: ' + linha.check);
+    }
+    document.getElementById('result').textContent = 'PASS: ' + checks + ' browser integration checks';
+  } catch (error) { document.getElementById('result').textContent = 'FAIL: ' + error.stack; }
+};
+</script>

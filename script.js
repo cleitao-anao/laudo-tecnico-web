@@ -286,7 +286,34 @@ function aplicarDados(dados) {
   });
 }
 
+// O diagnóstico envia uma fase por vez. Montamos um retrato completo antes de
+// recriar as linhas de discos, preservando o cadastro, a outra fase e a conferência.
+function prepararDadosDiagnostico(dados, atuais) {
+  if (dados._versaoIntegracao !== 1 || !['tecnico', 'testes'].includes(dados._fase) ||
+      typeof dados.campo_os !== 'string' || !dados.campo_os.trim()) {
+    throw new Error('Link de diagnóstico inválido ou de uma versão não suportada.');
+  }
+  const osAtual = String(atuais.campo_os || '').trim();
+  const mesmaOS = !osAtual || osAtual === dados.campo_os.trim();
+  const recebidos = { ...dados };
+  if (mesmaOS) {
+    for (const campo of ['campo_1', 'campo_2', 'campo_tecnico_tecnico', 'campo_tecnico_testes']) {
+      if (!recebidos[campo]) delete recebidos[campo];
+    }
+  }
+  const resultado = { ...(mesmaOS ? atuais : {}), ...recebidos, _enxuto: true };
+  resultado._armazenamentoCount = Math.max(
+    mesmaOS ? quantidadeDeArmazenamentos(atuais) || 0 : 0,
+    quantidadeDeArmazenamentos(dados) || 0
+  );
+  if (mesmaOS && atuais.campo_data) resultado.campo_data = atuais.campo_data;
+  return resultado;
+}
+
 function carregarDadosNoLaudo(dadosJSON) {
+  if (dadosJSON._origem === 'diagnostico-tecnico') {
+    dadosJSON = prepararDadosDiagnostico(dadosJSON, { ...coletarDados(), defeitosObs: { ...defeitosObs } });
+  }
   if (dadosJSON._enxuto) {
     defeitosObs = dadosJSON.defeitosObs ? { ...dadosJSON.defeitosObs } : {};
     salvarObs();
@@ -981,7 +1008,7 @@ async function compartilharLink() {
     url.hash = 'laudo=' + codigo;
     const linkFinal = url.toString();
 
-    await copiarParaTransferencia(linkFinal);
+    const copiado = await copiarParaTransferencia(linkFinal);
 
     // Em celulares com HTTPS, abre também o menu nativo de compartilhamento
     if (navigator.share && window.matchMedia('(pointer: coarse)').matches && url.protocol.startsWith('http')) {
@@ -998,7 +1025,8 @@ async function compartilharLink() {
       }
     }
 
-    abrirModal('Link do laudo copiado para a área de transferência! Basta colar e enviar.');
+    if (copiado) abrirModal('Link do laudo copiado para a área de transferência! Basta colar e enviar.');
+    else window.prompt('Copie o link do laudo:', linkFinal);
   } catch (err) {
     console.error('Erro ao gerar link:', err);
     abrirModal('Não foi possível gerar o link compartilhável.');
@@ -1009,22 +1037,33 @@ async function verificarLinkCompartilhado() {
   const hash = window.location.hash;
   if (!hash || !hash.startsWith('#laudo=')) return;
 
-  const codigo = decodeURIComponent(hash.slice('#laudo='.length).trim());
-  // Limpa o hash da barra de endereços para não recarregar o link ao atualizar a página
-  history.replaceState(null, '', window.location.pathname + window.location.search);
-  if (!codigo) return;
-
   try {
+    const codigo = decodeURIComponent(hash.slice('#laudo='.length).trim());
+    if (!codigo) throw new Error('Link vazio.');
     const dadosLink = await decodificarLaudo(codigo);
+    if (!dadosLink || typeof dadosLink !== 'object' || Array.isArray(dadosLink)) throw new Error('Dados inválidos.');
+    const diagnostico = dadosLink._origem === 'diagnostico-tecnico';
+    if (diagnostico) prepararDadosDiagnostico(dadosLink, coletarDados());
+    const osAtual = document.getElementById('osField').value.trim();
+    const mesmaOS = !osAtual || osAtual === String(dadosLink.campo_os || '').trim();
+    const limparLink = () => history.replaceState(null, '', window.location.pathname + window.location.search);
     if (temDadosPreenchidos()) {
+      const mensagem = diagnostico && mesmaOS
+        ? `Aplicar ${dadosLink._fase === 'testes' ? 'o teste final' : 'a análise técnica'} à OS ${dadosLink.campo_os}? Os resultados dessa fase serão atualizados; a data de entrada, a outra fase e a conferência do atendente serão preservadas.`
+        : 'Você abriu um link de laudo compartilhado, mas já existem dados preenchidos na tela. Deseja substituir o laudo atual pelo do link?';
       abrirModal(
-        'Você abriu um link de laudo compartilhado, mas já existem dados preenchidos na tela. Deseja substituir o laudo atual pelo do link?',
+        mensagem,
         (confirmou) => {
-          if (confirmou) carregarDadosNoLaudo(dadosLink);
+          if (confirmou) {
+            // Links antigos sem _enxuto também devem limpar a OS anterior.
+            carregarDadosNoLaudo(diagnostico ? dadosLink : { ...dadosLink, _enxuto: true });
+            limparLink();
+          }
         }
       );
     } else {
       carregarDadosNoLaudo(dadosLink);
+      limparLink();
     }
   } catch (err) {
     console.error('Erro ao ler link do laudo:', err);

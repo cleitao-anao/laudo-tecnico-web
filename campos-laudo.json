@@ -1,0 +1,69 @@
+{
+  "versao": 1,
+  "sobre": "Contrato entre o app Diagnóstico Técnico e o laudo web. As chaves são os data-id dos campos do index.html. O app embute uma cópia idêntica (Diaginostico Tecnico/src/campos-laudo.json); os testes dos dois projetos falham se as cópias divergirem ou se um campo/opção não existir na página.",
+  "cabecalho": {
+    "cliente": "campo_1",
+    "equipamento": "campo_2",
+    "os": "campo_os",
+    "parecer": "PARECERTECNICOField"
+  },
+  "responsavel": { "tecnico": "campo_tecnico_tecnico", "testes": "campo_tecnico_testes" },
+  "opcoes": {
+    "status": ["Funcionando", "Com defeito", "Não Se Aplica", "Não Testado"],
+    "processador": ["Intel Celeron", "Intel Pentium", "Core i3", "Core i5", "Core i7", "Core i9", "AMD Ryzen 3", "AMD Ryzen 5", "AMD Ryzen 7", "AMD Ryzen 9"],
+    "memoria": ["2GB", "4GB", "6GB", "8GB", "10GB", "12GB", "16GB", "32GB", "64GB"],
+    "resolucao": ["HD", "FULL HD", "2K (QHD)", "4K (UHD)"],
+    "taxaAtualizacao": ["60Hz", "75Hz", "120Hz", "144Hz", "165Hz", "240Hz"],
+    "armazenamentoTipo": ["SSD", "NVMe", "HD"]
+  },
+  "linhas": {
+    "teclado":            { "tecnico": "campo_102", "testes": "campo_104", "check": "check_104", "opcoes": "status" },
+    "touchpad":           { "tecnico": "campo_108", "testes": "campo_109", "check": "check_109", "opcoes": "status" },
+    "webcam":             { "tecnico": "campo_112", "testes": "campo_113", "check": "check_113", "opcoes": "status" },
+    "microfone":          { "tecnico": "campo_116", "testes": "campo_117", "check": "check_117", "opcoes": "status" },
+    "audio":              { "tecnico": "campo_120", "testes": "campo_121", "check": "check_121", "opcoes": "status" },
+    "p2":                 { "tecnico": "campo_124", "testes": "campo_125", "check": "check_125", "opcoes": "status" },
+    "hdmi":               { "tecnico": "campo_77h", "testes": "campo_78h", "check": "check_78h", "opcoes": "status" },
+    "usb":                { "tecnico": "campo_81",  "testes": "campo_82",  "check": "check_82",  "opcoes": "status" },
+    "bluetooth":          { "tecnico": "campo_97",  "testes": "campo_98",  "check": "check_98",  "opcoes": "status" },
+    "wifi":               { "tecnico": "campo_93",  "testes": "campo_94",  "check": "check_94",  "opcoes": "status" },
+    "lan":                { "tecnico": "campo_89",  "testes": "campo_90",  "check": "check_90",  "opcoes": "status" },
+    "bateria":            { "tecnico": "campo_9",   "testes": "campo_11",  "check": "check_11",  "opcoes": "status" },
+    "bateriaSaude":       { "tecnico": "campo_10",  "testes": "campo_13" },
+    "sistema":            { "tecnico": "campo_128", "testes": "campo_129", "check": "check_129", "opcoes": "status" },
+    "processador":        { "tecnico": "campo_34",  "opcoes": "processador" },
+    "memoria":            { "tecnico": "campo_43",  "opcoes": "memoria" },
+    "resolucao":          { "tecnico": "campo_56",  "testes": "campo_57",  "opcoes": "resolucao", "somenteNotebook": true },
+    "taxaAtualizacao":    { "tecnico": "campo_60",  "testes": "campo_61",  "opcoes": "taxaAtualizacao", "somenteNotebook": true },
+    "armazenamento":      { "tecnico": "campo_138", "testes": "campo_141", "check": "check_141", "opcoes": "status" },
+    "armazenamentoTipo":  { "tecnico": "campo_139", "testes": "campo_143", "opcoes": "armazenamentoTipo" },
+    "armazenamentoSaude": { "tecnico": "campo_140", "testes": "campo_144" }
+  },
+  "armazenamentoExtra": {
+    "sobre": "Discos a partir do 2º: {n} = 2, 3, ... (linhas criadas pelo botão + do laudo).",
+    "armazenamento":      { "tecnico": "campo_arm{n}_4", "testes": "campo_arm{n}_7", "check": "check_arm{n}", "opcoes": "status" },
+    "armazenamentoTipo":  { "tecnico": "campo_arm{n}_5", "testes": "campo_arm{n}_8", "opcoes": "armazenamentoTipo" },
+    "armazenamentoSaude": { "tecnico": "campo_arm{n}_6", "testes": "campo_arm{n}_9" }
+  },
+  "testesDoApp": {
+    "sobre": "Nome do teste no app (sem acento, minúsculo) → linhas do laudo que ele preenche.",
+    "teclado": ["teclado"],
+    "touchpad": ["touchpad"],
+    "webcam": ["webcam"],
+    "camera": ["webcam"],
+    "microfone": ["microfone"],
+    "audio interno": ["audio"],
+    "audio": ["audio"],
+    "conector p2": ["p2"],
+    "p2": ["p2"],
+    "audio / p2": ["audio", "p2"],
+    "hdmi": ["hdmi"],
+    "usb": ["usb"],
+    "bluetooth": ["bluetooth"],
+    "wi-fi": ["wifi"],
+    "wifi": ["wifi"],
+    "lan": ["lan"],
+    "bateria": ["bateria"],
+    "armazenamento": ["armazenamento"]
+  }
+}
