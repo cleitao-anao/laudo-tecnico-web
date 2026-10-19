@@ -683,6 +683,31 @@ button {
         color: inherit !important;
     }
 
+    /* Checklist do atendente: a regra geral de input acima apaga os checkboxes.
+       Desenha o quadrado com borda e o ✓ como texto (sai mesmo sem "gráficos de fundo"). */
+    input[type="checkbox"] {
+        display: inline-block !important;
+        position: relative;
+        width: 12px !important;
+        height: 12px !important;
+        min-width: 12px;
+        margin: 0 !important;
+        padding: 0 !important;
+        border: 1px solid #000 !important;
+        border-radius: 2px !important;
+        background: #fff !important;
+        vertical-align: middle;
+    }
+
+    input[type="checkbox"]:checked::after {
+        content: "\2713";
+        position: absolute;
+        inset: 0;
+        font: bold 11px/11px Arial, sans-serif;
+        text-align: center;
+        color: #000;
+    }
+
     .table-responsive {
         overflow-x: visible !important;
         box-shadow: none !important;
