@@ -60,6 +60,16 @@ frame.onload = async () => {
     await w.verificarLinkCompartilhado(); w.fecharModal(true);
     check(read('campo_os') === 'ANTIGA' && read('campo_1') === 'Legado', 'Links existentes continuam funcionando');
 
+    // "Vídeo integrado" (processador) só aparece no modo PC; no Notebook some e não conta como pendência
+    const video = w.document.querySelector('[data-id="campo_35"]'), videoTestes = w.document.querySelector('[data-id="campo_39"]');
+    const processador = video.closest('tr');
+    w.mudarModo('notebook');
+    check(processador.style.display !== 'none' && !w.campoVisivel(video) && !w.campoVisivel(videoTestes), 'Notebook esconde só o Vídeo integrado do processador');
+    check(!w.camposFocaveis(video.closest('td')).includes(video), 'Teclado não navega para o Vídeo integrado escondido');
+    w.mudarModo('pc');
+    check(w.campoVisivel(video) && w.campoVisivel(videoTestes), 'PC mostra o Vídeo integrado');
+    w.mudarModo('notebook');
+
     // Contrato campos-laudo.json: as duas cópias são iguais e todo campo/opção existe nesta página
     const [mapa, mapaApp] = await Promise.all(['/laudo-tecnico-web/campos-laudo.json', '/Diaginostico%20Tecnico/src/campos-laudo.json']
       .map(async u => { const r = await fetch(u); if (!r.ok) throw new Error('Não encontrado: ' + u); return r.json(); }));

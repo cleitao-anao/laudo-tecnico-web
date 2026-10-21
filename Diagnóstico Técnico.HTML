@@ -8,601 +8,607 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <title>Diagnóstico Técnico</title>
-  
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-/* ====== VARIÃVEIS DE DESIGN ====== */
-:root {
-    /* Cores principais */
-    --cor-primaria: #2196F3;
-    --cor-sucesso: #4CAF50;
-    --cor-perigo: #f44336;
-    --cor-alerta: #ff9800;
-
-    /* SuperfÃ­cies */
-    --cor-fundo: #f0f2f5;
-    --cor-superficie: #ffffff;
-    --cor-secao: #f1f5f9;
-    --cor-borda: #dde1e6;
-    --cor-separador: #e0e0e0;
-
-    /* Texto */
-    --cor-texto: #1e293b;
-    --cor-texto-secundario: #64748b;
-    --cor-texto-claro: #94a3b8;
-
-    /* CabeÃ§alho da tabela */
-    --cor-cabecalho: #1e293b;
-    --cor-cabecalho-texto: #ffffff;
-
-    /* App Bar */
-    --cor-appbar-inicio: #1e1e2e;
-    --cor-appbar-fim: #2a2a3e;
-
-    /* Sombras */
-    --sombra-card: 0 1px 3px rgba(0, 0, 0, 0.08);
-    --sombra-elevada: 0 4px 12px rgba(0, 0, 0, 0.1);
-
-    /* EspaÃ§amento */
-    --raio-borda: 8px;
-    --raio-borda-sm: 4px;
-
-    /* Foco */
-    --cor-foco: rgba(33, 150, 243, 0.3);
-}
-
-/* ====== DARK MODE ====== */
-body.dark-mode {
-    --cor-fundo: #121218;
-    --cor-superficie: #1e1e2a;
-    --cor-secao: #252536;
-    --cor-borda: #333348;
-    --cor-separador: #333348;
-
-    --cor-texto: #e2e8f0;
-    --cor-texto-secundario: #94a3b8;
-    --cor-texto-claro: #64748b;
-
-    --cor-cabecalho: #161622;
-    --cor-cabecalho-texto: #e2e8f0;
-
-    --sombra-card: 0 1px 3px rgba(0, 0, 0, 0.3);
-    --sombra-elevada: 0 4px 12px rgba(0, 0, 0, 0.4);
-}
-
-/* ====== RESET E BASE ====== */
-*, *::before, *::after {
-    box-sizing: border-box;
-}
-
-body {
-    font-family: 'Inter', Arial, sans-serif;
-    padding: 20px;
-    padding-top: 80px;
-    background: var(--cor-fundo);
-    color: var(--cor-texto);
-}
-
-h1 {
-    margin-bottom: 8px;
-    font-size: 22px;
-    font-weight: 700;
-    color: var(--cor-texto);
-    letter-spacing: -0.02em;
-    text-align: center;
-}
-
-.topo {
-    display: flex;
-    gap: 20px;
-    margin-bottom: 15px;
-}
-
-.topo div {
-    flex: 1;
-}
-
-.topo .campo-data {
-    flex: 0 0 180px;
-}
-
-.topo input.invalido {
-    border-color: var(--cor-perigo);
-    box-shadow: 0 0 0 3px rgba(244, 67, 54, 0.15);
-}
-
-.campo-erro {
-    display: block;
-    margin-top: 4px;
-    font-size: 12px;
-    font-weight: 600;
-    color: var(--cor-perigo);
-}
-
-label {
-    font-weight: 600;
-    display: block;
-    margin-bottom: 4px;
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    color: var(--cor-texto-secundario);
-}
-
-input,
-select,
-textarea {
-    width: 100%;
-    padding: 8px 10px;
-    border: 1px solid var(--cor-borda);
-    border-radius: var(--raio-borda-sm);
-    box-sizing: border-box;
-    font-family: 'Inter', Arial, sans-serif;
-    font-size: 14px;
-    color: var(--cor-texto);
-    background: var(--cor-superficie);
-    transition: border-color 0.2s, box-shadow 0.2s;
-}
-
-input:focus,
-select:focus,
-textarea:focus {
-    outline: none;
-    border-color: var(--cor-primaria);
-    box-shadow: 0 0 0 3px var(--cor-foco);
-}
-
-[hidden] {
-    display: none !important;
-}
-
-/* Campo "SaÃºde (%)" abaixo dos selects */
-.saude {
-    margin-top: 5px;
-}
-
-input[type="checkbox"] {
-    width: auto;
-    margin-right: 6px;
-}
-
-/* Checkbox de Teste RÃƒÂ¡pido / Checklist na coluna Testes */
-.teste-rapido-container {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    width: 100%;
-}
-
-.teste-rapido-container select,
-.teste-rapido-container input[type="text"] {
-    flex: 1;
-    min-width: 0;
-}
-
-.check-atendente {
-    flex-shrink: 0;
-    width: 16px;
-    height: 16px;
-    cursor: pointer;
-    accent-color: var(--cor-primaria);
-    margin: 0;
-}
-
-textarea {
-    field-sizing: content;
-    resize: vertical;
-    min-height: 2.5em;
-}
-
-.label-tecnico {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-}
-
-.input-tecnico {
-    padding: 3px 6px;
-    width: 60%;
-    border-radius: var(--raio-borda-sm);
-    box-sizing: border-box;
-    text-align: center;
-    font-size: 12px;
-    margin-top: 4px;
-    background: rgba(255, 255, 255, 0.15);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    color: var(--cor-cabecalho-texto);
-}
-
-.input-tecnico:focus {
-    background: rgba(255, 255, 255, 0.25);
-    border-color: rgba(255, 255, 255, 0.4);
-    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.1);
-}
-
-/* ====== TABELA ====== */
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 15px;
-    background: var(--cor-superficie);
-    border-radius: var(--raio-borda);
-    overflow: hidden;
-    box-shadow: var(--sombra-card);
-}
-
-th,
-td {
-    border: 1px solid var(--cor-borda);
-    padding: 8px;
-    text-align: left;
-}
-
-th {
-    background: var(--cor-cabecalho);
-    color: var(--cor-cabecalho-texto);
-    text-align: center;
-    font-size: 12px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    font-weight: 600;
-}
-
-.secao {
-    background: var(--cor-secao);
-    font-weight: 700;
-    text-align: center;
-    font-size: 12px;
-    text-transform: uppercase;
-    letter-spacing: 0.8px;
-    color: var(--cor-texto-secundario);
-    border-left: 3px solid var(--cor-primaria);
-}
-
-hr {
-    margin: 5px 0;
-    background-color: var(--cor-separador);
-    border: 0;
-    height: 1px;
-}
-
-/* ====== BOTÃ•ES ARMAZENAMENTO ====== */
-.table-responsive .armazenamento-acoes {
-    text-align: center;
-    padding: 4px;
-}
-
-.btn-add-armazenamento,
-.btn-remove-armazenamento {
-    margin: 4px 6px;
-    padding: 6px 16px;
-    font-size: 13px;
-    font-weight: 600;
-    font-family: 'Inter', Arial, sans-serif;
-    border-radius: 6px;
-    cursor: pointer;
-    border: 1px solid;
-    transition: all 0.2s ease;
-}
-
-.btn-add-armazenamento {
-    background: rgba(76, 175, 80, 0.1);
-    color: #2e7d32;
-    border-color: rgba(76, 175, 80, 0.3);
-}
-
-.btn-add-armazenamento:hover {
-    background: rgba(76, 175, 80, 0.2);
-    border-color: rgba(76, 175, 80, 0.5);
-    box-shadow: 0 2px 8px rgba(76, 175, 80, 0.15);
-}
-
-.btn-remove-armazenamento {
-    background: rgba(244, 67, 54, 0.1);
-    color: #c62828;
-    border-color: rgba(244, 67, 54, 0.3);
-}
-
-.btn-remove-armazenamento:hover {
-    background: rgba(244, 67, 54, 0.2);
-    border-color: rgba(244, 67, 54, 0.5);
-    box-shadow: 0 2px 8px rgba(244, 67, 54, 0.15);
-}
-
-button {
-    margin-top: 15px;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-/* ====== SWITCH TEMA (DARK/LIGHT) ====== */
-.switch {
-  font-size: 11px;
-  position: relative;
-  display: inline-block;
-  width: 3.5em;
-  height: 2em;
-}
-
-.switch input {
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
-
-.switch .slider {
-  --background: #522ba7; /* Fundo claro (Sol) */
-  position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: var(--background);
-  transition: .5s;
-  border-radius: 30px;
-}
-
-.switch .slider:before {
-  position: absolute;
-  content: "";
-  height: 1.4em;
-  width: 1.4em;
-  border-radius: 50%;
-  left: 10%;
-  bottom: 15%;
-  /* Sombra cobrindo todo o cÃ­rculo para fazer o Sol */
-  box-shadow: inset 15px -4px 0px 15px #fff000;
-  background: var(--background);
-  transition: .5s;
-}
-
-.switch input:checked + .slider {
-  background-color: #28096b; /* Fundo escuro (Lua) */
-}
-
-.switch input:checked + .slider:before {
-  transform: translateX(100%);
-  /* Sombra parcial para formar a Lua crescente */
-  box-shadow: inset 8px -4px 0px 0px #fff000;
-}
-
-/* ====== APP BAR ====== */
-.app-bar {
-    display: flex;
-    align-items: center;
-    gap: 0;
-    background: linear-gradient(135deg, var(--cor-appbar-inicio) 0%, var(--cor-appbar-fim) 50%, var(--cor-appbar-inicio) 100%);
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 1000;
-    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.35);
-    height: 56px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-}
-
-.app-bar-group {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    padding: 0 16px;
-    height: 100%;
-}
-
-.app-bar-group.grow {
-    flex: 1;
-    justify-content: flex-end;
-}
-
-.app-bar-group.app-bar-tema {
-    padding-left: 20px;
-}
-
-.app-bar-aviso {
-    display: inline-block;
-    white-space: nowrap;
-    margin-right: 10px;
-    padding: 4px 8px;
-    font-size: 14px;
-    font-weight: bold;
-    color: #f44336;
-    background: rgba(244, 67, 54, 0.1);
-    border: 1px solid rgba(244, 67, 54, 0.3);
-    border-radius: 4px;
-}
-
-
-
-
-.app-bar-label {
-    font-size: 10px;
-    font-weight: 600;
-    color: rgba(255, 255, 255, 0.55);
-    text-transform: uppercase;
-    letter-spacing: 1.2px;
-    margin-right: 10px;
-    white-space: nowrap;
-    user-select: none;
-}
-
-.app-bar-separator {
-    width: 1px;
-    height: 28px;
-    background: linear-gradient(180deg, transparent, rgba(255, 255, 255, 0.12), transparent);
-    flex-shrink: 0;
-}
-
-.app-bar button {
-    background: rgba(255, 255, 255, 0.06);
-    color: rgba(255, 255, 255, 0.8);
-    margin-top: 0;
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    font-size: 13px;
-    font-weight: 500;
-    font-family: 'Inter', Arial, sans-serif;
-    padding: 7px 14px;
-    border-radius: 6px;
-    transition: all 0.2s ease;
-    cursor: pointer;
-    white-space: nowrap;
-    letter-spacing: 0.2px;
-}
-
-.app-bar button:hover {
-    background: rgba(255, 255, 255, 0.12);
-    color: #fff;
-    border-color: rgba(255, 255, 255, 0.18);
-    transform: translateY(-1px);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-}
-
-.app-bar button:focus-visible {
-    outline: 2px solid var(--cor-primaria);
-    outline-offset: 2px;
-}
-
-.app-bar button:active {
-    transform: translateY(0px);
-    box-shadow: none;
-}
-
-.app-bar button.active {
-    background: linear-gradient(135deg, #4CAF50, #43A047);
-    border-color: rgba(76, 175, 80, 0.4);
-    color: #fff;
-    box-shadow: 0 0 12px rgba(76, 175, 80, 0.3);
-}
-
-/* BotÃµes de aÃ§Ã£o na app-bar */
-.btn-exportar {
-    background: rgba(33, 150, 243, 0.15) !important;
-    color: #64b5f6 !important;
-    border-color: rgba(33, 150, 243, 0.25) !important;
-}
-
-.btn-exportar:hover {
-    background: rgba(33, 150, 243, 0.3) !important;
-    color: #90caf9 !important;
-}
-
-.btn-importar {
-    background: rgba(255, 152, 0, 0.15) !important;
-    color: #ffb74d !important;
-    border-color: rgba(255, 152, 0, 0.25) !important;
-}
-
-.btn-importar:hover {
-    background: rgba(255, 152, 0, 0.3) !important;
-    color: #ffd54f !important;
-}
-
-.btn-imprimir {
-    background: rgba(76, 175, 80, 0.15) !important;
-    color: #81c784 !important;
-    border-color: rgba(76, 175, 80, 0.25) !important;
-}
-
-.btn-imprimir:hover {
-    background: rgba(76, 175, 80, 0.3) !important;
-    color: #a5d6a7 !important;
-}
-
-.btn-novo {
-    background: rgba(255, 255, 255, 0.1) !important;
-    color: #fff !important;
-    border-color: rgba(255, 255, 255, 0.25) !important;
-}
-
-.btn-novo:hover {
-    background: rgba(255, 255, 255, 0.2) !important;
-}
-
-.app-bar button.btn-vazio {
-    background: rgba(255, 255, 255, 0.06);
-    color: rgba(255, 255, 255, 0.7);
-    border: 1px dashed rgba(255, 255, 255, 0.2);
-}
-
-.app-bar button.btn-vazio:hover {
-    background: rgba(255, 255, 255, 0.1);
-    color: rgba(255, 255, 255, 0.95);
-    border-style: solid;
-}
-
-.app-bar button.btn-ok {
-    background: rgba(76, 175, 80, 0.12);
-    color: #66bb6a;
-    border-color: rgba(76, 175, 80, 0.2);
-}
-
-.app-bar button.btn-ok:hover {
-    background: rgba(76, 175, 80, 0.25);
-    color: #81c784;
-    border-color: rgba(76, 175, 80, 0.4);
-    box-shadow: 0 0 12px rgba(76, 175, 80, 0.15);
-}
-
-.app-bar button.btn-defeito {
-    background: rgba(239, 83, 80, 0.12);
-    color: #ef5350;
-    border-color: rgba(239, 83, 80, 0.2);
-}
-
-.app-bar button.btn-defeito:hover {
-    background: rgba(239, 83, 80, 0.25);
-    color: #e57373;
-    border-color: rgba(239, 83, 80, 0.4);
-    box-shadow: 0 0 12px rgba(239, 83, 80, 0.15);
-}
-
-.app-bar select {
-    background: rgba(255, 255, 255, 0.08);
-    color: #fff;
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    border-radius: 6px;
-    padding: 7px 30px 7px 12px;
-    font-size: 13px;
-    font-weight: 500;
-    font-family: 'Inter', Arial, sans-serif;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='rgba(255,255,255,0.5)' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 10px center;
-    width: auto;
-}
-
-.app-bar select:hover {
-    background-color: rgba(255, 255, 255, 0.14);
-    border-color: rgba(255, 255, 255, 0.22);
-}
-
-.app-bar select:focus {
-    outline: none;
-    border-color: rgba(100, 180, 255, 0.5);
-    box-shadow: 0 0 0 2px rgba(100, 180, 255, 0.2);
-}
-
-.app-bar select option {
-    background: #2a2a3e;
-    color: #fff;
-}
-
-/* ====== IMPRESSÃƒO ====== */
-@media print {
-    /* ForÃ§ar modo claro na impressÃ£o, independente do tema ativo */
-    body, body.dark-mode {
+    /* ====== VARIÃVEIS DE DESIGN ====== */
+    :root {
+      /* Cores principais */
+      --cor-primaria: #2196F3;
+      --cor-sucesso: #4CAF50;
+      --cor-perigo: #f44336;
+      --cor-alerta: #ff9800;
+
+      /* SuperfÃ­cies */
+      --cor-fundo: #f0f2f5;
+      --cor-superficie: #ffffff;
+      --cor-secao: #f1f5f9;
+      --cor-borda: #dde1e6;
+      --cor-separador: #e0e0e0;
+
+      /* Texto */
+      --cor-texto: #1e293b;
+      --cor-texto-secundario: #64748b;
+      --cor-texto-claro: #94a3b8;
+
+      /* CabeÃ§alho da tabela */
+      --cor-cabecalho: #1e293b;
+      --cor-cabecalho-texto: #ffffff;
+
+      /* App Bar */
+      --cor-appbar-inicio: #1e1e2e;
+      --cor-appbar-fim: #2a2a3e;
+
+      /* Sombras */
+      --sombra-card: 0 1px 3px rgba(0, 0, 0, 0.08);
+      --sombra-elevada: 0 4px 12px rgba(0, 0, 0, 0.1);
+
+      /* EspaÃ§amento */
+      --raio-borda: 8px;
+      --raio-borda-sm: 4px;
+
+      /* Foco */
+      --cor-foco: rgba(33, 150, 243, 0.3);
+    }
+
+    /* ====== DARK MODE ====== */
+    body.dark-mode {
+      --cor-fundo: #121218;
+      --cor-superficie: #1e1e2a;
+      --cor-secao: #252536;
+      --cor-borda: #333348;
+      --cor-separador: #333348;
+
+      --cor-texto: #e2e8f0;
+      --cor-texto-secundario: #94a3b8;
+      --cor-texto-claro: #64748b;
+
+      --cor-cabecalho: #161622;
+      --cor-cabecalho-texto: #e2e8f0;
+
+      --sombra-card: 0 1px 3px rgba(0, 0, 0, 0.3);
+      --sombra-elevada: 0 4px 12px rgba(0, 0, 0, 0.4);
+    }
+
+    /* ====== RESET E BASE ====== */
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', Arial, sans-serif;
+      padding: 20px;
+      padding-top: 80px;
+      background: var(--cor-fundo);
+      color: var(--cor-texto);
+    }
+
+    h1 {
+      margin-bottom: 8px;
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--cor-texto);
+      letter-spacing: -0.02em;
+      text-align: center;
+    }
+
+    .topo {
+      display: flex;
+      gap: 20px;
+      margin-bottom: 15px;
+    }
+
+    .topo div {
+      flex: 1;
+    }
+
+    .topo .campo-data {
+      flex: 0 0 180px;
+    }
+
+    .topo input.invalido {
+      border-color: var(--cor-perigo);
+      box-shadow: 0 0 0 3px rgba(244, 67, 54, 0.15);
+    }
+
+    .campo-erro {
+      display: block;
+      margin-top: 4px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--cor-perigo);
+    }
+
+    label {
+      font-weight: 600;
+      display: block;
+      margin-bottom: 4px;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--cor-texto-secundario);
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      padding: 8px 10px;
+      border: 1px solid var(--cor-borda);
+      border-radius: var(--raio-borda-sm);
+      box-sizing: border-box;
+      font-family: 'Inter', Arial, sans-serif;
+      font-size: 14px;
+      color: var(--cor-texto);
+      background: var(--cor-superficie);
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      outline: none;
+      border-color: var(--cor-primaria);
+      box-shadow: 0 0 0 3px var(--cor-foco);
+    }
+
+    [hidden] {
+      display: none !important;
+    }
+
+    /* Campo "SaÃºde (%)" abaixo dos selects */
+    .saude {
+      margin-top: 5px;
+    }
+
+    input[type="checkbox"] {
+      width: auto;
+      margin-right: 6px;
+    }
+
+    /* Checkbox de Teste RÃƒÂ¡pido / Checklist na coluna Testes */
+    .teste-rapido-container {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      width: 100%;
+    }
+
+    .teste-rapido-container select,
+    .teste-rapido-container input[type="text"] {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .check-atendente {
+      flex-shrink: 0;
+      width: 16px;
+      height: 16px;
+      cursor: pointer;
+      accent-color: var(--cor-primaria);
+      margin: 0;
+    }
+
+    textarea {
+      field-sizing: content;
+      resize: vertical;
+      min-height: 2.5em;
+    }
+
+    .label-tecnico {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+
+    .input-tecnico {
+      padding: 3px 6px;
+      width: 60%;
+      border-radius: var(--raio-borda-sm);
+      box-sizing: border-box;
+      text-align: center;
+      font-size: 12px;
+      margin-top: 4px;
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: var(--cor-cabecalho-texto);
+    }
+
+    .input-tecnico:focus {
+      background: rgba(255, 255, 255, 0.25);
+      border-color: rgba(255, 255, 255, 0.4);
+      box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.1);
+    }
+
+    /* ====== TABELA ====== */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+      background: var(--cor-superficie);
+      border-radius: var(--raio-borda);
+      overflow: hidden;
+      box-shadow: var(--sombra-card);
+    }
+
+    th,
+    td {
+      border: 1px solid var(--cor-borda);
+      padding: 8px;
+      text-align: left;
+    }
+
+    th {
+      background: var(--cor-cabecalho);
+      color: var(--cor-cabecalho-texto);
+      text-align: center;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      font-weight: 600;
+    }
+
+    .secao {
+      background: var(--cor-secao);
+      font-weight: 700;
+      text-align: center;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--cor-texto-secundario);
+      border-left: 3px solid var(--cor-primaria);
+    }
+
+    hr {
+      margin: 5px 0;
+      background-color: var(--cor-separador);
+      border: 0;
+      height: 1px;
+    }
+
+    /* ====== BOTÃ•ES ARMAZENAMENTO ====== */
+    .table-responsive .armazenamento-acoes {
+      text-align: center;
+      padding: 4px;
+    }
+
+    .btn-add-armazenamento,
+    .btn-remove-armazenamento {
+      margin: 4px 6px;
+      padding: 6px 16px;
+      font-size: 13px;
+      font-weight: 600;
+      font-family: 'Inter', Arial, sans-serif;
+      border-radius: 6px;
+      cursor: pointer;
+      border: 1px solid;
+      transition: all 0.2s ease;
+    }
+
+    .btn-add-armazenamento {
+      background: rgba(76, 175, 80, 0.1);
+      color: #2e7d32;
+      border-color: rgba(76, 175, 80, 0.3);
+    }
+
+    .btn-add-armazenamento:hover {
+      background: rgba(76, 175, 80, 0.2);
+      border-color: rgba(76, 175, 80, 0.5);
+      box-shadow: 0 2px 8px rgba(76, 175, 80, 0.15);
+    }
+
+    .btn-remove-armazenamento {
+      background: rgba(244, 67, 54, 0.1);
+      color: #c62828;
+      border-color: rgba(244, 67, 54, 0.3);
+    }
+
+    .btn-remove-armazenamento:hover {
+      background: rgba(244, 67, 54, 0.2);
+      border-color: rgba(244, 67, 54, 0.5);
+      box-shadow: 0 2px 8px rgba(244, 67, 54, 0.15);
+    }
+
+    button {
+      margin-top: 15px;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    /* ====== SWITCH TEMA (DARK/LIGHT) ====== */
+    .switch {
+      font-size: 11px;
+      position: relative;
+      display: inline-block;
+      width: 3.5em;
+      height: 2em;
+    }
+
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .switch .slider {
+      --background: #522ba7;
+      /* Fundo claro (Sol) */
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: var(--background);
+      transition: .5s;
+      border-radius: 30px;
+    }
+
+    .switch .slider:before {
+      position: absolute;
+      content: "";
+      height: 1.4em;
+      width: 1.4em;
+      border-radius: 50%;
+      left: 10%;
+      bottom: 15%;
+      /* Sombra cobrindo todo o cÃ­rculo para fazer o Sol */
+      box-shadow: inset 15px -4px 0px 15px #fff000;
+      background: var(--background);
+      transition: .5s;
+    }
+
+    .switch input:checked+.slider {
+      background-color: #28096b;
+      /* Fundo escuro (Lua) */
+    }
+
+    .switch input:checked+.slider:before {
+      transform: translateX(100%);
+      /* Sombra parcial para formar a Lua crescente */
+      box-shadow: inset 8px -4px 0px 0px #fff000;
+    }
+
+    /* ====== APP BAR ====== */
+    .app-bar {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      background: linear-gradient(135deg, var(--cor-appbar-inicio) 0%, var(--cor-appbar-fim) 50%, var(--cor-appbar-inicio) 100%);
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.35);
+      height: 56px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .app-bar-group {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 0 16px;
+      height: 100%;
+    }
+
+    .app-bar-group.grow {
+      flex: 1;
+      justify-content: flex-end;
+    }
+
+    .app-bar-group.app-bar-tema {
+      padding-left: 20px;
+    }
+
+    .app-bar-aviso {
+      display: inline-block;
+      white-space: nowrap;
+      margin-right: 10px;
+      padding: 4px 8px;
+      font-size: 14px;
+      font-weight: bold;
+      color: #f44336;
+      background: rgba(244, 67, 54, 0.1);
+      border: 1px solid rgba(244, 67, 54, 0.3);
+      border-radius: 4px;
+    }
+
+
+
+
+    .app-bar-label {
+      font-size: 10px;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.55);
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      margin-right: 10px;
+      white-space: nowrap;
+      user-select: none;
+    }
+
+    .app-bar-separator {
+      width: 1px;
+      height: 28px;
+      background: linear-gradient(180deg, transparent, rgba(255, 255, 255, 0.12), transparent);
+      flex-shrink: 0;
+    }
+
+    .app-bar button {
+      background: rgba(255, 255, 255, 0.06);
+      color: rgba(255, 255, 255, 0.8);
+      margin-top: 0;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      font-size: 13px;
+      font-weight: 500;
+      font-family: 'Inter', Arial, sans-serif;
+      padding: 7px 14px;
+      border-radius: 6px;
+      transition: all 0.2s ease;
+      cursor: pointer;
+      white-space: nowrap;
+      letter-spacing: 0.2px;
+    }
+
+    .app-bar button:hover {
+      background: rgba(255, 255, 255, 0.12);
+      color: #fff;
+      border-color: rgba(255, 255, 255, 0.18);
+      transform: translateY(-1px);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .app-bar button:focus-visible {
+      outline: 2px solid var(--cor-primaria);
+      outline-offset: 2px;
+    }
+
+    .app-bar button:active {
+      transform: translateY(0px);
+      box-shadow: none;
+    }
+
+    .app-bar button.active {
+      background: linear-gradient(135deg, #4CAF50, #43A047);
+      border-color: rgba(76, 175, 80, 0.4);
+      color: #fff;
+      box-shadow: 0 0 12px rgba(76, 175, 80, 0.3);
+    }
+
+    /* BotÃµes de aÃ§Ã£o na app-bar */
+    .btn-exportar {
+      background: rgba(33, 150, 243, 0.15) !important;
+      color: #64b5f6 !important;
+      border-color: rgba(33, 150, 243, 0.25) !important;
+    }
+
+    .btn-exportar:hover {
+      background: rgba(33, 150, 243, 0.3) !important;
+      color: #90caf9 !important;
+    }
+
+    .btn-importar {
+      background: rgba(255, 152, 0, 0.15) !important;
+      color: #ffb74d !important;
+      border-color: rgba(255, 152, 0, 0.25) !important;
+    }
+
+    .btn-importar:hover {
+      background: rgba(255, 152, 0, 0.3) !important;
+      color: #ffd54f !important;
+    }
+
+    .btn-imprimir {
+      background: rgba(76, 175, 80, 0.15) !important;
+      color: #81c784 !important;
+      border-color: rgba(76, 175, 80, 0.25) !important;
+    }
+
+    .btn-imprimir:hover {
+      background: rgba(76, 175, 80, 0.3) !important;
+      color: #a5d6a7 !important;
+    }
+
+    .btn-novo {
+      background: rgba(255, 255, 255, 0.1) !important;
+      color: #fff !important;
+      border-color: rgba(255, 255, 255, 0.25) !important;
+    }
+
+    .btn-novo:hover {
+      background: rgba(255, 255, 255, 0.2) !important;
+    }
+
+    .app-bar button.btn-vazio {
+      background: rgba(255, 255, 255, 0.06);
+      color: rgba(255, 255, 255, 0.7);
+      border: 1px dashed rgba(255, 255, 255, 0.2);
+    }
+
+    .app-bar button.btn-vazio:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: rgba(255, 255, 255, 0.95);
+      border-style: solid;
+    }
+
+    .app-bar button.btn-ok {
+      background: rgba(76, 175, 80, 0.12);
+      color: #66bb6a;
+      border-color: rgba(76, 175, 80, 0.2);
+    }
+
+    .app-bar button.btn-ok:hover {
+      background: rgba(76, 175, 80, 0.25);
+      color: #81c784;
+      border-color: rgba(76, 175, 80, 0.4);
+      box-shadow: 0 0 12px rgba(76, 175, 80, 0.15);
+    }
+
+    .app-bar button.btn-defeito {
+      background: rgba(239, 83, 80, 0.12);
+      color: #ef5350;
+      border-color: rgba(239, 83, 80, 0.2);
+    }
+
+    .app-bar button.btn-defeito:hover {
+      background: rgba(239, 83, 80, 0.25);
+      color: #e57373;
+      border-color: rgba(239, 83, 80, 0.4);
+      box-shadow: 0 0 12px rgba(239, 83, 80, 0.15);
+    }
+
+    .app-bar select {
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 6px;
+      padding: 7px 30px 7px 12px;
+      font-size: 13px;
+      font-weight: 500;
+      font-family: 'Inter', Arial, sans-serif;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='rgba(255,255,255,0.5)' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 10px center;
+      width: auto;
+    }
+
+    .app-bar select:hover {
+      background-color: rgba(255, 255, 255, 0.14);
+      border-color: rgba(255, 255, 255, 0.22);
+    }
+
+    .app-bar select:focus {
+      outline: none;
+      border-color: rgba(100, 180, 255, 0.5);
+      box-shadow: 0 0 0 2px rgba(100, 180, 255, 0.2);
+    }
+
+    .app-bar select option {
+      background: #2a2a3e;
+      color: #fff;
+    }
+
+    /* ====== IMPRESSÃƒO ====== */
+    @media print {
+
+      /* ForÃ§ar modo claro na impressÃ£o, independente do tema ativo */
+      body,
+      body.dark-mode {
         --cor-fundo: #f0f2f5;
         --cor-superficie: #ffffff;
         --cor-secao: #f1f5f9;
@@ -617,596 +623,629 @@ button {
         --cor-alerta: #ff9800;
         --sombra-card: none;
         --sombra-elevada: none;
-    }
+      }
 
-    button,
-    .app-bar,
-    title,
-    .no-print,
-    .avisos-pendencia,
-    #appBarAviso {
+      button,
+      .app-bar,
+      title,
+      .no-print,
+      .avisos-pendencia,
+      #appBarAviso {
         display: none !important;
-    }
+      }
 
-    input,
-    select,
-    textarea {
+      input,
+      select,
+      textarea {
         border: none !important;
         background: transparent !important;
         appearance: none;
         -webkit-appearance: none;
         -moz-appearance: none;
-    }
+      }
 
-    .topo input {
+      .topo input {
         padding: 0px;
         border-bottom: 1px solid #000 !important;
         border-radius: 0px !important;
-    }
+      }
 
-    .backup-input {
+      .backup-input {
         border: 1px solid #ccc !important;
-    }
+      }
 
-    body {
+      body {
         background: #fff;
         padding-top: 0 !important;
         padding-bottom: 0 !important;
         transform: scale(0.98);
         transform-origin: top center;
         color: #000;
-    }
+      }
 
-    /* Comprimir a tabela para caber em 1 pÃ¡gina sempre */
-    table th, table td {
+      /* Comprimir a tabela para caber em 1 pÃ¡gina sempre */
+      table th,
+      table td {
         padding: 4px 6px !important;
         font-size: 11px !important;
         line-height: 1.2 !important;
-    }
+      }
 
-    .secao {
+      .secao {
         padding: 4px !important;
         font-size: 11px !important;
-    }
+      }
 
-    .assinatura-linha {
-        margin: 25px auto 4px !important; /* Menos espaÃ§o vazio na assinatura */
-    }
+      .assinatura-linha {
+        margin: 25px auto 4px !important;
+        /* Menos espaÃ§o vazio na assinatura */
+      }
 
-    h1 {
+      h1 {
         font-size: 16px !important;
         margin-bottom: 4px !important;
-    }
+      }
 
-    select[data-print-hide-text] {
+      select[data-print-hide-text] {
         color: transparent !important;
-    }
+      }
 
-    .defeito-obs-row[data-print-hide],
-    .input-tecnico[data-print-hide] {
+      .defeito-obs-row[data-print-hide],
+      .input-tecnico[data-print-hide] {
         display: none !important;
-    }
+      }
 
-    .defeito-obs-input {
+      .defeito-obs-input {
         border: none !important;
         background: transparent !important;
         padding: 0 !important;
-    }
+      }
 
-    .input-tecnico {
+      .input-tecnico {
         color: inherit !important;
-    }
+      }
 
-    .table-responsive {
+      /* Checklist do atendente: a regra geral de input acima apaga os checkboxes.
+       Desenha o quadrado com borda e o ✓ como texto (sai mesmo sem "gráficos de fundo"). */
+      input[type="checkbox"] {
+        display: inline-block !important;
+        position: relative;
+        width: 12px !important;
+        height: 12px !important;
+        min-width: 12px;
+        margin: 0 !important;
+        padding: 0 !important;
+        border: 1px solid #000 !important;
+        border-radius: 2px !important;
+        background: #fff !important;
+        vertical-align: middle;
+      }
+
+      input[type="checkbox"]:checked::after {
+        content: "\2713";
+        position: absolute;
+        inset: 0;
+        font: bold 11px/11px Arial, sans-serif;
+        text-align: center;
+        color: #000;
+      }
+
+      .table-responsive {
         overflow-x: visible !important;
         box-shadow: none !important;
+      }
     }
-}
 
-/* ====== CAMPOS CONTENTEDITABLE (Parecer TÃ©cnico / Defeito Encontrado) ====== */
-#PARECERTECNICOField,
-#DEFEITOENCONTRADOField {
-    min-height: 60px;
-    word-wrap: break-word;
-    overflow-wrap: anywhere;
-    word-break: break-word;
-    white-space: pre-wrap;
-    max-width: 100%;
-    line-height: 1.5;
-}
+    /* ====== CAMPOS CONTENTEDITABLE (Parecer TÃ©cnico / Defeito Encontrado) ====== */
+    #PARECERTECNICOField,
+    #DEFEITOENCONTRADOField {
+      min-height: 60px;
+      word-wrap: break-word;
+      overflow-wrap: anywhere;
+      word-break: break-word;
+      white-space: pre-wrap;
+      max-width: 100%;
+      line-height: 1.5;
+    }
 
-/* ====== DEFEITOS ENCONTRADOS ====== */
-.defeito-card {
-    padding: 10px 14px;
-    margin-bottom: 6px;
-    font-size: 14px;
-    line-height: 1.5;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    border-left: 3px solid var(--cor-perigo);
-    background: rgba(244, 67, 54, 0.03);
-    border-radius: 0 var(--raio-borda-sm) var(--raio-borda-sm) 0;
-}
+    /* ====== DEFEITOS ENCONTRADOS ====== */
+    .defeito-card {
+      padding: 10px 14px;
+      margin-bottom: 6px;
+      font-size: 14px;
+      line-height: 1.5;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      border-left: 3px solid var(--cor-perigo);
+      background: rgba(244, 67, 54, 0.03);
+      border-radius: 0 var(--raio-borda-sm) var(--raio-borda-sm) 0;
+    }
 
-.defeito-card .defeito-texto {
-    color: var(--cor-texto);
-}
+    .defeito-card .defeito-texto {
+      color: var(--cor-texto);
+    }
 
-.defeito-card .defeito-extra {
-    font-size: 12px;
-    color: var(--cor-texto-secundario);
-    font-style: italic;
-}
+    .defeito-card .defeito-extra {
+      font-size: 12px;
+      color: var(--cor-texto-secundario);
+      font-style: italic;
+    }
 
-.defeito-card .defeito-obs-row {
-    display: flex;
-    align-items: flex-start;
-    gap: 6px;
-    margin-top: 2px;
-}
+    .defeito-card .defeito-obs-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 6px;
+      margin-top: 2px;
+    }
 
-.defeito-card .defeito-obs-row strong {
-    color: var(--cor-texto-secundario);
-    white-space: nowrap;
-    font-size: 13px;
-    padding-top: 4px;
-}
+    .defeito-card .defeito-obs-row strong {
+      color: var(--cor-texto-secundario);
+      white-space: nowrap;
+      font-size: 13px;
+      padding-top: 4px;
+    }
 
-.defeito-card .defeito-obs-input {
-    flex: 1;
-    border: 1px dashed var(--cor-borda);
-    border-radius: var(--raio-borda-sm);
-    padding: 3px 8px;
-    font-size: 13px;
-    background: var(--cor-superficie);
-    outline: none;
-    transition: border-color 0.2s;
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-    white-space: pre-wrap;
-    resize: vertical;
-    min-height: 28px;
-    font-family: inherit;
-}
+    .defeito-card .defeito-obs-input {
+      flex: 1;
+      border: 1px dashed var(--cor-borda);
+      border-radius: var(--raio-borda-sm);
+      padding: 3px 8px;
+      font-size: 13px;
+      background: var(--cor-superficie);
+      outline: none;
+      transition: border-color 0.2s;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+      white-space: pre-wrap;
+      resize: vertical;
+      min-height: 28px;
+      font-family: inherit;
+    }
 
-.defeito-card .defeito-obs-input:focus {
-    border-color: var(--cor-alerta);
-    border-style: solid;
-    box-shadow: 0 0 0 2px rgba(255, 152, 0, 0.15);
-}
+    .defeito-card .defeito-obs-input:focus {
+      border-color: var(--cor-alerta);
+      border-style: solid;
+      box-shadow: 0 0 0 2px rgba(255, 152, 0, 0.15);
+    }
 
-/* ====== MODAL ====== */
-.modal-overlay {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 2000;
-    justify-content: center;
-    align-items: center;
-    backdrop-filter: blur(4px);
-}
+    /* ====== MODAL ====== */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 2000;
+      justify-content: center;
+      align-items: center;
+      backdrop-filter: blur(4px);
+    }
 
-.modal-overlay.show {
-    display: flex;
-}
+    .modal-overlay.show {
+      display: flex;
+    }
 
-.modal-box {
-    background: var(--cor-superficie);
-    border-radius: 16px;
-    padding: 28px 32px;
-    max-width: 420px;
-    width: 90%;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-    text-align: center;
-    font-family: 'Inter', Arial, sans-serif;
-    animation: modalEntrar 0.2s ease-out;
-}
+    .modal-box {
+      background: var(--cor-superficie);
+      border-radius: 16px;
+      padding: 28px 32px;
+      max-width: 420px;
+      width: 90%;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      text-align: center;
+      font-family: 'Inter', Arial, sans-serif;
+      animation: modalEntrar 0.2s ease-out;
+    }
 
-@keyframes modalEntrar {
-    from {
+    @keyframes modalEntrar {
+      from {
         opacity: 0;
         transform: scale(0.95) translateY(10px);
-    }
-    to {
+      }
+
+      to {
         opacity: 1;
         transform: scale(1) translateY(0);
+      }
     }
-}
 
-.modal-box h3 {
-    margin: 0 0 8px;
-    font-size: 18px;
-    color: var(--cor-alerta);
-}
+    .modal-box h3 {
+      margin: 0 0 8px;
+      font-size: 18px;
+      color: var(--cor-alerta);
+    }
 
-.modal-box p {
-    margin: 0 0 20px;
-    font-size: 14px;
-    color: var(--cor-texto-secundario);
-    line-height: 1.5;
-}
+    .modal-box p {
+      margin: 0 0 20px;
+      font-size: 14px;
+      color: var(--cor-texto-secundario);
+      line-height: 1.5;
+    }
 
-.modal-box .modal-actions {
-    display: flex;
-    gap: 10px;
-    justify-content: center;
-}
+    .modal-box .modal-actions {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+    }
 
-.modal-box .modal-actions button {
-    padding: 10px 24px;
-    border-radius: var(--raio-borda);
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    border: none;
-    margin-top: 0;
-    transition: all 0.15s;
-}
+    .modal-box .modal-actions button {
+      padding: 10px 24px;
+      border-radius: var(--raio-borda);
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      margin-top: 0;
+      transition: all 0.15s;
+    }
 
-.modal-btn-cancel {
-    background: var(--cor-secao);
-    color: var(--cor-texto);
-}
+    .modal-btn-cancel {
+      background: var(--cor-secao);
+      color: var(--cor-texto);
+    }
 
-.modal-btn-cancel:hover {
-    background: var(--cor-borda);
-}
+    .modal-btn-cancel:hover {
+      background: var(--cor-borda);
+    }
 
-.modal-btn-confirm {
-    background: #e53935;
-    color: #fff;
-}
+    .modal-btn-confirm {
+      background: #e53935;
+      color: #fff;
+    }
 
-.modal-btn-confirm:hover {
-    background: #c62828;
-}
+    .modal-btn-confirm:hover {
+      background: #c62828;
+    }
 
-/* ====== AVISOS PENDÃŠNCIA ====== */
-.avisos-pendencia {
-    background: #ffebee;
-    border-left: 4px solid var(--cor-perigo);
-    padding: 10px 15px;
-    margin-top: 10px;
-    margin-bottom: 20px;
-    font-size: 14px;
-    color: #c62828;
-    border-radius: 0 var(--raio-borda-sm) var(--raio-borda-sm) 0;
-}
+    /* ====== AVISOS PENDÃŠNCIA ====== */
+    .avisos-pendencia {
+      background: #ffebee;
+      border-left: 4px solid var(--cor-perigo);
+      padding: 10px 15px;
+      margin-top: 10px;
+      margin-bottom: 20px;
+      font-size: 14px;
+      color: #c62828;
+      border-radius: 0 var(--raio-borda-sm) var(--raio-borda-sm) 0;
+    }
 
-.pendencia-link {
-    margin: 0;
-    padding: 0;
-    border: none;
-    background: none;
-    font: inherit;
-    color: inherit;
-    text-decoration: underline;
-    text-underline-offset: 2px;
-    cursor: pointer;
-}
+    .pendencia-link {
+      margin: 0;
+      padding: 0;
+      border: none;
+      background: none;
+      font: inherit;
+      color: inherit;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+      cursor: pointer;
+    }
 
-.pendencia-link:hover {
-    text-decoration-thickness: 2px;
-}
+    .pendencia-link:hover {
+      text-decoration-thickness: 2px;
+    }
 
-/* Pisca o campo quando se chega nele pelo aviso de pendÃªncias */
-.destaque {
-    animation: destacar 1.6s ease-out;
-}
+    /* Pisca o campo quando se chega nele pelo aviso de pendÃªncias */
+    .destaque {
+      animation: destacar 1.6s ease-out;
+    }
 
-@keyframes destacar {
-    0%, 40% {
+    @keyframes destacar {
+
+      0%,
+      40% {
         box-shadow: 0 0 0 4px rgba(244, 67, 54, 0.45);
         border-color: var(--cor-perigo);
-    }
-    100% {
+      }
+
+      100% {
         box-shadow: 0 0 0 4px rgba(244, 67, 54, 0);
+      }
     }
-}
 
-body.dark-mode .avisos-pendencia {
-    background: rgba(244, 67, 54, 0.1);
-    color: #ef9a9a;
-}
+    body.dark-mode .avisos-pendencia {
+      background: rgba(244, 67, 54, 0.1);
+      color: #ef9a9a;
+    }
 
-/* ====== CORES DOS RESULTADOS ====== */
-@media screen {
-    .table-responsive select[data-status="ok"] {
+    /* ====== CORES DOS RESULTADOS ====== */
+    @media screen {
+      .table-responsive select[data-status="ok"] {
         border-color: rgba(76, 175, 80, 0.6);
         background-color: rgba(76, 175, 80, 0.12);
         color: #2e7d32;
         font-weight: 600;
-    }
+      }
 
-    .table-responsive select[data-status="defeito"] {
+      .table-responsive select[data-status="defeito"] {
         border-color: rgba(244, 67, 54, 0.6);
         background-color: rgba(244, 67, 54, 0.12);
         color: #c62828;
         font-weight: 600;
-    }
+      }
 
-    .table-responsive select[data-status="vazio"] {
+      .table-responsive select[data-status="vazio"] {
         background-color: var(--cor-secao);
         color: var(--cor-texto-claro);
-    }
+      }
 
-    body.dark-mode .table-responsive select[data-status="ok"] {
+      body.dark-mode .table-responsive select[data-status="ok"] {
         color: #81c784;
-    }
+      }
 
-    body.dark-mode .table-responsive select[data-status="defeito"] {
+      body.dark-mode .table-responsive select[data-status="defeito"] {
         color: #ef9a9a;
-    }
+      }
 
-    /* A lista aberta mantÃ©m as cores normais */
-    .table-responsive select option {
+      /* A lista aberta mantÃ©m as cores normais */
+      .table-responsive select option {
         background: var(--cor-superficie);
         color: var(--cor-texto);
         font-weight: normal;
+      }
     }
-}
 
-/* ====== ASSINATURAS ====== */
-.assinatura-area {
-    margin-top: 30px;
-}
+    /* ====== ASSINATURAS ====== */
+    .assinatura-area {
+      margin-top: 30px;
+    }
 
-.assinatura-celula {
-    text-align: center;
-    padding: 0 15px 10px !important;
-    border: none !important;
-    vertical-align: bottom;
-}
+    .assinatura-celula {
+      text-align: center;
+      padding: 0 15px 10px !important;
+      border: none !important;
+      vertical-align: bottom;
+    }
 
-.assinatura-linha {
-    width: 180px;
-    max-width: 90%;
-    border-top: 1px solid var(--cor-texto-claro);
-    margin: 50px auto 8px;
-}
+    .assinatura-linha {
+      width: 180px;
+      max-width: 90%;
+      border-top: 1px solid var(--cor-texto-claro);
+      margin: 50px auto 8px;
+    }
 
-.assinatura-nome {
-    font-size: 12px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    color: var(--cor-texto-secundario);
-}
+    .assinatura-nome {
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--cor-texto-secundario);
+    }
 
-/* ====== MENU FLUTUANTE ====== */
-body {
-    padding-bottom: 96px; /* espaÃ§o para o botÃ£o nÃ£o cobrir o fim da pÃ¡gina */
-}
-
-.fab {
-    position: fixed;
-    right: 20px;
-    bottom: calc(20px + env(safe-area-inset-bottom));
-    z-index: 1500;
-    font-family: 'Inter', Arial, sans-serif;
-}
-
-.fab button {
-    margin-top: 0;
-    font-family: inherit;
-}
-
-.fab-botao {
-    position: relative;
-    width: 56px;
-    height: 56px;
-    padding: 0;
-    border-radius: 50%;
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    background: linear-gradient(135deg, var(--cor-appbar-inicio), var(--cor-appbar-fim));
-    color: #fff;
-    font-size: 20px;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
-    transition: transform 0.2s ease;
-}
-
-.fab-botao:hover {
-    transform: scale(1.05);
-}
-
-.fab-botao:focus-visible {
-    outline: 2px solid var(--cor-primaria);
-    outline-offset: 3px;
-}
-
-.fab-icone-fechar,
-.fab.aberto .fab-icone-abrir {
-    display: none;
-}
-
-.fab.aberto .fab-icone-fechar {
-    display: inline;
-}
-
-/* Bolinha vermelha quando o laudo estÃ¡ incompleto */
-.fab.com-aviso .fab-botao::after {
-    content: "";
-    position: absolute;
-    top: 2px;
-    right: 2px;
-    width: 14px;
-    height: 14px;
-    border-radius: 50%;
-    background: var(--cor-perigo);
-    border: 2px solid var(--cor-fundo);
-}
-
-.fab-menu {
-    position: absolute;
-    right: 0;
-    bottom: 68px;
-    width: 270px;
-    max-width: calc(100vw - 40px);
-    max-height: calc(100vh - 110px);
-    overflow-y: auto;
-    padding: 10px;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    background: var(--cor-superficie);
-    border: 1px solid var(--cor-borda);
-    border-radius: 14px;
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(8px) scale(0.98);
-    transform-origin: bottom right;
-    transition: opacity 0.15s ease, transform 0.15s ease, visibility 0.15s;
-}
-
-.fab.aberto .fab-menu {
-    opacity: 1;
-    visibility: visible;
-    transform: none;
-}
-
-.fab-aviso {
-    display: none;
-    padding: 8px 10px;
-    margin-bottom: 4px;
-    border-radius: var(--raio-borda-sm);
-    background: rgba(244, 67, 54, 0.1);
-    color: var(--cor-perigo);
-    font-size: 13px;
-    font-weight: 600;
-}
-
-.fab.com-aviso .fab-aviso {
-    display: block;
-}
-
-.fab-titulo {
-    padding: 2px 4px 4px;
-    font-size: 10px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    color: var(--cor-texto-secundario);
-}
-
-.fab-colunas {
-    display: flex;
-    padding: 3px;
-    border-radius: 8px;
-    background: var(--cor-secao);
-}
-
-.fab-colunas button {
-    flex: 1;
-    padding: 8px 4px;
-    border: none;
-    border-radius: 6px;
-    background: transparent;
-    color: var(--cor-texto-secundario);
-    font-size: 13px;
-    font-weight: 600;
-}
-
-.fab-colunas button.active {
-    background: var(--cor-superficie);
-    color: var(--cor-texto);
-    box-shadow: var(--sombra-card);
-}
-
-.fab-preencher {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 6px;
-    margin-top: 4px;
-}
-
-.fab-preencher button {
-    flex: 1;
-    min-height: 44px;
-    padding: 8px 6px;
-    border: 1px solid;
-    border-radius: 8px;
-    font-size: 13px;
-    font-weight: 600;
-    white-space: nowrap;
-}
-
-.fab-ok {
-    background: rgba(76, 175, 80, 0.12);
-    border-color: rgba(76, 175, 80, 0.35) !important;
-    color: #2e7d32;
-}
-
-.fab-vazio {
-    grid-column: 1 / -1;
-    min-height: 38px !important;
-    background: transparent;
-    border-style: dashed !important;
-    border-color: var(--cor-borda) !important;
-    color: var(--cor-texto-secundario);
-}
-
-.fab-defeito {
-    background: rgba(244, 67, 54, 0.1);
-    border-color: rgba(244, 67, 54, 0.35) !important;
-    color: #c62828;
-}
-
-body.dark-mode .fab-ok {
-    color: #81c784;
-}
-
-body.dark-mode .fab-defeito {
-    color: #ef9a9a;
-}
-
-.fab-separador {
-    height: 1px;
-    margin: 6px 0;
-    background: var(--cor-separador);
-}
-
-.fab-item {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    min-height: 44px;
-    padding: 8px 10px;
-    border-radius: 8px;
-    background: transparent;
-    color: var(--cor-texto);
-    font-size: 14px;
-    text-align: left;
-}
-
-.fab-item i {
-    width: 18px;
-    text-align: center;
-    color: var(--cor-texto-secundario);
-}
-
-.fab-item:hover,
-.fab-colunas button:hover {
-    background: var(--cor-secao);
-}
-
-.fab-colunas button.active:hover {
-    background: var(--cor-superficie);
-}
-
-/* ====== RESPONSIVIDADE ====== */
-@media screen and (max-width: 1700px) {
-    /* App bar deixa de ser fixa e quebra em linhas, sem cobrir o conteÃºdo */
+    /* ====== MENU FLUTUANTE ====== */
     body {
-        padding: 10px 10px 96px;
+      padding-bottom: 96px;
+      /* espaÃ§o para o botÃ£o nÃ£o cobrir o fim da pÃ¡gina */
     }
 
-    .app-bar {
+    .fab {
+      position: fixed;
+      right: 20px;
+      bottom: calc(20px + env(safe-area-inset-bottom));
+      z-index: 1500;
+      font-family: 'Inter', Arial, sans-serif;
+    }
+
+    .fab button {
+      margin-top: 0;
+      font-family: inherit;
+    }
+
+    .fab-botao {
+      position: relative;
+      width: 56px;
+      height: 56px;
+      padding: 0;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: linear-gradient(135deg, var(--cor-appbar-inicio), var(--cor-appbar-fim));
+      color: #fff;
+      font-size: 20px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+      transition: transform 0.2s ease;
+    }
+
+    .fab-botao:hover {
+      transform: scale(1.05);
+    }
+
+    .fab-botao:focus-visible {
+      outline: 2px solid var(--cor-primaria);
+      outline-offset: 3px;
+    }
+
+    .fab-icone-fechar,
+    .fab.aberto .fab-icone-abrir {
+      display: none;
+    }
+
+    .fab.aberto .fab-icone-fechar {
+      display: inline;
+    }
+
+    /* Bolinha vermelha quando o laudo estÃ¡ incompleto */
+    .fab.com-aviso .fab-botao::after {
+      content: "";
+      position: absolute;
+      top: 2px;
+      right: 2px;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--cor-perigo);
+      border: 2px solid var(--cor-fundo);
+    }
+
+    .fab-menu {
+      position: absolute;
+      right: 0;
+      bottom: 68px;
+      width: 270px;
+      max-width: calc(100vw - 40px);
+      max-height: calc(100vh - 110px);
+      overflow-y: auto;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      background: var(--cor-superficie);
+      border: 1px solid var(--cor-borda);
+      border-radius: 14px;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(8px) scale(0.98);
+      transform-origin: bottom right;
+      transition: opacity 0.15s ease, transform 0.15s ease, visibility 0.15s;
+    }
+
+    .fab.aberto .fab-menu {
+      opacity: 1;
+      visibility: visible;
+      transform: none;
+    }
+
+    .fab-aviso {
+      display: none;
+      padding: 8px 10px;
+      margin-bottom: 4px;
+      border-radius: var(--raio-borda-sm);
+      background: rgba(244, 67, 54, 0.1);
+      color: var(--cor-perigo);
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .fab.com-aviso .fab-aviso {
+      display: block;
+    }
+
+    .fab-titulo {
+      padding: 2px 4px 4px;
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--cor-texto-secundario);
+    }
+
+    .fab-colunas {
+      display: flex;
+      padding: 3px;
+      border-radius: 8px;
+      background: var(--cor-secao);
+    }
+
+    .fab-colunas button {
+      flex: 1;
+      padding: 8px 4px;
+      border: none;
+      border-radius: 6px;
+      background: transparent;
+      color: var(--cor-texto-secundario);
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .fab-colunas button.active {
+      background: var(--cor-superficie);
+      color: var(--cor-texto);
+      box-shadow: var(--sombra-card);
+    }
+
+    .fab-preencher {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+      margin-top: 4px;
+    }
+
+    .fab-preencher button {
+      flex: 1;
+      min-height: 44px;
+      padding: 8px 6px;
+      border: 1px solid;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .fab-ok {
+      background: rgba(76, 175, 80, 0.12);
+      border-color: rgba(76, 175, 80, 0.35) !important;
+      color: #2e7d32;
+    }
+
+    .fab-vazio {
+      grid-column: 1 / -1;
+      min-height: 38px !important;
+      background: transparent;
+      border-style: dashed !important;
+      border-color: var(--cor-borda) !important;
+      color: var(--cor-texto-secundario);
+    }
+
+    .fab-defeito {
+      background: rgba(244, 67, 54, 0.1);
+      border-color: rgba(244, 67, 54, 0.35) !important;
+      color: #c62828;
+    }
+
+    body.dark-mode .fab-ok {
+      color: #81c784;
+    }
+
+    body.dark-mode .fab-defeito {
+      color: #ef9a9a;
+    }
+
+    .fab-separador {
+      height: 1px;
+      margin: 6px 0;
+      background: var(--cor-separador);
+    }
+
+    .fab-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-height: 44px;
+      padding: 8px 10px;
+      border-radius: 8px;
+      background: transparent;
+      color: var(--cor-texto);
+      font-size: 14px;
+      text-align: left;
+    }
+
+    .fab-item i {
+      width: 18px;
+      text-align: center;
+      color: var(--cor-texto-secundario);
+    }
+
+    .fab-item:hover,
+    .fab-colunas button:hover {
+      background: var(--cor-secao);
+    }
+
+    .fab-colunas button.active:hover {
+      background: var(--cor-superficie);
+    }
+
+    /* ====== RESPONSIVIDADE ====== */
+    @media screen and (max-width: 1700px) {
+
+      /* App bar deixa de ser fixa e quebra em linhas, sem cobrir o conteÃºdo */
+      body {
+        padding: 10px 10px 96px;
+      }
+
+      .app-bar {
         position: static;
         height: auto;
         flex-wrap: wrap;
@@ -1214,140 +1253,141 @@ body.dark-mode .fab-defeito {
         padding: 10px;
         margin-bottom: 15px;
         border-radius: var(--raio-borda);
-    }
+      }
 
-    .app-bar-group {
+      .app-bar-group {
         flex-wrap: wrap;
         padding: 0 6px;
         height: auto;
-    }
+      }
 
-    .app-bar-group.grow {
+      .app-bar-group.grow {
         flex-basis: 100%;
         justify-content: flex-start;
-    }
+      }
 
-    .app-bar-separator:has(+ .grow) {
+      .app-bar-separator:has(+ .grow) {
         display: none;
+      }
     }
-}
 
-@media screen and (max-width: 768px) {
-    h1 {
+    @media screen and (max-width: 768px) {
+      h1 {
         font-size: 18px;
-    }
+      }
 
-    .app-bar-separator,
-    .app-bar-label {
+      .app-bar-separator,
+      .app-bar-label {
         display: none;
-    }
+      }
 
-    .app-bar-group {
+      .app-bar-group {
         flex: 1 1 100%;
         gap: 6px;
         padding: 0;
-    }
+      }
 
-    /* Tema + tipo de equipamento dividem a primeira linha */
-    .app-bar-group:first-child {
+      /* Tema + tipo de equipamento dividem a primeira linha */
+      .app-bar-group:first-child {
         flex: 0 0 auto;
-    }
+      }
 
-    .app-bar-group:nth-child(3) {
+      .app-bar-group:nth-child(3) {
         flex: 1 1 0;
-    }
+      }
 
-    .app-bar button,
-    .app-bar select {
+      .app-bar button,
+      .app-bar select {
         flex: 1 1 auto;
         font-size: 13px;
         padding: 8px 10px;
         min-height: 44px;
-    }
+      }
 
-    .app-bar select {
+      .app-bar select {
         flex-basis: 100%;
-    }
+      }
 
-    /* AÃ§Ãµes e preenchimento rÃ¡pido ficam no menu flutuante (.fab) */
-    .app-bar-group:nth-child(5),
-    .app-bar-group.grow {
+      /* AÃ§Ãµes e preenchimento rÃ¡pido ficam no menu flutuante (.fab) */
+      .app-bar-group:nth-child(5),
+      .app-bar-group.grow {
         display: none;
-    }
+      }
 
-    .topo {
+      .topo {
         flex-direction: column;
         gap: 10px;
-    }
+      }
 
-    .topo .campo-data {
+      .topo .campo-data {
         flex: 1;
-    }
+      }
 
-    .modal-box {
+      .modal-box {
         padding: 22px 20px;
-    }
+      }
 
-    .modal-box .modal-actions button {
+      .modal-box .modal-actions button {
         flex: 1;
-    }
+      }
 
-    .assinatura-celula {
+      .assinatura-celula {
         padding: 0 8px 10px !important;
-    }
+      }
 
-    .assinatura-linha {
+      .assinatura-linha {
         width: 100%;
+      }
     }
-}
 
-/* Tabela vira "cartÃµes": nome do item em cima, TÃ©cnico e Testes lado a lado */
-@media screen and (max-width: 600px) {
-    .table-responsive table,
-    .table-responsive thead,
-    .table-responsive tbody {
+    /* Tabela vira "cartÃµes": nome do item em cima, TÃ©cnico e Testes lado a lado */
+    @media screen and (max-width: 600px) {
+
+      .table-responsive table,
+      .table-responsive thead,
+      .table-responsive tbody {
         display: block;
-    }
+      }
 
-    .table-responsive tr {
+      .table-responsive tr {
         display: grid;
         grid-template-columns: 1fr 1fr;
         border-bottom: 1px solid var(--cor-borda);
-    }
+      }
 
-    .table-responsive th,
-    .table-responsive td {
+      .table-responsive th,
+      .table-responsive td {
         display: block;
         min-width: 0;
         border: none;
         padding: 6px 8px;
-    }
+      }
 
-    .table-responsive th:first-child {
+      .table-responsive th:first-child {
         display: none;
-    }
+      }
 
-    .table-responsive .input-tecnico {
+      .table-responsive .input-tecnico {
         width: 100%;
-    }
+      }
 
-    .table-responsive td:first-child,
-    .table-responsive td[colspan] {
+      .table-responsive td:first-child,
+      .table-responsive td[colspan] {
         grid-column: 1 / -1;
-    }
+      }
 
-    .table-responsive td:first-child:not(.secao) {
+      .table-responsive td:first-child:not(.secao) {
         padding-bottom: 0;
         font-size: 13px;
         font-weight: 600;
-    }
+      }
 
-    .table-responsive td:first-child:not([colspan]) + td[colspan] {
+      .table-responsive td:first-child:not([colspan])+td[colspan] {
         padding-top: 6px;
-    }
+      }
 
-    .table-responsive tbody td:nth-child(2):not([colspan])::before,
-    .table-responsive tbody td:nth-child(3)::before {
+      .table-responsive tbody td:nth-child(2):not([colspan])::before,
+      .table-responsive tbody td:nth-child(3)::before {
         display: block;
         margin-bottom: 3px;
         font-size: 10px;
@@ -1355,170 +1395,189 @@ body.dark-mode .fab-defeito {
         text-transform: uppercase;
         letter-spacing: 0.5px;
         color: var(--cor-texto-secundario);
-    }
+      }
 
-    .table-responsive tbody td:nth-child(2):not([colspan])::before {
+      .table-responsive tbody td:nth-child(2):not([colspan])::before {
         content: "TÃ©cnico";
-    }
+      }
 
-    .table-responsive tbody td:nth-child(3)::before {
+      .table-responsive tbody td:nth-child(3)::before {
         content: "Testes";
-    }
+      }
 
-    .table-responsive select,
-    .table-responsive input,
-    .table-responsive textarea {
-        font-size: 16px; /* evita o zoom automÃ¡tico do iPhone ao tocar no campo */
+      .table-responsive select,
+      .table-responsive input,
+      .table-responsive textarea {
+        font-size: 16px;
+        /* evita o zoom automÃ¡tico do iPhone ao tocar no campo */
         min-height: 40px;
-    }
+      }
 
-    .secao {
+      .secao {
         padding: 8px !important;
+      }
     }
-}
 
-/* ====== BARRA DE FORMATAÇÃO ====== */
-#barraFormatacao {
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    gap: 2px;
-    position: fixed;
-    left: 8px;
-    top: 50%;
-    min-width: 50px;
-    padding: 4px;
-    background: var(--cor-superficie, #fff);
-    border: 1px solid var(--cor-borda, #ddd);
-    border-radius: 14px;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
-    z-index: 1000;
-    transform: translate(-150%, -50%);
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
-    transition: transform 0.25s ease, opacity 0.25s ease, visibility 0s linear 0.25s;
-}
+    /* ====== BARRA DE FORMATAÇÃO ====== */
+    #barraFormatacao {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 2px;
+      position: fixed;
+      left: 8px;
+      top: 50%;
+      min-width: 50px;
+      padding: 4px;
+      background: var(--cor-superficie, #fff);
+      border: 1px solid var(--cor-borda, #ddd);
+      border-radius: 14px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+      z-index: 1000;
+      transform: translate(-150%, -50%);
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: transform 0.25s ease, opacity 0.25s ease, visibility 0s linear 0.25s;
+    }
 
-#barraFormatacao.visivel {
-    transform: translate(0, -50%);
-    opacity: 1;
-    visibility: visible;
-    pointer-events: auto;
-    transition: transform 0.25s ease, opacity 0.25s ease, visibility 0s;
-}
+    #barraFormatacao.visivel {
+      transform: translate(0, -50%);
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+      transition: transform 0.25s ease, opacity 0.25s ease, visibility 0s;
+    }
 
-#barraFormatacao button {
-    height: 26px;
-    padding: 0 4px;
-    border: none;
-    border-radius: 8px;
-    background: transparent;
-    color: inherit;
-    cursor: pointer;
-    font-size: 12px;
-    transition: background 0.15s;
-}
+    #barraFormatacao button {
+      height: 26px;
+      padding: 0 4px;
+      border: none;
+      border-radius: 8px;
+      background: transparent;
+      color: inherit;
+      cursor: pointer;
+      font-size: 12px;
+      transition: background 0.15s;
+    }
 
-#barraFormatacao button:hover {
-    background: rgba(0, 0, 0, 0.08);
-}
+    #barraFormatacao button:hover {
+      background: rgba(0, 0, 0, 0.08);
+    }
 
-#barraFormatacao hr {
-    width: 60%;
-    margin: 2px auto;
-    border: none;
-    border-top: 1px solid var(--cor-borda, #ddd);
-}
+    #barraFormatacao hr {
+      width: 60%;
+      margin: 2px auto;
+      border: none;
+      border-top: 1px solid var(--cor-borda, #ddd);
+    }
 
-#barraFormatacao .cor-atual {
-    display: inline-block;
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    border: 2px solid var(--cor-borda, #ccc);
-    vertical-align: middle;
-}
+    #barraFormatacao .cor-atual {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      border: 2px solid var(--cor-borda, #ccc);
+      vertical-align: middle;
+    }
 
-#paletaCores {
-    display: none;
-    position: absolute;
-    left: calc(100% + 8px);
-    bottom: 0;
-    width: 150px;
-    padding: 8px;
-    flex-direction: column;
-    gap: 6px;
-    background: var(--cor-superficie, #fff);
-    border: 1px solid var(--cor-borda, #ddd);
-    border-radius: 12px;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
-}
+    #paletaCores {
+      display: none;
+      position: absolute;
+      left: calc(100% + 8px);
+      bottom: 0;
+      width: 150px;
+      padding: 8px;
+      flex-direction: column;
+      gap: 6px;
+      background: var(--cor-superficie, #fff);
+      border: 1px solid var(--cor-borda, #ddd);
+      border-radius: 12px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
+    }
 
-#paletaCores.aberta {
-    display: flex;
-}
+    #paletaCores.aberta {
+      display: flex;
+    }
 
-#paletaCores .grade {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 6px;
-}
+    #paletaCores .grade {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+    }
 
-#barraFormatacao #paletaCores .grade button {
-    height: auto;
-    aspect-ratio: 1;
-    padding: 0;
-    border-radius: 50%;
-    border: 1px solid rgba(0, 0, 0, 0.2);
-}
+    #barraFormatacao #paletaCores .grade button {
+      height: auto;
+      aspect-ratio: 1;
+      padding: 0;
+      border-radius: 50%;
+      border: 1px solid rgba(0, 0, 0, 0.2);
+    }
 
-#barraFormatacao #paletaCores .grade button:hover {
-    transform: scale(1.15);
-}
+    #barraFormatacao #paletaCores .grade button:hover {
+      transform: scale(1.15);
+    }
 
-#paletaCores .personalizada {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    font-size: 11px;
-    cursor: pointer;
-}
+    #paletaCores .personalizada {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 11px;
+      cursor: pointer;
+    }
 
-#paletaCores input[type="color"] {
-    width: 28px;
-    height: 22px;
-    padding: 0;
-    border: none;
-    background: none;
-    cursor: pointer;
-}
+    #paletaCores input[type="color"] {
+      width: 28px;
+      height: 22px;
+      padding: 0;
+      border: none;
+      background: none;
+      cursor: pointer;
+    }
 
-#barraFormatacao #paletaCores .limpar {
-    font-size: 11px;
-    height: 22px;
-    border: 1px solid var(--cor-borda, #ddd);
-}
+    #barraFormatacao #paletaCores .limpar {
+      font-size: 11px;
+      height: 22px;
+      border: 1px solid var(--cor-borda, #ddd);
+    }
 
-.defeito-obs-input:empty::before {
-    content: attr(data-placeholder);
-    opacity: 0.5;
-    pointer-events: none;
-}
+    .defeito-obs-input:empty::before {
+      content: attr(data-placeholder);
+      opacity: 0.5;
+      pointer-events: none;
+    }
 
-#PARECERTECNICOField h1, .defeito-obs-input h1 { font-size: 1.6em; margin: 4px 0; }
-#PARECERTECNICOField h2, .defeito-obs-input h2 { font-size: 1.3em; margin: 4px 0; }
-#PARECERTECNICOField h3, .defeito-obs-input h3 { font-size: 1.1em; margin: 4px 0; }
+    #PARECERTECNICOField h1,
+    .defeito-obs-input h1 {
+      font-size: 1.6em;
+      margin: 4px 0;
+    }
 
-/* Não aparece em celulares nem na impressão */
-@media (max-width: 768px), (pointer: coarse) {
-    #barraFormatacao { display: none !important; }
-}
+    #PARECERTECNICOField h2,
+    .defeito-obs-input h2 {
+      font-size: 1.3em;
+      margin: 4px 0;
+    }
 
-@media print {
-    #barraFormatacao { display: none !important; }
-}
+    #PARECERTECNICOField h3,
+    .defeito-obs-input h3 {
+      font-size: 1.1em;
+      margin: 4px 0;
+    }
 
+    /* Não aparece em celulares nem na impressão */
+    @media (max-width: 768px),
+    (pointer: coarse) {
+      #barraFormatacao {
+        display: none !important;
+      }
+    }
+
+    @media print {
+      #barraFormatacao {
+        display: none !important;
+      }
+    }
   </style>
 
 
@@ -1553,11 +1612,13 @@ body.dark-mode .fab-defeito {
     <div class="app-bar-group">
       <span class="app-bar-label">Ações</span>
       <button class="btn-exportar" onclick="exportarJSON()"><i class="fa-solid fa-download"></i> Exportar</button>
-      <input type="file" id="importFile" accept=".json,.txt,application/json,text/plain" hidden onchange="importarJSON(event)">
-      <button class="btn-importar" onclick="document.getElementById('importFile').click()"><i class="fa-solid fa-upload"></i> Importar</button>
+      <input type="file" id="importFile" accept=".json,.txt,application/json,text/plain" hidden
+        onchange="importarJSON(event)">
+      <button class="btn-importar" onclick="document.getElementById('importFile').click()"><i
+          class="fa-solid fa-upload"></i> Importar</button>
       <button class="btn-imprimir" onclick="imprimir()"><i class="fa-solid fa-print"></i> Imprimir</button>
       <button class="btn-novo" onclick="novoLaudo()"><i class="fa-solid fa-file-circle-plus"></i> Novo laudo</button>
-      
+
     </div>
 
     <div class="app-bar-separator"></div>
@@ -1573,9 +1634,12 @@ body.dark-mode .fab-defeito {
         <option value="1">Técnico</option>
         <option value="2">Testes</option>
       </select>
-      <button class="btn-vazio" onclick="preencherColunaApp('Selecione')"><i class="fa-regular fa-square"></i> Vazio</button>
-      <button class="btn-ok" onclick="preencherColunaApp('Funcionando')"><i class="fa-solid fa-check"></i> Funcionando</button>
-      <button class="btn-defeito" onclick="preencherColunaApp('Com defeito')"><i class="fa-solid fa-xmark"></i> Com defeito</button>
+      <button class="btn-vazio" onclick="preencherColunaApp('Selecione')"><i class="fa-regular fa-square"></i>
+        Vazio</button>
+      <button class="btn-ok" onclick="preencherColunaApp('Funcionando')"><i class="fa-solid fa-check"></i>
+        Funcionando</button>
+      <button class="btn-defeito" onclick="preencherColunaApp('Com defeito')"><i class="fa-solid fa-xmark"></i> Com
+        defeito</button>
     </div>
 
   </div>
@@ -1591,7 +1655,8 @@ body.dark-mode .fab-defeito {
 
     <div class="campo-data">
       <label>DATA</label>
-      <input type="text" class="save" id="dataField" data-id="campo_data" inputmode="numeric" placeholder="dd/mm/aaaa" maxlength="10">
+      <input type="text" class="save" id="dataField" data-id="campo_data" inputmode="numeric" placeholder="dd/mm/aaaa"
+        maxlength="10">
       <small class="campo-erro" id="dataErro" hidden>Data inválida</small>
     </div>
   </div>
@@ -1609,390 +1674,486 @@ body.dark-mode .fab-defeito {
   </div>
 
   <div class="table-responsive">
-  <table>
-    <thead>
-      <tr>
-        <th>ITEM</th>
-        <th>
-          <div class="label-tecnico"> TÉCNICO <input class="input-tecnico save" type="text" data-id="campo_tecnico_tecnico"> </div>
-        </th>
-        <th>
-          <div class="label-tecnico"> TESTES <input class="input-tecnico save" type="text" data-id="campo_tecnico_testes"></div>
-        </th>
-      </tr>
-    </thead>
+    <table>
+      <thead>
+        <tr>
+          <th>ITEM</th>
+          <th>
+            <div class="label-tecnico"> TÉCNICO <input class="input-tecnico save" type="text"
+                data-id="campo_tecnico_tecnico"> </div>
+          </th>
+          <th>
+            <div class="label-tecnico"> TESTES <input class="input-tecnico save" type="text"
+                data-id="campo_tecnico_testes"></div>
+          </th>
+        </tr>
+      </thead>
 
-    <tbody>
+      <tbody>
 
-      <!-- ENERGIA -->
-      <tr data-device="pc,notebook,tv">
-        <td colspan="3" class="secao">ENERGIA</td>
-      </tr>
+        <!-- ENERGIA -->
+        <tr data-device="pc,notebook,tv">
+          <td colspan="3" class="secao">ENERGIA</td>
+        </tr>
 
-      <tr data-device="pc,notebook,tv">
-        <td>FONTE / PLACA FONTE</td>
-        <td><select class="save" data-opt="opt1" data-id="campo_4"></select></td>
-        <td><div class="teste-rapido-container"><select class="save" data-opt="opt1" data-id="campo_5"></select><input type="checkbox" class="save check-atendente" data-id="check_5" title="Checklist Testes"></div></td>
-      </tr>
+        <tr data-device="pc,notebook,tv">
+          <td>FONTE / PLACA FONTE</td>
+          <td><select class="save" data-opt="opt1" data-id="campo_4"></select></td>
+          <td>
+            <div class="teste-rapido-container"><select class="save" data-opt="opt1" data-id="campo_5"></select><input
+                type="checkbox" class="save check-atendente" data-id="check_5" title="Checklist Testes"></div>
+          </td>
+        </tr>
 
-      <tr data-device="notebook">
-        <td>BATERIA</td>
-        <td>
-          <select class="save" data-opt="opt1" data-id="campo_9"></select>
-          <hr>
-          <input type="text" class="save saude" placeholder="Saúde (%)" data-id="campo_10">
-        </td>
-        <td>
-          <div class="teste-rapido-container"><select class="save" data-opt="opt1" data-id="campo_11"></select><input type="checkbox" class="save check-atendente" data-id="check_11" title="Checklist Testes"></div>
-          <hr>
-          <input type="text" class="save saude" placeholder="Saúde (%)" data-id="campo_13">
-        </td>
-      </tr>
+        <tr data-device="notebook">
+          <td>BATERIA</td>
+          <td>
+            <select class="save" data-opt="opt1" data-id="campo_9"></select>
+            <hr>
+            <input type="text" class="save saude" placeholder="Saúde (%)" data-id="campo_10">
+          </td>
+          <td>
+            <div class="teste-rapido-container"><select class="save" data-opt="opt1" data-id="campo_11"></select><input
+                type="checkbox" class="save check-atendente" data-id="check_11" title="Checklist Testes"></div>
+            <hr>
+            <input type="text" class="save saude" placeholder="Saúde (%)" data-id="campo_13">
+          </td>
+        </tr>
 
-      <tr data-device="notebook">
-        <td>CONECTOR POWER JACK</td>
-        <td><select class="save" data-opt="opt1" data-id="campo_15"></select></td>
-        <td><div class="teste-rapido-container"><select class="save" data-opt="opt1" data-id="campo_16"></select><input type="checkbox" class="save check-atendente" data-id="check_16" title="Checklist Testes"></div></td>
-      </tr>
+        <tr data-device="notebook">
+          <td>CONECTOR POWER JACK</td>
+          <td><select class="save" data-opt="opt1" data-id="campo_15"></select></td>
+          <td>
+            <div class="teste-rapido-container"><select class="save" data-opt="opt1" data-id="campo_16"></select><input
+                type="checkbox" class="save check-atendente" data-id="check_16" title="Checklist Testes"></div>
+          </td>
+        </tr>
 
-      <!-- ACIONAMENTO -->
-      <tr data-device="pc,notebook,tv">
-        <td colspan="3" class="secao">ACIONAMENTO</td>
-      </tr>
+        <!-- ACIONAMENTO -->
+        <tr data-device="pc,notebook,tv">
+          <td colspan="3" class="secao">ACIONAMENTO</td>
+        </tr>
 
-      <tr data-device="pc,notebook,tv">
-        <td>BOTÃO POWER</td>
-        <td><select class="save" data-opt="opt2" data-id="campo_19"></select></td>
-        <td><div class="teste-rapido-container"><select class="save" data-opt="opt2" data-id="campo_20"></select><input type="checkbox" class="save check-atendente" data-id="check_20" title="Checklist Testes"></div></td>
-      </tr>
+        <tr data-device="pc,notebook,tv">
+          <td>BOTÃO POWER</td>
+          <td><select class="save" data-opt="opt2" data-id="campo_19"></select></td>
+          <td>
+            <div class="teste-rapido-container"><select class="save" data-opt="opt2" data-id="campo_20"></select><input
+                type="checkbox" class="save check-atendente" data-id="check_20" title="Checklist Testes"></div>
+          </td>
+        </tr>
 
-      <!-- CARCAÇA -->
-      <tr data-device="pc,notebook,tv">
-        <td colspan="3" class="secao">CARCAÇA</td>
-      </tr>
+        <!-- CARCAÇA -->
+        <tr data-device="pc,notebook,tv">
+          <td colspan="3" class="secao">CARCAÇA</td>
+        </tr>
 
-      <tr data-device="pc,notebook,tv">
-        <td>CARCAÇA</td>
-        <td><select class="save" data-opt="opt3" data-id="campo_23"></select></td>
-        <td><div class="teste-rapido-container"><select class="save" data-opt="opt3" data-id="campo_24"></select><input type="checkbox" class="save check-atendente" data-id="check_24" title="Checklist Testes"></div></td>
-      </tr>
+        <tr data-device="pc,notebook,tv">
+          <td>CARCAÇA</td>
+          <td><select class="save" data-opt="opt3" data-id="campo_23"></select></td>
+          <td>
+            <div class="teste-rapido-container"><select class="save" data-opt="opt3" data-id="campo_24"></select><input
+                type="checkbox" class="save check-atendente" data-id="check_24" title="Checklist Testes"></div>
+          </td>
+        </tr>
 
-      <!-- PLACA / PROCESSAMENTO -->
-      <tr data-device="pc,notebook,tv">
-        <td colspan="3" class="secao">PLACA / PROCESSAMENTO</td>
-      </tr>
+        <!-- PLACA / PROCESSAMENTO -->
+        <tr data-device="pc,notebook,tv">
+          <td colspan="3" class="secao">PLACA / PROCESSAMENTO</td>
+        </tr>
 
-      <tr data-device="pc,notebook,tv">
-        <td>PLACA MÃE / PLACA PRINCIPAL</td>
-        <td><select class="save" data-opt="opt2" data-id="campo_27"></select></td>
-        <td><div class="teste-rapido-container"><select class="save" data-opt="opt2" data-id="campo_28"></select><input type="checkbox" class="save check-atendente" data-id="check_28" title="Checklist Testes"></div></td>
-      </tr>
+        <tr data-device="pc,notebook,tv">
+          <td>PLACA MÃE / PLACA PRINCIPAL</td>
+          <td><select class="save" data-opt="opt2" data-id="campo_27"></select></td>
+          <td>
+            <div class="teste-rapido-container"><select class="save" data-opt="opt2" data-id="campo_28"></select><input
+                type="checkbox" class="save check-atendente" data-id="check_28" title="Checklist Testes"></div>
+          </td>
+        </tr>
 
-      <tr data-device="pc,notebook">
-        <td>PROCESSADOR</td>
-        <td>
-          <select class="save" data-opt="opt2" data-id="campo_33"></select>
-          <hr>
-          <select class="save" data-opt="opt4" data-id="campo_34"></select>
-          <hr>
-          <select class="save" data-opt="opt19" data-id="campo_35"></select>
-        </td>
-        <td>
-          <div class="teste-rapido-container"><select class="save" data-opt="opt2" data-id="campo_36"></select><input type="checkbox" class="save check-atendente" data-id="check_36" title="Checklist Testes"></div>
-          <hr>
-          <select class="save" data-opt="opt4" data-id="campo_38"></select>
-          <hr>
-          <select class="save" data-opt="opt19" data-id="campo_39"></select>
-        </td>
-      </tr>
+        <tr data-device="pc,notebook">
+          <td>PROCESSADOR</td>
+          <td>
+            <select class="save" data-opt="opt2" data-id="campo_33"></select>
+            <hr>
+            <select class="save" data-opt="opt4" data-id="campo_34"></select>
+            <hr>
+            <select class="save" data-opt="opt19" data-id="campo_35"></select>
+          </td>
+          <td>
+            <div class="teste-rapido-container"><select class="save" data-opt="opt2" data-id="campo_36"></select><input
+                type="checkbox" class="save check-atendente" data-id="check_36" title="Checklist Testes"></div>
+            <hr>
+            <select class="save" data-opt="opt4" data-id="campo_38"></select>
+            <hr>
+            <select class="save" data-opt="opt19" data-id="campo_39"></select>
+          </td>
+        </tr>
 
-      <tr data-device="pc,notebook">
-        <td>MEMÓRIA</td>
-        <td>
-          <select class="save" data-opt="opt2" data-id="campo_42"></select>
-          <hr>
-          <select class="save" data-opt="opt5" data-id="campo_43"></select>
-        </td>
-        <td>
-          <div class="teste-rapido-container"><select class="save" data-opt="opt2" data-id="campo_44"></select><input type="checkbox" class="save check-atendente" data-id="check_44" title="Checklist Testes"></div>
-          <hr>
-          <select class="save" data-opt="opt5" data-id="campo_46"></select>
-        </td>
-      </tr>
+        <tr data-device="pc,notebook">
+          <td>MEMÓRIA</td>
+          <td>
+            <select class="save" data-opt="opt2" data-id="campo_42"></select>
+            <hr>
+            <select class="save" data-opt="opt5" data-id="campo_43"></select>
+          </td>
+          <td>
+            <div class="teste-rapido-container"><select class="save" data-opt="opt2" data-id="campo_44"></select><input
+                type="checkbox" class="save check-atendente" data-id="check_44" title="Checklist Testes"></div>
+            <hr>
+            <select class="save" data-opt="opt5" data-id="campo_46"></select>
+          </td>
+        </tr>
 
-      <!-- DISPLAY -->
-      <tr data-device="notebook,tv">
-        <td colspan="3" class="secao">DISPLAY</td>
-      </tr>
-      <tr data-device="notebook,tv">
-        <td>TELA (ESTADO)</td>
-        <td>
-          <select class="save display-check" data-opt="opt6" data-id="campo_48"></select>
-        </td>
-        <td><div class="teste-rapido-container">
-          <select class="save display-check" data-opt="opt6" data-id="campo_49"></select>
-        <input type="checkbox" class="save check-atendente" data-id="check_49" title="Checklist Testes"></div></td>
-      </tr>
+        <!-- DISPLAY -->
+        <tr data-device="notebook,tv">
+          <td colspan="3" class="secao">DISPLAY</td>
+        </tr>
+        <tr data-device="notebook,tv">
+          <td>TELA (ESTADO)</td>
+          <td>
+            <select class="save display-check" data-opt="opt6" data-id="campo_48"></select>
+          </td>
+          <td>
+            <div class="teste-rapido-container">
+              <select class="save display-check" data-opt="opt6" data-id="campo_49"></select>
+              <input type="checkbox" class="save check-atendente" data-id="check_49" title="Checklist Testes">
+            </div>
+          </td>
+        </tr>
 
-      <tr data-device="notebook,tv">
-        <td>TIPO DE PAINEL</td>
-        <td>
-          <select class="save" data-opt="opt7" data-id="campo_52"></select>
-        </td>
-        <td><div class="teste-rapido-container">
-          <select class="save" data-opt="opt7" data-id="campo_53"></select>
-        <input type="checkbox" class="save check-atendente" data-id="check_53" title="Checklist Testes"></div></td>
-      </tr>
+        <tr data-device="notebook,tv">
+          <td>TIPO DE PAINEL</td>
+          <td>
+            <select class="save" data-opt="opt7" data-id="campo_52"></select>
+          </td>
+          <td>
+            <div class="teste-rapido-container">
+              <select class="save" data-opt="opt7" data-id="campo_53"></select>
+              <input type="checkbox" class="save check-atendente" data-id="check_53" title="Checklist Testes">
+            </div>
+          </td>
+        </tr>
 
-      <tr data-device="notebook,tv">
-        <td>RESOLUÇÃO</td>
-        <td>
-          <select class="save" data-opt="opt8" data-id="campo_56"></select>
-        </td>
-        <td><div class="teste-rapido-container">
-          <select class="save" data-opt="opt8" data-id="campo_57"></select>
-        <input type="checkbox" class="save check-atendente" data-id="check_57" title="Checklist Testes"></div></td>
-      </tr>
+        <tr data-device="notebook,tv">
+          <td>RESOLUÇÃO</td>
+          <td>
+            <select class="save" data-opt="opt8" data-id="campo_56"></select>
+          </td>
+          <td>
+            <div class="teste-rapido-container">
+              <select class="save" data-opt="opt8" data-id="campo_57"></select>
+              <input type="checkbox" class="save check-atendente" data-id="check_57" title="Checklist Testes">
+            </div>
+          </td>
+        </tr>
 
-      <tr data-device="notebook,tv">
-        <td>TAXA DE ATUALIZAÇÃO</td>
-        <td>
-          <select class="save" data-opt="opt9" data-id="campo_60"></select>
-        </td>
-        <td><div class="teste-rapido-container">
-          <select class="save" data-opt="opt9" data-id="campo_61"></select>
-        <input type="checkbox" class="save check-atendente" data-id="check_61" title="Checklist Testes"></div></td>
-      </tr>
+        <tr data-device="notebook,tv">
+          <td>TAXA DE ATUALIZAÇÃO</td>
+          <td>
+            <select class="save" data-opt="opt9" data-id="campo_60"></select>
+          </td>
+          <td>
+            <div class="teste-rapido-container">
+              <select class="save" data-opt="opt9" data-id="campo_61"></select>
+              <input type="checkbox" class="save check-atendente" data-id="check_61" title="Checklist Testes">
+            </div>
+          </td>
+        </tr>
 
-      <tr data-device="notebook,tv">
-        <td>BACKLIGHT (ILUMINAÇÃO)</td>
-        <td><select class="save display-check" data-opt="opt10" data-id="campo_64"></select></td>
-        <td><div class="teste-rapido-container"><select class="save display-check" data-opt="opt10" data-id="campo_65"></select><input type="checkbox" class="save check-atendente" data-id="check_65" title="Checklist Testes"></div></td>
-      </tr>
+        <tr data-device="notebook,tv">
+          <td>BACKLIGHT (ILUMINAÇÃO)</td>
+          <td><select class="save display-check" data-opt="opt10" data-id="campo_64"></select></td>
+          <td>
+            <div class="teste-rapido-container"><select class="save display-check" data-opt="opt10"
+                data-id="campo_65"></select><input type="checkbox" class="save check-atendente" data-id="check_65"
+                title="Checklist Testes"></div>
+          </td>
+        </tr>
 
-      <tr data-device="tv">
-        <td>BARRA DE LEDS</td>
-        <td><select class="save display-check" data-opt="opt11" data-id="campo_68"></select></td>
-        <td><div class="teste-rapido-container"><select class="save display-check" data-opt="opt11" data-id="campo_69"></select><input type="checkbox" class="save check-atendente" data-id="check_69" title="Checklist Testes"></div></td>
-      </tr>
+        <tr data-device="tv">
+          <td>BARRA DE LEDS</td>
+          <td><select class="save display-check" data-opt="opt11" data-id="campo_68"></select></td>
+          <td>
+            <div class="teste-rapido-container"><select class="save display-check" data-opt="opt11"
+                data-id="campo_69"></select><input type="checkbox" class="save check-atendente" data-id="check_69"
+                title="Checklist Testes"></div>
+          </td>
+        </tr>
 
-      <tr data-device="notebook,tv">
-        <td>CABO FLAT (LVDS/eDP)</td>
-        <td><select class="save display-check" data-opt="opt12" data-id="campo_72"></select></td>
-        <td><div class="teste-rapido-container"><select class="save display-check" data-opt="opt12" data-id="campo_73"></select><input type="checkbox" class="save check-atendente" data-id="check_73" title="Checklist Testes"></div></td>
-      </tr>
+        <tr data-device="notebook,tv">
+          <td>CABO FLAT (LVDS/eDP)</td>
+          <td><select class="save display-check" data-opt="opt12" data-id="campo_72"></select></td>
+          <td>
+            <div class="teste-rapido-container"><select class="save display-check" data-opt="opt12"
+                data-id="campo_73"></select><input type="checkbox" class="save check-atendente" data-id="check_73"
+                title="Checklist Testes"></div>
+          </td>
+        </tr>
 
-      <tr data-device="notebook,tv">
-        <td>SINTOMA VISUAL</td>
-        <td colspan="2">
-          <select class="save display-check" data-opt="opt13" data-id="campo_75"></select>
-        </td>
-      </tr>
+        <tr data-device="notebook,tv">
+          <td>SINTOMA VISUAL</td>
+          <td colspan="2">
+            <select class="save display-check" data-opt="opt13" data-id="campo_75"></select>
+          </td>
+        </tr>
 
-      <!-- PORTAS / PERIFÉRICOS -->
-      <tr data-device="pc,notebook,tv">
-        <td colspan="3" class="secao">PORTAS / PERIFÉRICOS</td>
-      </tr>
-
-
-      <tr data-device="pc,notebook,tv">
-        <td>PAINEL</td>
-        <td><select class="save" data-opt="opt1" data-id="campo_77"></select></td>
-        <td><div class="teste-rapido-container"><select class="save" data-opt="opt1" data-id="campo_78"></select><input type="checkbox" class="save check-atendente" data-id="check_78" title="Checklist Testes"></div></td>
-
-      </tr>
-
-      <tr data-device="pc,notebook,tv">
-        <td>HDMI</td>
-        <td><select class="save" data-opt="opt1" data-id="campo_77h"></select></td>
-        <td><div class="teste-rapido-container"><select class="save" data-opt="opt1" data-id="campo_78h"></select><input type="checkbox" class="save check-atendente" data-id="check_78h" title="Checklist Testes"></div></td>
-      </tr>
-
-      <tr data-device="pc,notebook,tv">
-        <td>USB / USB-C</td>
-        <td><select class="save" data-opt="opt1" data-id="campo_81"></select></td>
-        <td><div class="teste-rapido-container"><select class="save" data-opt="opt1" data-id="campo_82"></select><input type="checkbox" class="save check-atendente" data-id="check_82" title="Checklist Testes"></div></td>
-      </tr>
-
-      <tr data-device="pc,notebook">
-        <td>VGA</td>
-        <td><select class="save" data-opt="opt1" data-id="campo_85"></select></td>
-        <td><div class="teste-rapido-container"><select class="save" data-opt="opt1" data-id="campo_86"></select><input type="checkbox" class="save check-atendente" data-id="check_86" title="Checklist Testes"></div></td>
-      </tr>
-      <tr data-device="pc,notebook">
-        <td>LAN</td>
-        <td><select class="save" data-opt="opt1" data-id="campo_89"></select></td>
-        <td><div class="teste-rapido-container"><select class="save" data-opt="opt1" data-id="campo_90"></select><input type="checkbox" class="save check-atendente" data-id="check_90" title="Checklist Testes"></div></td>
-      </tr>
-
-      <tr data-device="pc,notebook">
-        <td>WIFI</td>
-        <td><select class="save" data-opt="opt1" data-id="campo_93"></select></td>
-        <td><div class="teste-rapido-container"><select class="save" data-opt="opt1" data-id="campo_94"></select><input type="checkbox" class="save check-atendente" data-id="check_94" title="Checklist Testes"></div></td>
-      </tr>
-
-      <tr data-device="pc,notebook">
-        <td>BLUETOOTH</td>
-        <td><select class="save" data-opt="opt1" data-id="campo_97"></select></td>
-        <td><div class="teste-rapido-container"><select class="save" data-opt="opt1" data-id="campo_98"></select><input type="checkbox" class="save check-atendente" data-id="check_98" title="Checklist Testes"></div></td>
-      </tr>
+        <!-- PORTAS / PERIFÉRICOS -->
+        <tr data-device="pc,notebook,tv">
+          <td colspan="3" class="secao">PORTAS / PERIFÉRICOS</td>
+        </tr>
 
 
-      <tr data-device="notebook">
-        <td>TECLADO</td>
-        <td>
-          <select class="save" data-opt="opt1" data-id="campo_102"></select>
-          <hr>
-          <select class="save" data-opt="opt15" data-id="campo_103"></select>
-        </td>
-        <td>
-          <div class="teste-rapido-container"><select class="save" data-opt="opt1" data-id="campo_104"></select><input type="checkbox" class="save check-atendente" data-id="check_104" title="Checklist Testes"></div>
-          <hr>
-          <select class="save" data-opt="opt15" data-id="campo_106"></select>
-        </td>
-      </tr>
+        <tr data-device="pc,notebook,tv">
+          <td>PAINEL</td>
+          <td><select class="save" data-opt="opt1" data-id="campo_77"></select></td>
+          <td>
+            <div class="teste-rapido-container"><select class="save" data-opt="opt1" data-id="campo_78"></select><input
+                type="checkbox" class="save check-atendente" data-id="check_78" title="Checklist Testes"></div>
+          </td>
 
-      <tr data-device="notebook">
-        <td>TOUCHPAD</td>
-        <td><select class="save" data-opt="opt1" data-id="campo_108"></select></td>
-        <td><div class="teste-rapido-container"><select class="save" data-opt="opt1" data-id="campo_109"></select><input type="checkbox" class="save check-atendente" data-id="check_109" title="Checklist Testes"></div></td>
-      </tr>
+        </tr>
 
-      <tr data-device="notebook">
-        <td>CÂMERA</td>
-        <td><select class="save" data-opt="opt1" data-id="campo_112"></select></td>
-        <td><div class="teste-rapido-container"><select class="save" data-opt="opt1" data-id="campo_113"></select><input type="checkbox" class="save check-atendente" data-id="check_113" title="Checklist Testes"></div></td>
-      </tr>
+        <tr data-device="pc,notebook,tv">
+          <td>HDMI</td>
+          <td><select class="save" data-opt="opt1" data-id="campo_77h"></select></td>
+          <td>
+            <div class="teste-rapido-container"><select class="save" data-opt="opt1" data-id="campo_78h"></select><input
+                type="checkbox" class="save check-atendente" data-id="check_78h" title="Checklist Testes"></div>
+          </td>
+        </tr>
 
-      <tr data-device="notebook">
-        <td>MICROFONE</td>
-        <td><select class="save" data-opt="opt1" data-id="campo_116"></select></td>
-        <td><div class="teste-rapido-container"><select class="save" data-opt="opt1" data-id="campo_117"></select><input type="checkbox" class="save check-atendente" data-id="check_117" title="Checklist Testes"></div></td>
-      </tr>
+        <tr data-device="pc,notebook,tv">
+          <td>USB / USB-C</td>
+          <td><select class="save" data-opt="opt1" data-id="campo_81"></select></td>
+          <td>
+            <div class="teste-rapido-container"><select class="save" data-opt="opt1" data-id="campo_82"></select><input
+                type="checkbox" class="save check-atendente" data-id="check_82" title="Checklist Testes"></div>
+          </td>
+        </tr>
 
-      <tr data-device="notebook,tv">
-        <td>AUDIO INTERNO</td>
-        <td><select class="save" data-opt="opt1" data-id="campo_120"></select></td>
-        <td><div class="teste-rapido-container"><select class="save" data-opt="opt1" data-id="campo_121"></select><input type="checkbox" class="save check-atendente" data-id="check_121" title="Checklist Testes"></div></td>
-      </tr>
+        <tr data-device="pc,notebook">
+          <td>VGA</td>
+          <td><select class="save" data-opt="opt1" data-id="campo_85"></select></td>
+          <td>
+            <div class="teste-rapido-container"><select class="save" data-opt="opt1" data-id="campo_86"></select><input
+                type="checkbox" class="save check-atendente" data-id="check_86" title="Checklist Testes"></div>
+          </td>
+        </tr>
+        <tr data-device="pc,notebook">
+          <td>LAN</td>
+          <td><select class="save" data-opt="opt1" data-id="campo_89"></select></td>
+          <td>
+            <div class="teste-rapido-container"><select class="save" data-opt="opt1" data-id="campo_90"></select><input
+                type="checkbox" class="save check-atendente" data-id="check_90" title="Checklist Testes"></div>
+          </td>
+        </tr>
 
-      <tr data-device="pc,notebook,tv">
-        <td>CONECTOR P2</td>
-        <td><select class="save" data-opt="opt1" data-id="campo_124"></select></td>
-        <td><div class="teste-rapido-container"><select class="save" data-opt="opt1" data-id="campo_125"></select><input type="checkbox" class="save check-atendente" data-id="check_125" title="Checklist Testes"></div></td>
-      </tr>
+        <tr data-device="pc,notebook">
+          <td>WIFI</td>
+          <td><select class="save" data-opt="opt1" data-id="campo_93"></select></td>
+          <td>
+            <div class="teste-rapido-container"><select class="save" data-opt="opt1" data-id="campo_94"></select><input
+                type="checkbox" class="save check-atendente" data-id="check_94" title="Checklist Testes"></div>
+          </td>
+        </tr>
 
-      <tr data-device="pc,notebook">
-        <td>SISTEMA OPERACIONAL</td>
-        <td><select class="save" data-opt="opt16" data-id="campo_128"></select></td>
-        <td><div class="teste-rapido-container"><select class="save" data-opt="opt16" data-id="campo_129"></select><input type="checkbox" class="save check-atendente" data-id="check_129" title="Checklist Testes"></div></td>
-      </tr>
+        <tr data-device="pc,notebook">
+          <td>BLUETOOTH</td>
+          <td><select class="save" data-opt="opt1" data-id="campo_97"></select></td>
+          <td>
+            <div class="teste-rapido-container"><select class="save" data-opt="opt1" data-id="campo_98"></select><input
+                type="checkbox" class="save check-atendente" data-id="check_98" title="Checklist Testes"></div>
+          </td>
+        </tr>
 
-      <!-- PLACA GRÁFICA -->
-      <tr data-device="pc,notebook">
-        <td>PLACA GRÁFICA</td>
-        <td><select class="save" data-opt="opt1" data-id="campo_132"></select></td>
-        <td><div class="teste-rapido-container"><select class="save" data-opt="opt1" data-id="campo_133"></select><input type="checkbox" class="save check-atendente" data-id="check_133" title="Checklist Testes"></div></td>
-      </tr>
 
-      <!-- ARMAZENAMENTO -->
-      <tr data-device="pc,notebook">
-        <td colspan="3" class="secao">ARMAZENAMENTO</td>
-      </tr>
+        <tr data-device="notebook">
+          <td>TECLADO</td>
+          <td>
+            <select class="save" data-opt="opt1" data-id="campo_102"></select>
+            <hr>
+            <select class="save" data-opt="opt15" data-id="campo_103"></select>
+          </td>
+          <td>
+            <div class="teste-rapido-container"><select class="save" data-opt="opt1" data-id="campo_104"></select><input
+                type="checkbox" class="save check-atendente" data-id="check_104" title="Checklist Testes"></div>
+            <hr>
+            <select class="save" data-opt="opt15" data-id="campo_106"></select>
+          </td>
+        </tr>
 
-      <tr data-device="pc,notebook" class="armazenamento-row">
-        <td>SSD/NVMe/HD</td>
-        <td>
-          <select class="save" data-opt="opt1" data-id="campo_138"></select>
-          <hr>
-          <select class="save" data-opt="opt17" data-id="campo_139"></select>
-          <hr>
-          <input type="text" class="save saude" placeholder="Saúde (%)" data-id="campo_140">
-        </td>
-        <td>
-          <div class="teste-rapido-container"><select class="save" data-opt="opt1" data-id="campo_141"></select><input type="checkbox" class="save check-atendente" data-id="check_141" title="Checklist Testes"></div>
-          <hr>
-          <select class="save" data-opt="opt17" data-id="campo_143"></select>
-          <hr>
-          <input type="text" class="save saude" placeholder="Saúde (%)" data-id="campo_144">
-        </td>
-      </tr>
+        <tr data-device="notebook">
+          <td>TOUCHPAD</td>
+          <td><select class="save" data-opt="opt1" data-id="campo_108"></select></td>
+          <td>
+            <div class="teste-rapido-container"><select class="save" data-opt="opt1" data-id="campo_109"></select><input
+                type="checkbox" class="save check-atendente" data-id="check_109" title="Checklist Testes"></div>
+          </td>
+        </tr>
 
-      <tr data-device="pc,notebook" class="armazenamento-btn-row no-print">
-        <td colspan="3" class="armazenamento-acoes">
-          <button type="button" class="btn-add-armazenamento" onclick="adicionarArmazenamento()"><i class="fa-solid fa-plus"></i> Adicionar Armazenamento</button>
-          <button type="button" class="btn-remove-armazenamento" id="btnRemoverArmazenamento" onclick="removerArmazenamento()" hidden><i class="fa-solid fa-minus"></i> Remover Último</button>
-        </td>
-      </tr>
+        <tr data-device="notebook">
+          <td>CÂMERA</td>
+          <td><select class="save" data-opt="opt1" data-id="campo_112"></select></td>
+          <td>
+            <div class="teste-rapido-container"><select class="save" data-opt="opt1" data-id="campo_113"></select><input
+                type="checkbox" class="save check-atendente" data-id="check_113" title="Checklist Testes"></div>
+          </td>
+        </tr>
 
-      <!-- BACKUP -->
-      <tr data-device="pc,notebook">
-        <td colspan="3" class="secao">BACKUP</td>
-      </tr>
+        <tr data-device="notebook">
+          <td>MICROFONE</td>
+          <td><select class="save" data-opt="opt1" data-id="campo_116"></select></td>
+          <td>
+            <div class="teste-rapido-container"><select class="save" data-opt="opt1" data-id="campo_117"></select><input
+                type="checkbox" class="save check-atendente" data-id="check_117" title="Checklist Testes"></div>
+          </td>
+        </tr>
 
-      <tr data-device="pc,notebook">
-        <td>BACKUP</td>
-        <td colspan="2">
-          <textarea class="backup-input save" rows="2" placeholder="Disco C" data-id="campo_backup_c"></textarea>
-          <textarea class="backup-input save" rows="2" placeholder="Usuário" data-id="campo_backup_usuario"></textarea>
-          <textarea class="backup-input save" rows="2" placeholder="Disco D" data-id="campo_backup_d"></textarea>
-        </td>
-      </tr>
+        <tr data-device="notebook,tv">
+          <td>AUDIO INTERNO</td>
+          <td><select class="save" data-opt="opt1" data-id="campo_120"></select></td>
+          <td>
+            <div class="teste-rapido-container"><select class="save" data-opt="opt1" data-id="campo_121"></select><input
+                type="checkbox" class="save check-atendente" data-id="check_121" title="Checklist Testes"></div>
+          </td>
+        </tr>
 
-      <!-- FINALIZAÇÃO -->
-      <tr data-device="pc,notebook,tv">
-        <td colspan="3" class="secao">FINALIZAÇÃO</td>
-      </tr>
+        <tr data-device="pc,notebook,tv">
+          <td>CONECTOR P2</td>
+          <td><select class="save" data-opt="opt1" data-id="campo_124"></select></td>
+          <td>
+            <div class="teste-rapido-container"><select class="save" data-opt="opt1" data-id="campo_125"></select><input
+                type="checkbox" class="save check-atendente" data-id="check_125" title="Checklist Testes"></div>
+          </td>
+        </tr>
 
-      <tr data-device="pc,notebook,tv">
-        <td>PREVENTIVA</td>
-        <td><select class="save" data-opt="opt18" data-id="campo_146"></select></td>
-        <td><div class="teste-rapido-container"><select class="save" data-opt="opt18" data-id="campo_147"></select><input type="checkbox" class="save check-atendente" data-id="check_147" title="Checklist Testes"></div></td>
-      </tr>
+        <tr data-device="pc,notebook">
+          <td>SISTEMA OPERACIONAL</td>
+          <td><select class="save" data-opt="opt16" data-id="campo_128"></select></td>
+          <td>
+            <div class="teste-rapido-container"><select class="save" data-opt="opt16"
+                data-id="campo_129"></select><input type="checkbox" class="save check-atendente" data-id="check_129"
+                title="Checklist Testes"></div>
+          </td>
+        </tr>
 
-      <!-- RESULTADO -->
-      <tr data-device="pc,notebook,tv">
-        <td colspan="3" class="secao">RESULTADO</td>
-      </tr>
+        <!-- PLACA GRÁFICA -->
+        <tr data-device="pc,notebook">
+          <td>PLACA GRÁFICA</td>
+          <td><select class="save" data-opt="opt1" data-id="campo_132"></select></td>
+          <td>
+            <div class="teste-rapido-container"><select class="save" data-opt="opt1" data-id="campo_133"></select><input
+                type="checkbox" class="save check-atendente" data-id="check_133" title="Checklist Testes"></div>
+          </td>
+        </tr>
 
-      <tr data-device="pc,notebook,tv">
-        <td>DEFEITO ENCONTRADO</td>
-        <td colspan="2">
-          <div id="DEFEITOENCONTRADOField"></div>
-        </td>
-      </tr>
+        <!-- ARMAZENAMENTO -->
+        <tr data-device="pc,notebook">
+          <td colspan="3" class="secao">ARMAZENAMENTO</td>
+        </tr>
 
-      <tr data-device="pc,notebook,tv">
-        <td>PARECER TÉCNICO</td>
-        <td colspan="2">
-          <div id="PARECERTECNICOField" contenteditable="true" class="save"></div>
-        </td>
-      </tr>
+        <tr data-device="pc,notebook" class="armazenamento-row">
+          <td>SSD/NVMe/HD</td>
+          <td>
+            <select class="save" data-opt="opt1" data-id="campo_138"></select>
+            <hr>
+            <select class="save" data-opt="opt17" data-id="campo_139"></select>
+            <hr>
+            <input type="text" class="save saude" placeholder="Saúde (%)" data-id="campo_140">
+          </td>
+          <td>
+            <div class="teste-rapido-container"><select class="save" data-opt="opt1" data-id="campo_141"></select><input
+                type="checkbox" class="save check-atendente" data-id="check_141" title="Checklist Testes"></div>
+            <hr>
+            <select class="save" data-opt="opt17" data-id="campo_143"></select>
+            <hr>
+            <input type="text" class="save saude" placeholder="Saúde (%)" data-id="campo_144">
+          </td>
+        </tr>
 
-    </tbody>
-  </table>
+        <tr data-device="pc,notebook" class="armazenamento-btn-row no-print">
+          <td colspan="3" class="armazenamento-acoes">
+            <button type="button" class="btn-add-armazenamento" onclick="adicionarArmazenamento()"><i
+                class="fa-solid fa-plus"></i> Adicionar Armazenamento</button>
+            <button type="button" class="btn-remove-armazenamento" id="btnRemoverArmazenamento"
+              onclick="removerArmazenamento()" hidden><i class="fa-solid fa-minus"></i> Remover Último</button>
+          </td>
+        </tr>
+
+        <!-- BACKUP -->
+        <tr data-device="pc,notebook">
+          <td colspan="3" class="secao">BACKUP</td>
+        </tr>
+
+        <tr data-device="pc,notebook">
+          <td>BACKUP</td>
+          <td colspan="2">
+            <textarea class="backup-input save" rows="2" placeholder="Disco C" data-id="campo_backup_c"></textarea>
+            <textarea class="backup-input save" rows="2" placeholder="Usuário"
+              data-id="campo_backup_usuario"></textarea>
+            <textarea class="backup-input save" rows="2" placeholder="Disco D" data-id="campo_backup_d"></textarea>
+          </td>
+        </tr>
+
+        <!-- FINALIZAÇÃO -->
+        <tr data-device="pc,notebook,tv">
+          <td colspan="3" class="secao">FINALIZAÇÃO</td>
+        </tr>
+
+        <tr data-device="pc,notebook,tv">
+          <td>PREVENTIVA</td>
+          <td><select class="save" data-opt="opt18" data-id="campo_146"></select></td>
+          <td>
+            <div class="teste-rapido-container"><select class="save" data-opt="opt18"
+                data-id="campo_147"></select><input type="checkbox" class="save check-atendente" data-id="check_147"
+                title="Checklist Testes"></div>
+          </td>
+        </tr>
+
+        <!-- RESULTADO -->
+        <tr data-device="pc,notebook,tv">
+          <td colspan="3" class="secao">RESULTADO</td>
+        </tr>
+
+        <tr data-device="pc,notebook,tv">
+          <td>DEFEITO ENCONTRADO</td>
+          <td colspan="2">
+            <div id="DEFEITOENCONTRADOField"></div>
+          </td>
+        </tr>
+
+        <tr data-device="pc,notebook,tv">
+          <td>PARECER TÉCNICO</td>
+          <td colspan="2">
+            <div id="PARECERTECNICOField" contenteditable="true" class="save"></div>
+          </td>
+        </tr>
+
+      </tbody>
+    </table>
   </div>
 
   <div id="avisosPendencia" class="avisos-pendencia" hidden></div>
 
   <!-- ASSINATURAS -->
   <div class="assinatura-area">
-  <table>
-    <tr>
-      <td class="assinatura-celula">
-        <div class="assinatura-linha"></div>
-        <div class="assinatura-nome">ASSINATURA DO ATENDENTE</div>
-      </td>
-      <td class="assinatura-celula">
-        <div class="assinatura-linha"></div>
-        <div class="assinatura-nome">ASSINATURA DO TÉCNICO</div>
-      </td>
-      <td class="assinatura-celula">
-        <div class="assinatura-linha"></div>
-        <div class="assinatura-nome">ASSINATURA DO CLIENTE</div>
-      </td>
-    </tr>
-  </table>
+    <table>
+      <tr>
+        <td class="assinatura-celula">
+          <div class="assinatura-linha"></div>
+          <div class="assinatura-nome">ASSINATURA DO ATENDENTE</div>
+        </td>
+        <td class="assinatura-celula">
+          <div class="assinatura-linha"></div>
+          <div class="assinatura-nome">ASSINATURA DO TÉCNICO</div>
+        </td>
+        <td class="assinatura-celula">
+          <div class="assinatura-linha"></div>
+          <div class="assinatura-nome">ASSINATURA DO CLIENTE</div>
+        </td>
+      </tr>
+    </table>
   </div>
 
   <!-- MENU FLUTUANTE (canto inferior direito) -->
@@ -2007,21 +2168,30 @@ body.dark-mode .fab-defeito {
         <button type="button" data-col="2" onclick="escolherColunaFab('2')">Testes</button>
       </div>
       <div class="fab-preencher">
-        <button type="button" class="fab-ok" onclick="preencherColunaApp('Funcionando')"><i class="fa-solid fa-check"></i> Funcionando</button>
-        <button type="button" class="fab-defeito" onclick="preencherColunaApp('Com defeito')"><i class="fa-solid fa-xmark"></i> Com defeito</button>
-        <button type="button" class="fab-vazio" onclick="preencherColunaApp('Selecione')"><i class="fa-regular fa-square"></i> Vazio</button>
+        <button type="button" class="fab-ok" onclick="preencherColunaApp('Funcionando')"><i
+            class="fa-solid fa-check"></i> Funcionando</button>
+        <button type="button" class="fab-defeito" onclick="preencherColunaApp('Com defeito')"><i
+            class="fa-solid fa-xmark"></i> Com defeito</button>
+        <button type="button" class="fab-vazio" onclick="preencherColunaApp('Selecione')"><i
+            class="fa-regular fa-square"></i> Vazio</button>
       </div>
 
       <div class="fab-separador"></div>
 
-      <button type="button" class="fab-item" onclick="fabAcao(imprimir)"><i class="fa-solid fa-print"></i> Imprimir</button>
-      <button type="button" class="fab-item" onclick="fabAcao(exportarJSON)"><i class="fa-solid fa-download"></i> Exportar</button>
-      <button type="button" class="fab-item" onclick="fabAcao(() => document.getElementById('importFile').click())"><i class="fa-solid fa-upload"></i> Importar</button>
-      <button type="button" class="fab-item" onclick="fabAcao(novoLaudo)"><i class="fa-solid fa-file-circle-plus"></i> Novo laudo</button>
-      <button type="button" class="fab-item" onclick="fabAcao(() => window.scrollTo({ top: 0, behavior: 'smooth' }))"><i class="fa-solid fa-arrow-up"></i> Voltar ao topo</button>
+      <button type="button" class="fab-item" onclick="fabAcao(imprimir)"><i class="fa-solid fa-print"></i>
+        Imprimir</button>
+      <button type="button" class="fab-item" onclick="fabAcao(exportarJSON)"><i class="fa-solid fa-download"></i>
+        Exportar</button>
+      <button type="button" class="fab-item" onclick="fabAcao(() => document.getElementById('importFile').click())"><i
+          class="fa-solid fa-upload"></i> Importar</button>
+      <button type="button" class="fab-item" onclick="fabAcao(novoLaudo)"><i class="fa-solid fa-file-circle-plus"></i>
+        Novo laudo</button>
+      <button type="button" class="fab-item" onclick="fabAcao(() => window.scrollTo({ top: 0, behavior: 'smooth' }))"><i
+          class="fa-solid fa-arrow-up"></i> Voltar ao topo</button>
     </div>
 
-    <button type="button" class="fab-botao" id="fabBotao" onclick="alternarFab()" aria-expanded="false" aria-controls="fabMenu" title="Menu">
+    <button type="button" class="fab-botao" id="fabBotao" onclick="alternarFab()" aria-expanded="false"
+      aria-controls="fabMenu" title="Menu">
       <i class="fa-solid fa-bars fab-icone-abrir"></i>
       <i class="fa-solid fa-xmark fab-icone-fechar"></i>
     </button>
@@ -2040,290 +2210,290 @@ body.dark-mode .fab-defeito {
   </div>
 
   <script>
-// =====================================================================
-// DADOS
-// =====================================================================
+    // =====================================================================
+    // DADOS
+    // =====================================================================
 
-// Opções de cada select (data-opt). A primeira opção de cada lista é o
-// "vazio" do campo (Selecione, Modelo, Capacidade, Tipo, Vídeo integrado).
-const optionsData = {
-  'opt1': ['Selecione', 'Funcionando', 'Com defeito', 'Não Testado', 'Não Se Aplica'],
-  'opt2': ['Selecione', 'Funcionando', 'Com defeito', 'Não Testado'],
-  'opt3': ['Selecione', 'Funcionando', 'Com defeito'],
+    // Opções de cada select (data-opt). A primeira opção de cada lista é o
+    // "vazio" do campo (Selecione, Modelo, Capacidade, Tipo, Vídeo integrado).
+    const optionsData = {
+      'opt1': ['Selecione', 'Funcionando', 'Com defeito', 'Não Testado', 'Não Se Aplica'],
+      'opt2': ['Selecione', 'Funcionando', 'Com defeito', 'Não Testado'],
+      'opt3': ['Selecione', 'Funcionando', 'Com defeito'],
 
-  'opt4': ['Modelo', 'Intel Celeron', 'Intel Pentium', 'Core i3', 'Core i5', 'Core i7', 'Core i9', 'AMD Ryzen 3', 'AMD Ryzen 5', 'AMD Ryzen 7', 'AMD Ryzen 9'],
-  'opt5': ['Capacidade', '2GB', '4GB', '6GB', '8GB', '10GB', '12GB', '16GB', '32GB', '64GB'],
+      'opt4': ['Modelo', 'Intel Celeron', 'Intel Pentium', 'Core i3', 'Core i5', 'Core i7', 'Core i9', 'AMD Ryzen 3', 'AMD Ryzen 5', 'AMD Ryzen 7', 'AMD Ryzen 9'],
+      'opt5': ['Capacidade', '2GB', '4GB', '6GB', '8GB', '10GB', '12GB', '16GB', '32GB', '64GB'],
 
-  'opt6': ['Selecione', 'Funcionando', 'Com defeito', 'Sem Imagem', 'Imagem com Defeito', 'Não Testado'],
-  'opt7': ['Selecione', 'TN', 'IPS', 'VA', 'OLED'],
-  'opt8': ['Selecione', 'HD', 'FULL HD', '2K (QHD)', '4K (UHD)'],
-  'opt9': ['Selecione', '60Hz', '75Hz', '120Hz', '144Hz', '165Hz', '240Hz'],
-  'opt10': ['Selecione', 'Funcionando', 'Com defeito', 'Sem Iluminação', 'Oscilando', 'Não Testado'],
-  'opt11': ['Selecione', 'Funcionando', 'Com defeito', 'Aberta', 'Em Curto', 'Não Testado'],
-  'opt12': ['Selecione', 'Funcionando', 'Com defeito', 'Mau Contato', 'Rompido', 'Não Testado'],
-  'opt13': ['Selecione', 'Imagem Normal', 'Tela Escura com Imagem', 'Sem Imagem Total', 'Listras / Artefatos', 'Imagem Piscando'],
+      'opt6': ['Selecione', 'Funcionando', 'Com defeito', 'Sem Imagem', 'Imagem com Defeito', 'Não Testado'],
+      'opt7': ['Selecione', 'TN', 'IPS', 'VA', 'OLED'],
+      'opt8': ['Selecione', 'HD', 'FULL HD', '2K (QHD)', '4K (UHD)'],
+      'opt9': ['Selecione', '60Hz', '75Hz', '120Hz', '144Hz', '165Hz', '240Hz'],
+      'opt10': ['Selecione', 'Funcionando', 'Com defeito', 'Sem Iluminação', 'Oscilando', 'Não Testado'],
+      'opt11': ['Selecione', 'Funcionando', 'Com defeito', 'Aberta', 'Em Curto', 'Não Testado'],
+      'opt12': ['Selecione', 'Funcionando', 'Com defeito', 'Mau Contato', 'Rompido', 'Não Testado'],
+      'opt13': ['Selecione', 'Imagem Normal', 'Tela Escura com Imagem', 'Sem Imagem Total', 'Listras / Artefatos', 'Imagem Piscando'],
 
-  'opt15': ['Selecione', 'Simples', 'Completo'],
-  'opt16': ['Selecione', 'Funcionando', 'Com defeito', 'Corrompido', 'Não Inicializa', 'Não Testado', 'Não Se Aplica'],
-  'opt17': ['Tipo', 'SSD', 'NVMe', 'HD', 'NGFF(M2)'],
-  'opt18': ['Selecione', 'Necessário', 'Realizada', 'Não necessária', 'Não realizada'],
+      'opt15': ['Selecione', 'Simples', 'Completo'],
+      'opt16': ['Selecione', 'Funcionando', 'Com defeito', 'Corrompido', 'Não Inicializa', 'Não Testado', 'Não Se Aplica'],
+      'opt17': ['Tipo', 'SSD', 'NVMe', 'HD', 'NGFF(M2)'],
+      'opt18': ['Selecione', 'Necessário', 'Realizada', 'Não necessária', 'Não realizada'],
 
-  'opt19': ['Vídeo integrado', 'Com vídeo integrado', 'Sem vídeo integrado']
-};
+      'opt19': ['Vídeo integrado', 'Com vídeo integrado', 'Sem vídeo integrado']
+    };
 
-// Valores que indicam problema em selects de display
-const valoresDisplayProblema = [
-  'sem iluminação', 'oscilando', 'aberta', 'em curto',
-  'mau contato', 'rompido', 'tela escura com imagem',
-  'sem imagem total', 'listras / artefatos', 'imagem piscando',
-  'sem imagem', 'imagem com defeito'
-];
+    // Valores que indicam problema em selects de display
+    const valoresDisplayProblema = [
+      'sem iluminação', 'oscilando', 'aberta', 'em curto',
+      'mau contato', 'rompido', 'tela escura com imagem',
+      'sem imagem total', 'listras / artefatos', 'imagem piscando',
+      'sem imagem', 'imagem com defeito'
+    ];
 
-// Valores padrão de defeito
-const valoresDeDefeito = ['com defeito', 'corrompido', 'não inicializa'];
+    // Valores padrão de defeito
+    const valoresDeDefeito = ['com defeito', 'corrompido', 'não inicializa'];
 
-// Valores pintados de verde
-const valoresOk = ['funcionando', 'imagem normal'];
+    // Valores pintados de verde
+    const valoresOk = ['funcionando', 'imagem normal'];
 
-// Índice da célula de cada coluna dentro da linha (0 é o nome do item)
-const COLUNAS = [1, 2];
-const NOMES_COLUNAS = { 1: 'Técnico', 2: 'Testes' };
+    // Índice da célula de cada coluna dentro da linha (0 é o nome do item)
+    const COLUNAS = [1, 2];
+    const NOMES_COLUNAS = { 1: 'Técnico', 2: 'Testes' };
 
-// Valor usado pelo botão Vazio no preenchimento rápido
-const VALOR_VAZIO = 'Selecione';
+    // Valor usado pelo botão Vazio no preenchimento rápido
+    const VALOR_VAZIO = 'Selecione';
 
-let armazenamentoCount = 0;
+    let armazenamentoCount = 0;
 
-// Observações dos defeitos (persistidas no localStorage)
-let defeitosObs = JSON.parse(localStorage.getItem('defeitosObs') || '{}');
-
-
-// =====================================================================
-// UTILITÁRIOS
-// =====================================================================
-
-function nomeDoItem(linha) {
-  return linha?.querySelector('td')?.innerText.trim();
-}
-
-function linhaVisivel(tr) {
-  return tr.style.display !== 'none';
-}
-
-// A primeira opção de todo select é o "vazio"
-function selectVazio(select) {
-  return select.selectedIndex <= 0;
-}
-
-function ehValorDeDefeito(valor) {
-  const v = valor.toLowerCase();
-  return valoresDeDefeito.includes(v) || valoresDisplayProblema.includes(v);
-}
-
-function temObs(item) {
-  return Boolean(item && defeitosObs[item] && defeitosObs[item].trim() !== '');
-}
-
-function escaparHtml(texto) {
-  return String(texto)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;');
-}
-
-// Data de hoje no formato brasileiro (dd/mm/aaaa)
-function dataDeHoje() {
-  const hoje = new Date();
-  const doisDigitos = n => String(n).padStart(2, '0');
-  return `${doisDigitos(hoje.getDate())}/${doisDigitos(hoje.getMonth() + 1)}/${hoje.getFullYear()}`;
-}
-
-// Coloca as barras enquanto digita: 03102026 -> 03/10/2026
-function mascararData(campo) {
-  const digitos = campo.value.replace(/\D/g, '').slice(0, 8);
-  campo.value = [digitos.slice(0, 2), digitos.slice(2, 4), digitos.slice(4)].filter(Boolean).join('/');
-}
-
-// Confere se dd/mm/aaaa é uma data que existe (ex.: 31/02/2026 não existe)
-function dataValida(texto) {
-  const partes = texto.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
-  if (!partes) return false;
-  const [dia, mes, ano] = partes.slice(1).map(Number);
-  const data = new Date(ano, mes - 1, dia);
-  return data.getFullYear() === ano && data.getMonth() === mes - 1 && data.getDate() === dia;
-}
-
-// Mostra o aviso de data inválida (campo vazio não é marcado enquanto se digita)
-function conferirData() {
-  const campo = document.getElementById('dataField');
-  const invalida = campo.value !== '' && !dataValida(campo.value);
-  campo.classList.toggle('invalido', invalida);
-  document.getElementById('dataErro').hidden = !invalida;
-  return !invalida;
-}
-
-// Laudo sem data (novo, antigo ou vindo do diagnostico.ps1) recebe a data de hoje.
-// Datas salvas no formato antigo (aaaa-mm-dd) são convertidas.
-function preencherDataSeVazia() {
-  const campo = document.getElementById('dataField');
-  const iso = campo.value.match(/^(\d{4})-(\d{2})-(\d{2})$/);
-  if (iso) campo.value = `${iso[3]}/${iso[2]}/${iso[1]}`;
-  if (!campo.value) campo.value = dataDeHoje();
-  salvar();
-}
-
-// Remove caracteres que não podem ir em nome de arquivo
-function nomeDeArquivoSeguro(texto, padrao) {
-  return (texto || '').trim().replace(/[\\/:*?"<>|]/g, '_') || padrao;
-}
-
-function injetarOpcoes(raiz) {
-  raiz.querySelectorAll('select[data-opt]').forEach(select => {
-    const items = optionsData[select.getAttribute('data-opt')];
-    if (!items) return;
-    select.innerHTML = '';
-    items.forEach(item => {
-      const option = document.createElement('option');
-      option.textContent = item;
-      select.appendChild(option);
-    });
-  });
-}
+    // Observações dos defeitos (persistidas no localStorage)
+    let defeitosObs = JSON.parse(localStorage.getItem('defeitosObs') || '{}');
 
 
-// =====================================================================
-// CAMPOS: ler, escrever, salvar e carregar
-// =====================================================================
+    // =====================================================================
+    // UTILITÁRIOS
+    // =====================================================================
 
-function idDoCampo(el) {
-  return el.getAttribute('data-id') || el.id;
-}
-
-function ehCampoDeValor(el) {
-  return el.tagName === 'SELECT' || el.tagName === 'INPUT' || el.tagName === 'TEXTAREA';
-}
-
-function lerCampo(el) {
-  if (el.type === 'checkbox') return el.checked;
-  if (ehCampoDeValor(el)) return el.value;
-  return el.innerHTML;
-}
-
-function escreverCampo(el, valor) {
-  if (el.type === 'checkbox') {
-    el.checked = valor === true || valor === 'true';
-  } else if (ehCampoDeValor(el)) {
-    el.value = valor || '';
-    if (el.tagName === 'SELECT') {
-      // Valor salvo que não existe mais no menu volta para a primeira opção
-      if (el.selectedIndex === -1) el.selectedIndex = 0;
-      el.dataset.anterior = el.value;
-    }
-  } else {
-    el.innerHTML = valor || '';
-  }
-}
-
-function coletarDados() {
-  const dados = {};
-  document.querySelectorAll('.save').forEach(el => {
-    const id = idDoCampo(el);
-    if (id) dados[id] = lerCampo(el);
-  });
-  dados._armazenamentoCount = armazenamentoCount;
-  return dados;
-}
-
-// Quantas linhas extras de armazenamento o laudo tem (null = não informado)
-function quantidadeDeArmazenamentos(dados) {
-  if (dados._armazenamentoCount !== undefined) {
-    return parseInt(dados._armazenamentoCount, 10) || 0;
-  }
-  // JSONs exportados por versões antigas não guardavam a quantidade:
-  // deduz pelos campos campo_arm2_*, campo_arm3_*... (a linha N é a extra N - 1)
-  const numeros = Object.keys(dados)
-    .map(chave => chave.match(/^campo_arm(\d+)_/))
-    .filter(Boolean)
-    .map(m => parseInt(m[1], 10));
-  return numeros.length > 0 ? Math.max(...numeros) - 1 : null;
-}
-
-// Usado ao abrir a página (dados do localStorage) e ao importar um JSON
-function aplicarDados(dados) {
-  const armazenamentos = quantidadeDeArmazenamentos(dados);
-  if (armazenamentos !== null) recriarArmazenamentos(armazenamentos);
-  document.querySelectorAll('.save').forEach(el => {
-    const id = idDoCampo(el);
-    if (id && dados[id] !== undefined) escreverCampo(el, dados[id]);
-  });
-}
-
-function salvar() {
-  localStorage.setItem('laudo', JSON.stringify(coletarDados()));
-}
-
-function salvarObs() {
-  localStorage.setItem('defeitosObs', JSON.stringify(defeitosObs));
-}
-
-// Liga o salvamento automático e a atualização da tela em um campo .save
-function prepararCampo(el) {
-  el.addEventListener('change', salvar);
-
-  if (el.tagName === 'SELECT') {
-    prepararSelect(el);
-    return;
-  }
-
-  el.addEventListener('input', () => {
-    salvar();
-    atualizarResumo();
-  });
-}
-
-// Ao tirar um item de "defeito", avisa antes de apagar a observação dele
-function prepararSelect(select) {
-  select.dataset.anterior = select.value;
-  select.addEventListener('focus', () => {
-    select.dataset.anterior = select.value;
-  });
-
-  select.addEventListener('change', () => {
-    const anterior = select.dataset.anterior;
-    const novoValor = select.value;
-    const item = nomeDoItem(select.closest('tr'));
-
-    if (!(ehValorDeDefeito(anterior) && !ehValorDeDefeito(novoValor) && temObs(item))) {
-      select.dataset.anterior = novoValor;
-      atualizarResumo();
-      return;
+    function nomeDoItem(linha) {
+      return linha?.querySelector('td')?.innerText.trim();
     }
 
-    abrirModal(
-      'O item "' + item + '" possui uma observação que será apagada. Deseja continuar?',
-      (confirmou) => {
-        if (confirmou) {
-          delete defeitosObs[item];
-          salvarObs();
+    function linhaVisivel(tr) {
+      return tr.style.display !== 'none';
+    }
+
+    // A primeira opção de todo select é o "vazio"
+    function selectVazio(select) {
+      return select.selectedIndex <= 0;
+    }
+
+    function ehValorDeDefeito(valor) {
+      const v = valor.toLowerCase();
+      return valoresDeDefeito.includes(v) || valoresDisplayProblema.includes(v);
+    }
+
+    function temObs(item) {
+      return Boolean(item && defeitosObs[item] && defeitosObs[item].trim() !== '');
+    }
+
+    function escaparHtml(texto) {
+      return String(texto)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    // Data de hoje no formato brasileiro (dd/mm/aaaa)
+    function dataDeHoje() {
+      const hoje = new Date();
+      const doisDigitos = n => String(n).padStart(2, '0');
+      return `${doisDigitos(hoje.getDate())}/${doisDigitos(hoje.getMonth() + 1)}/${hoje.getFullYear()}`;
+    }
+
+    // Coloca as barras enquanto digita: 03102026 -> 03/10/2026
+    function mascararData(campo) {
+      const digitos = campo.value.replace(/\D/g, '').slice(0, 8);
+      campo.value = [digitos.slice(0, 2), digitos.slice(2, 4), digitos.slice(4)].filter(Boolean).join('/');
+    }
+
+    // Confere se dd/mm/aaaa é uma data que existe (ex.: 31/02/2026 não existe)
+    function dataValida(texto) {
+      const partes = texto.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
+      if (!partes) return false;
+      const [dia, mes, ano] = partes.slice(1).map(Number);
+      const data = new Date(ano, mes - 1, dia);
+      return data.getFullYear() === ano && data.getMonth() === mes - 1 && data.getDate() === dia;
+    }
+
+    // Mostra o aviso de data inválida (campo vazio não é marcado enquanto se digita)
+    function conferirData() {
+      const campo = document.getElementById('dataField');
+      const invalida = campo.value !== '' && !dataValida(campo.value);
+      campo.classList.toggle('invalido', invalida);
+      document.getElementById('dataErro').hidden = !invalida;
+      return !invalida;
+    }
+
+    // Laudo sem data (novo, antigo ou vindo do diagnostico.ps1) recebe a data de hoje.
+    // Datas salvas no formato antigo (aaaa-mm-dd) são convertidas.
+    function preencherDataSeVazia() {
+      const campo = document.getElementById('dataField');
+      const iso = campo.value.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+      if (iso) campo.value = `${iso[3]}/${iso[2]}/${iso[1]}`;
+      if (!campo.value) campo.value = dataDeHoje();
+      salvar();
+    }
+
+    // Remove caracteres que não podem ir em nome de arquivo
+    function nomeDeArquivoSeguro(texto, padrao) {
+      return (texto || '').trim().replace(/[\\/:*?"<>|]/g, '_') || padrao;
+    }
+
+    function injetarOpcoes(raiz) {
+      raiz.querySelectorAll('select[data-opt]').forEach(select => {
+        const items = optionsData[select.getAttribute('data-opt')];
+        if (!items) return;
+        select.innerHTML = '';
+        items.forEach(item => {
+          const option = document.createElement('option');
+          option.textContent = item;
+          select.appendChild(option);
+        });
+      });
+    }
+
+
+    // =====================================================================
+    // CAMPOS: ler, escrever, salvar e carregar
+    // =====================================================================
+
+    function idDoCampo(el) {
+      return el.getAttribute('data-id') || el.id;
+    }
+
+    function ehCampoDeValor(el) {
+      return el.tagName === 'SELECT' || el.tagName === 'INPUT' || el.tagName === 'TEXTAREA';
+    }
+
+    function lerCampo(el) {
+      if (el.type === 'checkbox') return el.checked;
+      if (ehCampoDeValor(el)) return el.value;
+      return el.innerHTML;
+    }
+
+    function escreverCampo(el, valor) {
+      if (el.type === 'checkbox') {
+        el.checked = valor === true || valor === 'true';
+      } else if (ehCampoDeValor(el)) {
+        el.value = valor || '';
+        if (el.tagName === 'SELECT') {
+          // Valor salvo que não existe mais no menu volta para a primeira opção
+          if (el.selectedIndex === -1) el.selectedIndex = 0;
+          el.dataset.anterior = el.value;
+        }
+      } else {
+        el.innerHTML = valor || '';
+      }
+    }
+
+    function coletarDados() {
+      const dados = {};
+      document.querySelectorAll('.save').forEach(el => {
+        const id = idDoCampo(el);
+        if (id) dados[id] = lerCampo(el);
+      });
+      dados._armazenamentoCount = armazenamentoCount;
+      return dados;
+    }
+
+    // Quantas linhas extras de armazenamento o laudo tem (null = não informado)
+    function quantidadeDeArmazenamentos(dados) {
+      if (dados._armazenamentoCount !== undefined) {
+        return parseInt(dados._armazenamentoCount, 10) || 0;
+      }
+      // JSONs exportados por versões antigas não guardavam a quantidade:
+      // deduz pelos campos campo_arm2_*, campo_arm3_*... (a linha N é a extra N - 1)
+      const numeros = Object.keys(dados)
+        .map(chave => chave.match(/^campo_arm(\d+)_/))
+        .filter(Boolean)
+        .map(m => parseInt(m[1], 10));
+      return numeros.length > 0 ? Math.max(...numeros) - 1 : null;
+    }
+
+    // Usado ao abrir a página (dados do localStorage) e ao importar um JSON
+    function aplicarDados(dados) {
+      const armazenamentos = quantidadeDeArmazenamentos(dados);
+      if (armazenamentos !== null) recriarArmazenamentos(armazenamentos);
+      document.querySelectorAll('.save').forEach(el => {
+        const id = idDoCampo(el);
+        if (id && dados[id] !== undefined) escreverCampo(el, dados[id]);
+      });
+    }
+
+    function salvar() {
+      localStorage.setItem('laudo', JSON.stringify(coletarDados()));
+    }
+
+    function salvarObs() {
+      localStorage.setItem('defeitosObs', JSON.stringify(defeitosObs));
+    }
+
+    // Liga o salvamento automático e a atualização da tela em um campo .save
+    function prepararCampo(el) {
+      el.addEventListener('change', salvar);
+
+      if (el.tagName === 'SELECT') {
+        prepararSelect(el);
+        return;
+      }
+
+      el.addEventListener('input', () => {
+        salvar();
+        atualizarResumo();
+      });
+    }
+
+    // Ao tirar um item de "defeito", avisa antes de apagar a observação dele
+    function prepararSelect(select) {
+      select.dataset.anterior = select.value;
+      select.addEventListener('focus', () => {
+        select.dataset.anterior = select.value;
+      });
+
+      select.addEventListener('change', () => {
+        const anterior = select.dataset.anterior;
+        const novoValor = select.value;
+        const item = nomeDoItem(select.closest('tr'));
+
+        if (!(ehValorDeDefeito(anterior) && !ehValorDeDefeito(novoValor) && temObs(item))) {
           select.dataset.anterior = novoValor;
           atualizarResumo();
-        } else {
-          select.value = anterior;
-          salvar();
+          return;
         }
-      }
-    );
-  });
-}
+
+        abrirModal(
+          'O item "' + item + '" possui uma observação que será apagada. Deseja continuar?',
+          (confirmou) => {
+            if (confirmou) {
+              delete defeitosObs[item];
+              salvarObs();
+              select.dataset.anterior = novoValor;
+              atualizarResumo();
+            } else {
+              select.value = anterior;
+              salvar();
+            }
+          }
+        );
+      });
+    }
 
 
-// =====================================================================
-// ARMAZENAMENTO (linhas extras de SSD/NVMe/HD)
-// =====================================================================
+    // =====================================================================
+    // ARMAZENAMENTO (linhas extras de SSD/NVMe/HD)
+    // =====================================================================
 
-function celulaArmazenamento(n, primeiroCampo) {
-  return `
+    function celulaArmazenamento(n, primeiroCampo) {
+      return `
         <td>
           <select class="save" data-opt="opt1" data-id="campo_arm${n}_${primeiroCampo}"></select>
           <hr>
@@ -2331,777 +2501,777 @@ function celulaArmazenamento(n, primeiroCampo) {
           <hr>
           <input type="text" class="save saude" placeholder="Saúde (%)" data-id="campo_arm${n}_${primeiroCampo + 2}">
         </td>`;
-}
+    }
 
-function adicionarArmazenamento() {
-  const btnRow = document.querySelector('.armazenamento-btn-row');
-  if (!btnRow) return;
+    function adicionarArmazenamento() {
+      const btnRow = document.querySelector('.armazenamento-btn-row');
+      if (!btnRow) return;
 
-  armazenamentoCount++;
-  const n = armazenamentoCount + 1;
+      armazenamentoCount++;
+      const n = armazenamentoCount + 1;
 
-  const linha = document.createElement('tr');
-  linha.setAttribute('data-device', 'pc,notebook');
-  linha.classList.add('armazenamento-row', 'armazenamento-extra');
-  linha.innerHTML = `
+      const linha = document.createElement('tr');
+      linha.setAttribute('data-device', 'pc,notebook');
+      linha.classList.add('armazenamento-row', 'armazenamento-extra');
+      linha.innerHTML = `
         <td>SSD/NVMe/HD (${n})</td>` + celulaArmazenamento(n, 4) + celulaArmazenamento(n, 7);
 
-  btnRow.parentNode.insertBefore(linha, btnRow);
-  injetarOpcoes(linha);
-  linha.querySelectorAll('.save').forEach(prepararCampo);
+      btnRow.parentNode.insertBefore(linha, btnRow);
+      injetarOpcoes(linha);
+      linha.querySelectorAll('.save').forEach(prepararCampo);
 
-  const modoAtual = localStorage.getItem('modo_equipamento') || 'notebook';
-  if (!linha.getAttribute('data-device').split(',').includes(modoAtual)) {
-    linha.style.display = 'none';
-  }
+      const modoAtual = localStorage.getItem('modo_equipamento') || 'notebook';
+      if (!linha.getAttribute('data-device').split(',').includes(modoAtual)) {
+        linha.style.display = 'none';
+      }
 
-  document.getElementById('btnRemoverArmazenamento').hidden = false;
-  atualizarCoresSelects();
-}
-
-function removerArmazenamento() {
-  const extras = document.querySelectorAll('.armazenamento-extra');
-  if (extras.length > 0) {
-    extras[extras.length - 1].remove();
-    armazenamentoCount--;
-  }
-  document.getElementById('btnRemoverArmazenamento').hidden = armazenamentoCount === 0;
-  atualizarResumo();
-}
-
-function recriarArmazenamentos(quantidade) {
-  document.querySelectorAll('.armazenamento-extra').forEach(linha => linha.remove());
-  armazenamentoCount = 0;
-  document.getElementById('btnRemoverArmazenamento').hidden = true;
-  for (let i = 0; i < quantidade; i++) {
-    adicionarArmazenamento();
-  }
-}
-
-
-// =====================================================================
-// RESUMO: defeitos encontrados, cores e pendências
-// =====================================================================
-
-// Recalcula tudo o que depende dos valores da tabela
-function atualizarResumo() {
-  capturarDefeitos();
-  atualizarCoresSelects();
-  verificarPendencias();
-}
-
-function obterInfoExtra(item, linha) {
-  // Para SSD/NVMe/HD (e os extras "SSD/NVMe/HD (2)", "(3)"...), busca saúde e tipo
-  if (item.startsWith('SSD/NVMe/HD')) {
-    let saude = '';
-    linha.querySelectorAll('.saude').forEach(inp => {
-      if (inp.value.trim() !== '') saude = inp.value.trim();
-    });
-    let tipo = '';
-    linha.querySelectorAll('select[data-opt="opt17"]').forEach(sel => {
-      if (!selectVazio(sel)) tipo = sel.value;
-    });
-    let extra = tipo;
-    if (saude) extra += (extra ? ' ' : '') + 'com ' + saude + ' de saúde';
-    return extra;
-  }
-
-  // Para itens de display, mostra os sintomas específicos selecionados
-  const sintomas = [];
-  linha.querySelectorAll('.display-check').forEach(sel => {
-    if (valoresDisplayProblema.includes(sel.value.toLowerCase())) sintomas.push(sel.value);
-  });
-  return sintomas.join(', ');
-}
-
-function capturarDefeitos() {
-  const defeitos = []; // { item, extra }
-  const itensAdicionados = [];
-
-  document.querySelectorAll('.save').forEach(el => {
-    const valor = ehCampoDeValor(el) ? el.value : el.innerText;
-    if (!valor) return;
-
-    const linha = el.closest('tr');
-    const item = nomeDoItem(linha);
-    if (!item || itensAdicionados.includes(item)) return;
-
-    if (ehValorDeDefeito(valor)) {
-      itensAdicionados.push(item);
-      defeitos.push({ item, extra: obterInfoExtra(item, linha) });
-    } else if (item === 'PREVENTIVA' && valor === 'Necessário' && el.tagName === 'SELECT') {
-      // Preventiva: quando "Necessário" é selecionado, aparece na área de problemas
-      itensAdicionados.push(item);
-      defeitos.push({ item, extra: 'Limpeza preventiva necessária' });
+      document.getElementById('btnRemoverArmazenamento').hidden = false;
+      atualizarCoresSelects();
     }
-  });
 
-  // Remove OBS de itens que não são mais defeito
-  Object.keys(defeitosObs).forEach(item => {
-    if (!itensAdicionados.includes(item)) delete defeitosObs[item];
-  });
-  salvarObs();
+    function removerArmazenamento() {
+      const extras = document.querySelectorAll('.armazenamento-extra');
+      if (extras.length > 0) {
+        extras[extras.length - 1].remove();
+        armazenamentoCount--;
+      }
+      document.getElementById('btnRemoverArmazenamento').hidden = armazenamentoCount === 0;
+      atualizarResumo();
+    }
 
-  renderizarDefeitos(defeitos);
-}
+    function recriarArmazenamentos(quantidade) {
+      document.querySelectorAll('.armazenamento-extra').forEach(linha => linha.remove());
+      armazenamentoCount = 0;
+      document.getElementById('btnRemoverArmazenamento').hidden = true;
+      for (let i = 0; i < quantidade; i++) {
+        adicionarArmazenamento();
+      }
+    }
 
-function renderizarDefeitos(defeitos) {
-  const campo = document.getElementById('DEFEITOENCONTRADOField');
-  if (!campo) return;
 
-  // Sem espaços entre as tags: o campo usa white-space: pre-wrap
-  campo.innerHTML = defeitos.map(d =>
-    '<div class="defeito-card">' +
-      `<div class="defeito-texto">Problema encontrado: <strong>${escaparHtml(d.item)}</strong></div>` +
-      (d.extra ? `<div class="defeito-extra">${escaparHtml(d.extra)}</div>` : '') +
-      '<div class="defeito-obs-row">' +
+    // =====================================================================
+    // RESUMO: defeitos encontrados, cores e pendências
+    // =====================================================================
+
+    // Recalcula tudo o que depende dos valores da tabela
+    function atualizarResumo() {
+      capturarDefeitos();
+      atualizarCoresSelects();
+      verificarPendencias();
+    }
+
+    function obterInfoExtra(item, linha) {
+      // Para SSD/NVMe/HD (e os extras "SSD/NVMe/HD (2)", "(3)"...), busca saúde e tipo
+      if (item.startsWith('SSD/NVMe/HD')) {
+        let saude = '';
+        linha.querySelectorAll('.saude').forEach(inp => {
+          if (inp.value.trim() !== '') saude = inp.value.trim();
+        });
+        let tipo = '';
+        linha.querySelectorAll('select[data-opt="opt17"]').forEach(sel => {
+          if (!selectVazio(sel)) tipo = sel.value;
+        });
+        let extra = tipo;
+        if (saude) extra += (extra ? ' ' : '') + 'com ' + saude + ' de saúde';
+        return extra;
+      }
+
+      // Para itens de display, mostra os sintomas específicos selecionados
+      const sintomas = [];
+      linha.querySelectorAll('.display-check').forEach(sel => {
+        if (valoresDisplayProblema.includes(sel.value.toLowerCase())) sintomas.push(sel.value);
+      });
+      return sintomas.join(', ');
+    }
+
+    function capturarDefeitos() {
+      const defeitos = []; // { item, extra }
+      const itensAdicionados = [];
+
+      document.querySelectorAll('.save').forEach(el => {
+        const valor = ehCampoDeValor(el) ? el.value : el.innerText;
+        if (!valor) return;
+
+        const linha = el.closest('tr');
+        const item = nomeDoItem(linha);
+        if (!item || itensAdicionados.includes(item)) return;
+
+        if (ehValorDeDefeito(valor)) {
+          itensAdicionados.push(item);
+          defeitos.push({ item, extra: obterInfoExtra(item, linha) });
+        } else if (item === 'PREVENTIVA' && valor === 'Necessário' && el.tagName === 'SELECT') {
+          // Preventiva: quando "Necessário" é selecionado, aparece na área de problemas
+          itensAdicionados.push(item);
+          defeitos.push({ item, extra: 'Limpeza preventiva necessária' });
+        }
+      });
+
+      // Remove OBS de itens que não são mais defeito
+      Object.keys(defeitosObs).forEach(item => {
+        if (!itensAdicionados.includes(item)) delete defeitosObs[item];
+      });
+      salvarObs();
+
+      renderizarDefeitos(defeitos);
+    }
+
+    function renderizarDefeitos(defeitos) {
+      const campo = document.getElementById('DEFEITOENCONTRADOField');
+      if (!campo) return;
+
+      // Sem espaços entre as tags: o campo usa white-space: pre-wrap
+      campo.innerHTML = defeitos.map(d =>
+        '<div class="defeito-card">' +
+        `<div class="defeito-texto">Problema encontrado: <strong>${escaparHtml(d.item)}</strong></div>` +
+        (d.extra ? `<div class="defeito-extra">${escaparHtml(d.extra)}</div>` : '') +
+        '<div class="defeito-obs-row">' +
         '<strong>OBS:</strong>' +
         `<div class="defeito-obs-input" contenteditable="true" data-rich="true" data-placeholder="Adicionar observação..." data-item="${escaparHtml(d.item)}" oninput="atualizarObs(this)">${defeitosObs[d.item] || ''}</div>` +
-      '</div>' +
-    '</div>'
-  ).join('');
-}
-
-function atualizarObs(textarea) {
-  defeitosObs[textarea.getAttribute('data-item')] = textarea.innerText.trim() === '' ? '' : textarea.innerHTML;
-  salvarObs();
-}
-
-// Pinta cada select da tabela conforme o resultado: ok, defeito ou ainda não preenchido
-function atualizarCoresSelects() {
-  document.querySelectorAll('.table-responsive tbody select').forEach(sel => {
-    const v = sel.value.toLowerCase();
-    if (selectVazio(sel)) {
-      sel.dataset.status = 'vazio';
-    } else if (valoresOk.includes(v)) {
-      sel.dataset.status = 'ok';
-    } else if (ehValorDeDefeito(v)) {
-      sel.dataset.status = 'defeito';
-    } else {
-      delete sel.dataset.status;
+        '</div>' +
+        '</div>'
+      ).join('');
     }
-  });
-}
 
-// Campos referenciados pelos links do aviso de pendências
-let camposPendentes = [];
-
-function irParaPendencia(campo) {
-  campo.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  campo.focus({ preventScroll: true });
-  campo.classList.remove('destaque');
-  void campo.offsetWidth; // reinicia a animação se clicar de novo
-  campo.classList.add('destaque');
-  setTimeout(() => campo.classList.remove('destaque'), 1600);
-}
-
-// Avisa quando uma coluna foi começada mas ficou com itens sem selecionar
-function verificarPendencias() {
-  const pendentes = { 1: [], 2: [] };
-  const comecada = { 1: false, 2: false };
-
-  document.querySelectorAll('tbody tr').forEach(tr => {
-    const tds = tr.querySelectorAll('td');
-    // Linhas de item têm uma célula por coluna; seções e campos largos têm menos
-    if (!linhaVisivel(tr) || tds.length !== COLUNAS.length + 1) return;
-
-    COLUNAS.forEach(col => {
-      const selects = Array.from(tds[col].querySelectorAll('select'));
-      if (selects.some(sel => !selectVazio(sel))) comecada[col] = true;
-      const primeiroVazio = selects.find(selectVazio);
-      if (primeiroVazio) pendentes[col].push({ item: nomeDoItem(tr), campo: primeiroVazio });
-    });
-  });
-
-  // Cada item pendente vira um link que leva até o campo que falta
-  camposPendentes = [];
-  const link = ({ item, campo }) => {
-    camposPendentes.push(campo);
-    return `<button type="button" class="pendencia-link" data-pendencia="${camposPendentes.length - 1}">${escaparHtml(item)}</button>`;
-  };
-
-  const msgs = COLUNAS
-    .filter(col => comecada[col] && pendentes[col].length > 0)
-    .map(col => `<strong><i class="fa-solid fa-triangle-exclamation"></i> Coluna ${NOMES_COLUNAS[col]} incompleta:</strong> Faltou selecionar em: ${pendentes[col].map(link).join(', ')}`);
-
-  const incompleto = msgs.length > 0;
-  const avisoDiv = document.getElementById('avisosPendencia');
-  avisoDiv.innerHTML = msgs.join('<br><br>');
-  avisoDiv.hidden = !incompleto;
-  document.getElementById('appBarAviso').hidden = !incompleto;
-  document.getElementById('fab').classList.toggle('com-aviso', incompleto);
-}
-
-
-// =====================================================================
-// MODO (PC / Notebook / TV) E TEMA
-// =====================================================================
-
-function mudarModo(modo) {
-  document.querySelectorAll('.app-bar button').forEach(btn => btn.classList.remove('active'));
-  document.getElementById('btn-' + modo)?.classList.add('active');
-
-  document.querySelectorAll('tbody tr[data-device]').forEach(tr => {
-    tr.style.display = tr.getAttribute('data-device').split(',').includes(modo) ? '' : 'none';
-  });
-
-  localStorage.setItem('modo_equipamento', modo);
-}
-
-function toggleDarkMode() {
-  const escuro = document.getElementById('themeSwitch').checked;
-  document.body.classList.toggle('dark-mode', escuro);
-  localStorage.setItem('tema_escuro', String(escuro));
-}
-
-function aplicarTemaSalvo() {
-  const escuro = localStorage.getItem('tema_escuro') === 'true';
-  document.body.classList.toggle('dark-mode', escuro);
-  document.getElementById('themeSwitch').checked = escuro;
-}
-
-
-// =====================================================================
-// PREENCHIMENTO RÁPIDO (Funcionando / Com defeito / Vazio)
-// =====================================================================
-
-// Colunas escolhidas em "Preencher": Todos (0), Técnico (1) ou Testes (2)
-function colunasEscolhidas() {
-  const escolha = parseInt(document.getElementById('colunaSelect').value, 10);
-  return escolha === 0 ? COLUNAS : [escolha];
-}
-
-function celulasDaColuna(col) {
-  return Array.from(document.querySelectorAll('tbody tr'))
-    .filter(linhaVisivel)
-    .map(tr => tr.querySelectorAll('td')[col])
-    .filter(Boolean);
-}
-
-function preencherColunaApp(valorProcurado) {
-  const colunas = colunasEscolhidas();
-  const selectsAfetados = colunas.flatMap(col =>
-    celulasDaColuna(col).flatMap(td => Array.from(td.querySelectorAll('select'))));
-
-  // Itens que deixariam de ser defeito e têm observação escrita
-  const itensEmRisco = ehValorDeDefeito(valorProcurado) ? [] : [...new Set(
-    selectsAfetados
-      .filter(sel => ehValorDeDefeito(sel.value))
-      .map(sel => nomeDoItem(sel.closest('tr')))
-      .filter(temObs)
-  )];
-
-  if (itensEmRisco.length === 0) {
-    executarPreenchimento(colunas, valorProcurado);
-    return;
-  }
-
-  abrirModal(
-    'Os seguintes itens têm observações que serão apagadas: ' + itensEmRisco.join(', ') + '. Deseja continuar?',
-    (confirmou) => {
-      if (!confirmou) return;
-      itensEmRisco.forEach(item => delete defeitosObs[item]);
+    function atualizarObs(textarea) {
+      defeitosObs[textarea.getAttribute('data-item')] = textarea.innerText.trim() === '' ? '' : textarea.innerHTML;
       salvarObs();
-      executarPreenchimento(colunas, valorProcurado);
     }
-  );
-}
 
-function executarPreenchimento(colunas, valorProcurado) {
-  const limpar = valorProcurado === VALOR_VAZIO;
-
-  // Vazio em "Todos" também limpa os campos largos, que pertencem às duas colunas (Backup, Parecer)
-  if (limpar && colunas.length > 1) {
-    document.querySelectorAll('tbody td[colspan] textarea').forEach(campo => {
-      campo.value = '';
-    });
-    document.getElementById('PARECERTECNICOField').innerHTML = '';
-  }
-
-  colunas.forEach(col => {
-    celulasDaColuna(col).forEach(td => {
-      if (limpar) {
-        limparCelula(td);
-      } else {
-        preencherCelula(td, valorProcurado);
-      }
-    });
-  });
-
-  atualizarResumo();
-  salvar();
-}
-
-function preencherCelula(td, valor) {
-  td.querySelectorAll('select').forEach(select => {
-    const existe = Array.from(select.options).some(opt => opt.value === valor || opt.text === valor);
-    if (existe) select.value = valor;
-  });
-}
-
-// Volta os selects para a primeira opção e limpa os textos da célula (ex.: Saúde %).
-// Células largas (Backup, Sintoma Visual...) só têm os selects resetados.
-function limparCelula(td) {
-  td.querySelectorAll('select').forEach(select => {
-    select.selectedIndex = 0;
-  });
-  if (!td.hasAttribute('colspan')) {
-    td.querySelectorAll('input[type="checkbox"]').forEach(campo => { campo.checked = false; });
-    td.querySelectorAll('input[type="text"], textarea').forEach(campo => {
-      campo.value = '';
-    });
-  }
-}
-
-
-// =====================================================================
-// AÇÕES: novo laudo, imprimir, exportar, importar
-// =====================================================================
-
-function novoLaudo() {
-  abrirModal('Iniciar um novo laudo? Todos os dados preenchidos na tela serão apagados.', (confirmou) => {
-    if (confirmou) {
-      localStorage.removeItem('laudo');
-      localStorage.removeItem('defeitosObs');
-      location.reload();
-    }
-  });
-}
-
-function validarObrigatorios() {
-  const falta = [];
-  if (!document.getElementById('clienteField').value.trim()) falta.push('CLIENTE');
-  if (!document.getElementById('equipamentoField').value.trim()) falta.push('EQUIPAMENTO');
-  if (!document.getElementById('osField').value.trim()) falta.push('OS');
-  if (!document.getElementById('dataField').value.trim()) falta.push('DATA');
-
-  const temTecnico = Array.from(document.querySelectorAll('.input-tecnico')).some(inp => inp.value.trim());
-  if (!temTecnico) falta.push('TÉCNICO (pelo menos um nome)');
-
-  if (falta.length > 0) {
-    abrirModal('Os seguintes campos são obrigatórios: ' + falta.join(', '));
-    return false;
-  }
-  if (!conferirData()) {
-    abrirModal('A data do laudo não existe. Confira o dia e o mês (formato dd/mm/aaaa).');
-    return false;
-  }
-  return true;
-}
-
-// Marca o que não deve sair no papel (selects vazios, OBS e nomes em branco)
-function prepararImpressao() {
-  document.querySelectorAll('select:not(#colunaSelect)').forEach(sel => {
-    sel.toggleAttribute('data-print-hide-text', selectVazio(sel));
-  });
-
-  document.querySelectorAll('.defeito-obs-input').forEach(inp => {
-    inp.closest('.defeito-obs-row').toggleAttribute('data-print-hide', inp.innerText.trim() === '');
-  });
-
-  document.querySelectorAll('.input-tecnico').forEach(inp => {
-    inp.toggleAttribute('data-print-hide', inp.value.trim() === '');
-  });
-}
-
-function imprimir() {
-  if (!validarObrigatorios()) return;
-  prepararImpressao();
-
-  const os = nomeDeArquivoSeguro(document.getElementById('osField').value, 'SemOS');
-  const cliente = nomeDeArquivoSeguro(document.getElementById('clienteField').value, 'SemCliente');
-
-  // O título vira o nome sugerido do PDF
-  const tituloOriginal = document.title;
-  document.title = os + ' Diagnóstico Técnico ' + cliente;
-  window.print();
-  setTimeout(() => {
-    document.title = tituloOriginal;
-  }, 1000);
-}
-
-// Compartilha o laudo pela tela de compartilhar do sistema. Só em telas de toque
-// e em https; devolve false quando não dá, para o Exportar baixar o arquivo.
-async function compartilharArquivo(conteudo, nomeArquivo) {
-  if (!navigator.canShare || !window.matchMedia('(pointer: coarse)').matches) return false;
-
-  // Chrome/Brave no Android não compartilham .json: manda o mesmo conteúdo como .txt
-  const candidatos = [
-    new File([conteudo], nomeArquivo, { type: 'application/json' }),
-    new File([conteudo], nomeArquivo.replace(/\.json$/, '.txt'), { type: 'text/plain' }),
-  ];
-  const arquivo = candidatos.find(f => navigator.canShare({ files: [f] }));
-  if (!arquivo) return false;
-
-  try {
-    await navigator.share({ files: [arquivo], title: nomeArquivo });
-  } catch (err) {
-    // Cancelar a tela de compartilhar não é erro; outras falhas caem no download
-    if (err.name !== 'AbortError') return false;
-  }
-  return true;
-}
-
-async function exportarJSON() {
-  const dadosJSON = coletarDados();
-  dadosJSON.defeitosObs = defeitosObs;
-  dadosJSON._modo = localStorage.getItem('modo_equipamento') || 'notebook';
-
-  const os = nomeDeArquivoSeguro(document.getElementById('osField').value, 'OS');
-  const cliente = nomeDeArquivoSeguro(document.getElementById('clienteField').value, 'Cliente');
-  const nomeArquivo = `${os} - Diagnostico - ${cliente}.json`;
-  const conteudoJSON = JSON.stringify(dadosJSON, null, 2);
-
-  try {
-    // No celular, abre a tela de compartilhar (Drive, Arquivos, WhatsApp, e-mail...)
-    if (await compartilharArquivo(conteudoJSON, nomeArquivo)) return;
-
-    // Tenta usar a API moderna do navegador para abrir a janela "Salvar Como"
-    if (window.showSaveFilePicker) {
-      const handle = await window.showSaveFilePicker({
-        suggestedName: nomeArquivo,
-        types: [{
-          description: 'Arquivo JSON',
-          accept: { 'application/json': ['.json'] },
-        }],
+    // Pinta cada select da tabela conforme o resultado: ok, defeito ou ainda não preenchido
+    function atualizarCoresSelects() {
+      document.querySelectorAll('.table-responsive tbody select').forEach(sel => {
+        const v = sel.value.toLowerCase();
+        if (selectVazio(sel)) {
+          sel.dataset.status = 'vazio';
+        } else if (valoresOk.includes(v)) {
+          sel.dataset.status = 'ok';
+        } else if (ehValorDeDefeito(v)) {
+          sel.dataset.status = 'defeito';
+        } else {
+          delete sel.dataset.status;
+        }
       });
-      const writable = await handle.createWritable();
-      await writable.write(conteudoJSON);
-      await writable.close();
-    } else {
-      // Fallback para navegadores sem a API (ex.: Firefox ou arquivo local sem HTTPS)
-      const link = document.createElement('a');
-      link.href = 'data:text/json;charset=utf-8,' + encodeURIComponent(conteudoJSON);
-      link.download = nomeArquivo;
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
     }
-  } catch (err) {
-    // Ignora o erro se o usuário apenas clicou em "Cancelar" na janela
-    if (err.name !== 'AbortError') {
-      console.error('Erro ao salvar:', err);
-      alert('Não foi possível salvar o arquivo.');
+
+    // Campos referenciados pelos links do aviso de pendências
+    let camposPendentes = [];
+
+    function irParaPendencia(campo) {
+      campo.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      campo.focus({ preventScroll: true });
+      campo.classList.remove('destaque');
+      void campo.offsetWidth; // reinicia a animação se clicar de novo
+      campo.classList.add('destaque');
+      setTimeout(() => campo.classList.remove('destaque'), 1600);
     }
-  }
-}
 
-function importarJSON(event) {
-  const file = event.target.files[0];
-  if (!file) return;
+    // Avisa quando uma coluna foi começada mas ficou com itens sem selecionar
+    function verificarPendencias() {
+      const pendentes = { 1: [], 2: [] };
+      const comecada = { 1: false, 2: false };
 
-  const reader = new FileReader();
-  reader.onload = function (e) {
-    try {
-      const dadosJSON = JSON.parse(e.target.result);
+      document.querySelectorAll('tbody tr').forEach(tr => {
+        const tds = tr.querySelectorAll('td');
+        // Linhas de item têm uma célula por coluna; seções e campos largos têm menos
+        if (!linhaVisivel(tr) || tds.length !== COLUNAS.length + 1) return;
 
-      if (dadosJSON.defeitosObs) {
-        defeitosObs = dadosJSON.defeitosObs;
-        salvarObs();
+        COLUNAS.forEach(col => {
+          const selects = Array.from(tds[col].querySelectorAll('select'));
+          if (selects.some(sel => !selectVazio(sel))) comecada[col] = true;
+          const primeiroVazio = selects.find(selectVazio);
+          if (primeiroVazio) pendentes[col].push({ item: nomeDoItem(tr), campo: primeiroVazio });
+        });
+      });
+
+      // Cada item pendente vira um link que leva até o campo que falta
+      camposPendentes = [];
+      const link = ({ item, campo }) => {
+        camposPendentes.push(campo);
+        return `<button type="button" class="pendencia-link" data-pendencia="${camposPendentes.length - 1}">${escaparHtml(item)}</button>`;
+      };
+
+      const msgs = COLUNAS
+        .filter(col => comecada[col] && pendentes[col].length > 0)
+        .map(col => `<strong><i class="fa-solid fa-triangle-exclamation"></i> Coluna ${NOMES_COLUNAS[col]} incompleta:</strong> Faltou selecionar em: ${pendentes[col].map(link).join(', ')}`);
+
+      const incompleto = msgs.length > 0;
+      const avisoDiv = document.getElementById('avisosPendencia');
+      avisoDiv.innerHTML = msgs.join('<br><br>');
+      avisoDiv.hidden = !incompleto;
+      document.getElementById('appBarAviso').hidden = !incompleto;
+      document.getElementById('fab').classList.toggle('com-aviso', incompleto);
+    }
+
+
+    // =====================================================================
+    // MODO (PC / Notebook / TV) E TEMA
+    // =====================================================================
+
+    function mudarModo(modo) {
+      document.querySelectorAll('.app-bar button').forEach(btn => btn.classList.remove('active'));
+      document.getElementById('btn-' + modo)?.classList.add('active');
+
+      document.querySelectorAll('tbody tr[data-device]').forEach(tr => {
+        tr.style.display = tr.getAttribute('data-device').split(',').includes(modo) ? '' : 'none';
+      });
+
+      localStorage.setItem('modo_equipamento', modo);
+    }
+
+    function toggleDarkMode() {
+      const escuro = document.getElementById('themeSwitch').checked;
+      document.body.classList.toggle('dark-mode', escuro);
+      localStorage.setItem('tema_escuro', String(escuro));
+    }
+
+    function aplicarTemaSalvo() {
+      const escuro = localStorage.getItem('tema_escuro') === 'true';
+      document.body.classList.toggle('dark-mode', escuro);
+      document.getElementById('themeSwitch').checked = escuro;
+    }
+
+
+    // =====================================================================
+    // PREENCHIMENTO RÁPIDO (Funcionando / Com defeito / Vazio)
+    // =====================================================================
+
+    // Colunas escolhidas em "Preencher": Todos (0), Técnico (1) ou Testes (2)
+    function colunasEscolhidas() {
+      const escolha = parseInt(document.getElementById('colunaSelect').value, 10);
+      return escolha === 0 ? COLUNAS : [escolha];
+    }
+
+    function celulasDaColuna(col) {
+      return Array.from(document.querySelectorAll('tbody tr'))
+        .filter(linhaVisivel)
+        .map(tr => tr.querySelectorAll('td')[col])
+        .filter(Boolean);
+    }
+
+    function preencherColunaApp(valorProcurado) {
+      const colunas = colunasEscolhidas();
+      const selectsAfetados = colunas.flatMap(col =>
+        celulasDaColuna(col).flatMap(td => Array.from(td.querySelectorAll('select'))));
+
+      // Itens que deixariam de ser defeito e têm observação escrita
+      const itensEmRisco = ehValorDeDefeito(valorProcurado) ? [] : [...new Set(
+        selectsAfetados
+          .filter(sel => ehValorDeDefeito(sel.value))
+          .map(sel => nomeDoItem(sel.closest('tr')))
+          .filter(temObs)
+      )];
+
+      if (itensEmRisco.length === 0) {
+        executarPreenchimento(colunas, valorProcurado);
+        return;
       }
 
-      // _modo vem do Exportar ou do diagnostico.ps1
-      if (['pc', 'notebook', 'tv'].includes(dadosJSON._modo)) {
-        mudarModo(dadosJSON._modo);
+      abrirModal(
+        'Os seguintes itens têm observações que serão apagadas: ' + itensEmRisco.join(', ') + '. Deseja continuar?',
+        (confirmou) => {
+          if (!confirmou) return;
+          itensEmRisco.forEach(item => delete defeitosObs[item]);
+          salvarObs();
+          executarPreenchimento(colunas, valorProcurado);
+        }
+      );
+    }
+
+    function executarPreenchimento(colunas, valorProcurado) {
+      const limpar = valorProcurado === VALOR_VAZIO;
+
+      // Vazio em "Todos" também limpa os campos largos, que pertencem às duas colunas (Backup, Parecer)
+      if (limpar && colunas.length > 1) {
+        document.querySelectorAll('tbody td[colspan] textarea').forEach(campo => {
+          campo.value = '';
+        });
+        document.getElementById('PARECERTECNICOField').innerHTML = '';
       }
 
-      if (dadosJSON.campo_data === undefined) document.getElementById('dataField').value = '';
-      aplicarDados(dadosJSON);
-      preencherDataSeVazia();
+      colunas.forEach(col => {
+        celulasDaColuna(col).forEach(td => {
+          if (limpar) {
+            limparCelula(td);
+          } else {
+            preencherCelula(td, valorProcurado);
+          }
+        });
+      });
+
       atualizarResumo();
       salvar();
-      alert('Dados carregados com sucesso!');
-    } catch (error) {
-      alert('Erro ao ler o arquivo JSON. O arquivo pode estar corrompido.');
-      console.error(error);
     }
 
-    // Permite importar o mesmo arquivo de novo
-    event.target.value = '';
-  };
-  reader.readAsText(file);
-}
-
-
-// =====================================================================
-// MODAL
-// =====================================================================
-
-let _modalCallback = null;
-
-function abrirModal(msg, callback) {
-  document.getElementById('modalMsg').textContent = msg;
-  document.getElementById('modalAviso').classList.add('show');
-  _modalCallback = callback;
-}
-
-function fecharModal(confirmou) {
-  document.getElementById('modalAviso').classList.remove('show');
-  if (_modalCallback) _modalCallback(confirmou);
-  _modalCallback = null;
-}
-
-
-// =====================================================================
-// MENU FLUTUANTE
-// =====================================================================
-
-function alternarFab(abrir) {
-  const fab = document.getElementById('fab');
-  const aberto = typeof abrir === 'boolean' ? abrir : !fab.classList.contains('aberto');
-  fab.classList.toggle('aberto', aberto);
-  document.getElementById('fabBotao').setAttribute('aria-expanded', aberto);
-}
-
-// Ações que não são de preenchimento fecham o menu antes de rodar
-function fabAcao(acao) {
-  alternarFab(false);
-  acao();
-}
-
-// O menu e a app bar compartilham o mesmo #colunaSelect
-function escolherColunaFab(col) {
-  document.getElementById('colunaSelect').value = col;
-  sincronizarColunaFab();
-}
-
-function sincronizarColunaFab() {
-  const col = document.getElementById('colunaSelect').value;
-  document.querySelectorAll('.fab-colunas button').forEach(btn => {
-    btn.classList.toggle('active', btn.dataset.col === col);
-  });
-}
-
-function configurarFab() {
-  document.addEventListener('click', e => {
-    const fab = document.getElementById('fab');
-    if (fab.classList.contains('aberto') && !fab.contains(e.target)) alternarFab(false);
-  });
-
-  document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') alternarFab(false);
-  });
-}
-
-
-// =====================================================================
-// NAVEGAÇÃO POR TECLADO (Tab, Alt/Ctrl + setas)
-// =====================================================================
-
-function camposFocaveis(celula) {
-  return Array.from(celula.querySelectorAll('input:not([type="hidden"]), select, textarea'));
-}
-
-function configurarNavegacaoTeclado() {
-  document.addEventListener('keydown', function (e) {
-    const isTab = e.key === 'Tab';
-    const isSeta = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key);
-
-    // Exigir Tab ou (Alt/Ctrl + Seta)
-    if (!isTab && !(isSeta && (e.altKey || e.ctrlKey))) return;
-
-    const atual = document.activeElement;
-    // Só navegar se estiver focando em algum campo do laudo
-    if (!atual || (!atual.classList.contains('save') && !atual.classList.contains('input-tecnico'))) return;
-
-    const td = atual.closest('td');
-    const tr = td ? td.closest('tr') : null;
-    if (!td || !tr) return;
-
-    const irmaos = camposFocaveis(td);
-    const indexNestaCelula = irmaos.indexOf(atual);
-    const colIndex = td.cellIndex;
-    let alvo = null;
-
-    function pegarFocavel(linha, pegarUltimo) {
-      const celula = linha?.cells[colIndex];
-      if (!celula) return null;
-      const itens = camposFocaveis(celula);
-      if (itens.length === 0) return null;
-      return pegarUltimo ? itens[itens.length - 1] : itens[0];
+    function preencherCelula(td, valor) {
+      td.querySelectorAll('select').forEach(select => {
+        const existe = Array.from(select.options).some(opt => opt.value === valor || opt.text === valor);
+        if (existe) select.value = valor;
+      });
     }
 
-    // Ignora linhas invisíveis ou de cabeçalho
-    function proximaLinha(linha, direcao) {
-      let atualLinha = linha[direcao];
-      while (atualLinha && (atualLinha.style.display === 'none' || atualLinha.querySelector('th'))) {
-        atualLinha = atualLinha[direcao];
-      }
-      return atualLinha;
-    }
-
-    function campoNaCelulaVizinha(direcao) {
-      let vizinha = td[direcao];
-      while (vizinha) {
-        const itens = camposFocaveis(vizinha);
-        if (itens.length > 0) return itens[Math.min(Math.max(indexNestaCelula, 0), itens.length - 1)];
-        vizinha = vizinha[direcao];
-      }
-      return null;
-    }
-
-    // Tab normal se comporta igual ArrowDown. Shift+Tab igual ArrowUp
-    const indoParaBaixo = (e.key === 'ArrowDown') || (isTab && !e.shiftKey);
-    const indoParaCima = (e.key === 'ArrowUp') || (isTab && e.shiftKey);
-
-    if (indoParaBaixo) {
-      // Desce pro próximo item na MESMA célula (ex: combos do SSD) ou pra próxima linha
-      alvo = (indexNestaCelula >= 0 && indexNestaCelula < irmaos.length - 1)
-        ? irmaos[indexNestaCelula + 1]
-        : pegarFocavel(proximaLinha(tr, 'nextElementSibling'), false);
-    } else if (indoParaCima) {
-      alvo = indexNestaCelula > 0
-        ? irmaos[indexNestaCelula - 1]
-        : pegarFocavel(proximaLinha(tr, 'previousElementSibling'), true);
-    } else if (e.key === 'ArrowRight') {
-      alvo = campoNaCelulaVizinha('nextElementSibling');
-    } else if (e.key === 'ArrowLeft') {
-      alvo = campoNaCelulaVizinha('previousElementSibling');
-    }
-
-    // Se achou um alvo, foca nele e previne o comportamento padrão do navegador
-    if (alvo) {
-      e.preventDefault();
-      alvo.focus();
-      if (alvo.tagName === 'INPUT' && typeof alvo.select === 'function') {
-        alvo.select();
+    // Volta os selects para a primeira opção e limpa os textos da célula (ex.: Saúde %).
+    // Células largas (Backup, Sintoma Visual...) só têm os selects resetados.
+    function limparCelula(td) {
+      td.querySelectorAll('select').forEach(select => {
+        select.selectedIndex = 0;
+      });
+      if (!td.hasAttribute('colspan')) {
+        td.querySelectorAll('input[type="checkbox"]').forEach(campo => { campo.checked = false; });
+        td.querySelectorAll('input[type="text"], textarea').forEach(campo => {
+          campo.value = '';
+        });
       }
     }
-  });
-}
 
 
-// =====================================================================
-// INICIALIZAÇÃO
-// =====================================================================
+    // =====================================================================
+    // AÇÕES: novo laudo, imprimir, exportar, importar
+    // =====================================================================
 
-window.addEventListener('load', () => {
-  injetarOpcoes(document);
-  // A máscara roda antes do salvamento automático do campo
-  const campoData = document.getElementById('dataField');
-  campoData.addEventListener('input', () => {
-    mascararData(campoData);
-    // Enquanto digita, só some com o aviso; ele volta ao sair do campo se continuar errado
-    if (dataValida(campoData.value)) conferirData();
-  });
-  campoData.addEventListener('blur', conferirData);
-  document.querySelectorAll('.save').forEach(prepararCampo);
-  configurarNavegacaoTeclado();
-  configurarFab();
-  sincronizarColunaFab();
-
-  mudarModo(localStorage.getItem('modo_equipamento') || 'notebook');
-  aplicarTemaSalvo();
-
-  const dados = JSON.parse(localStorage.getItem('laudo'));
-  if (dados) aplicarDados(dados);
-  preencherDataSeVazia();
-
-  document.getElementById('avisosPendencia').addEventListener('click', e => {
-    const link = e.target.closest('.pendencia-link');
-    if (link) irParaPendencia(camposPendentes[link.dataset.pendencia]);
-  });
-
-  atualizarResumo();
-});
-
-// ====== BARRA DE FORMATAÇÃO (Parecer Técnico e OBS dos defeitos) ======
-(function () {
-  const SELETOR = '#PARECERTECNICOField, .defeito-obs-input';
-  const paleta = [
-    '#000000', '#555555', '#999999', '#ffffff',
-    '#d32f2f', '#e91e63', '#f57c00', '#fbc02d',
-    '#388e3c', '#00897b', '#1976d2', '#3949ab',
-    '#7b1fa2', '#6d4c41', '#00acc1', '#8bc34a'
-  ];
-  const btn = (cmd, val, html, titulo, extra) =>
-    `<button type="button" data-cmd="${cmd}" data-val="${val || ''}" title="${titulo}" ${extra || ''}>${html}</button>`;
-
-  const barra = document.createElement('div');
-  barra.id = 'barraFormatacao';
-  barra.innerHTML =
-    btn('formatBlock', 'H1', 'T1', 'Título 1') +
-    btn('formatBlock', 'H2', 'T2', 'Título 2') +
-    btn('formatBlock', 'H3', 'T3', 'Título 3') +
-    btn('formatBlock', 'DIV', 'T', 'Texto normal') +
-    '<hr>' +
-    btn('justifyLeft', '', '<i class="fas fa-align-left"></i>', 'Esquerda') +
-    btn('justifyCenter', '', '<i class="fas fa-align-center"></i>', 'Centro') +
-    btn('justifyRight', '', '<i class="fas fa-align-right"></i>', 'Direita') +
-    btn('justifyFull', '', '<i class="fas fa-align-justify"></i>', 'Justificar') +
-    '<hr>' +
-    btn('bold', '', '<b>N</b>', 'Negrito') +
-    btn('italic', '', '<i>I</i>', 'Itálico') +
-    '<hr>' +
-    '<button type="button" id="btnCor" title="Cor do texto"><span class="cor-atual"></span></button>' +
-    '<div id="paletaCores">' +
-      '<div class="grade">' + paleta.map(c => btn('foreColor', c, '', c, `style="background:${c}"`)).join('') + '</div>' +
-      '<label class="personalizada">Personalizada<input type="color" id="corLivre" value="#000000"></label>' +
-      btn('removeFormat', '', 'Limpar formatação', 'Limpar formatação', 'class="limpar"') +
-    '</div>';
-  document.body.appendChild(barra);
-
-  const paletaEl = barra.querySelector('#paletaCores');
-  const corAtual = barra.querySelector('.cor-atual');
-  const corLivre = barra.querySelector('#corLivre');
-  corAtual.style.background = '#000000';
-
-  // Guarda a seleção para restaurar ao usar o seletor de cor nativo
-  let faixa = null;
-  document.addEventListener('selectionchange', () => {
-    const s = window.getSelection();
-    if (s.rangeCount && s.anchorNode) {
-      const el = s.anchorNode.nodeType === 1 ? s.anchorNode : s.anchorNode.parentElement;
-      if (el && el.closest(SELETOR)) faixa = s.getRangeAt(0).cloneRange();
+    function novoLaudo() {
+      abrirModal('Iniciar um novo laudo? Todos os dados preenchidos na tela serão apagados.', (confirmou) => {
+        if (confirmou) {
+          localStorage.removeItem('laudo');
+          localStorage.removeItem('defeitosObs');
+          location.reload();
+        }
+      });
     }
-  });
 
-  function aplicar(cmd, val) {
-    if (faixa) {
-      const alvo = faixa.startContainer.nodeType === 1 ? faixa.startContainer : faixa.startContainer.parentElement;
-      const campo = alvo && alvo.closest(SELETOR);
-      if (campo && document.activeElement !== campo) campo.focus();
-      const s = window.getSelection();
-      s.removeAllRanges();
-      s.addRange(faixa);
+    function validarObrigatorios() {
+      const falta = [];
+      if (!document.getElementById('clienteField').value.trim()) falta.push('CLIENTE');
+      if (!document.getElementById('equipamentoField').value.trim()) falta.push('EQUIPAMENTO');
+      if (!document.getElementById('osField').value.trim()) falta.push('OS');
+      if (!document.getElementById('dataField').value.trim()) falta.push('DATA');
+
+      const temTecnico = Array.from(document.querySelectorAll('.input-tecnico')).some(inp => inp.value.trim());
+      if (!temTecnico) falta.push('TÉCNICO (pelo menos um nome)');
+
+      if (falta.length > 0) {
+        abrirModal('Os seguintes campos são obrigatórios: ' + falta.join(', '));
+        return false;
+      }
+      if (!conferirData()) {
+        abrirModal('A data do laudo não existe. Confira o dia e o mês (formato dd/mm/aaaa).');
+        return false;
+      }
+      return true;
     }
-    document.execCommand('styleWithCSS', false, false);
-    document.execCommand(cmd, false, val || null);
-  }
 
-  // Botões não tiram o foco do campo (exceto o seletor de cor nativo)
-  barra.addEventListener('mousedown', e => {
-    if (!e.target.closest('input')) e.preventDefault();
-  });
-  barra.addEventListener('click', e => {
-    const b = e.target.closest('button');
-    if (!b) return;
-    if (b.id === 'btnCor') { paletaEl.classList.toggle('aberta'); return; }
-    aplicar(b.dataset.cmd, b.dataset.val);
-    if (b.dataset.cmd === 'foreColor') {
-      corAtual.style.background = b.dataset.val;
-      corLivre.value = b.dataset.val;
-      paletaEl.classList.remove('aberta');
+    // Marca o que não deve sair no papel (selects vazios, OBS e nomes em branco)
+    function prepararImpressao() {
+      document.querySelectorAll('select:not(#colunaSelect)').forEach(sel => {
+        sel.toggleAttribute('data-print-hide-text', selectVazio(sel));
+      });
+
+      document.querySelectorAll('.defeito-obs-input').forEach(inp => {
+        inp.closest('.defeito-obs-row').toggleAttribute('data-print-hide', inp.innerText.trim() === '');
+      });
+
+      document.querySelectorAll('.input-tecnico').forEach(inp => {
+        inp.toggleAttribute('data-print-hide', inp.value.trim() === '');
+      });
     }
-  });
-  corLivre.addEventListener('input', () => {
-    aplicar('foreColor', corLivre.value);
-    corAtual.style.background = corLivre.value;
-  });
 
-  let timer;
-  function atualizar() {
-    clearTimeout(timer);
-    timer = setTimeout(() => {
-      const a = document.activeElement;
-      const ativo = a && (a.matches(SELETOR) || barra.contains(a));
-      barra.classList.toggle('visivel', Boolean(ativo));
-      if (!ativo) paletaEl.classList.remove('aberta');
-    }, 120);
-  }
-  document.addEventListener('focusin', atualizar);
-  document.addEventListener('focusout', atualizar);
-})();
+    function imprimir() {
+      if (!validarObrigatorios()) return;
+      prepararImpressao();
+
+      const os = nomeDeArquivoSeguro(document.getElementById('osField').value, 'SemOS');
+      const cliente = nomeDeArquivoSeguro(document.getElementById('clienteField').value, 'SemCliente');
+
+      // O título vira o nome sugerido do PDF
+      const tituloOriginal = document.title;
+      document.title = os + ' Diagnóstico Técnico ' + cliente;
+      window.print();
+      setTimeout(() => {
+        document.title = tituloOriginal;
+      }, 1000);
+    }
+
+    // Compartilha o laudo pela tela de compartilhar do sistema. Só em telas de toque
+    // e em https; devolve false quando não dá, para o Exportar baixar o arquivo.
+    async function compartilharArquivo(conteudo, nomeArquivo) {
+      if (!navigator.canShare || !window.matchMedia('(pointer: coarse)').matches) return false;
+
+      // Chrome/Brave no Android não compartilham .json: manda o mesmo conteúdo como .txt
+      const candidatos = [
+        new File([conteudo], nomeArquivo, { type: 'application/json' }),
+        new File([conteudo], nomeArquivo.replace(/\.json$/, '.txt'), { type: 'text/plain' }),
+      ];
+      const arquivo = candidatos.find(f => navigator.canShare({ files: [f] }));
+      if (!arquivo) return false;
+
+      try {
+        await navigator.share({ files: [arquivo], title: nomeArquivo });
+      } catch (err) {
+        // Cancelar a tela de compartilhar não é erro; outras falhas caem no download
+        if (err.name !== 'AbortError') return false;
+      }
+      return true;
+    }
+
+    async function exportarJSON() {
+      const dadosJSON = coletarDados();
+      dadosJSON.defeitosObs = defeitosObs;
+      dadosJSON._modo = localStorage.getItem('modo_equipamento') || 'notebook';
+
+      const os = nomeDeArquivoSeguro(document.getElementById('osField').value, 'OS');
+      const cliente = nomeDeArquivoSeguro(document.getElementById('clienteField').value, 'Cliente');
+      const nomeArquivo = `${os} - Diagnostico - ${cliente}.json`;
+      const conteudoJSON = JSON.stringify(dadosJSON, null, 2);
+
+      try {
+        // No celular, abre a tela de compartilhar (Drive, Arquivos, WhatsApp, e-mail...)
+        if (await compartilharArquivo(conteudoJSON, nomeArquivo)) return;
+
+        // Tenta usar a API moderna do navegador para abrir a janela "Salvar Como"
+        if (window.showSaveFilePicker) {
+          const handle = await window.showSaveFilePicker({
+            suggestedName: nomeArquivo,
+            types: [{
+              description: 'Arquivo JSON',
+              accept: { 'application/json': ['.json'] },
+            }],
+          });
+          const writable = await handle.createWritable();
+          await writable.write(conteudoJSON);
+          await writable.close();
+        } else {
+          // Fallback para navegadores sem a API (ex.: Firefox ou arquivo local sem HTTPS)
+          const link = document.createElement('a');
+          link.href = 'data:text/json;charset=utf-8,' + encodeURIComponent(conteudoJSON);
+          link.download = nomeArquivo;
+          document.body.appendChild(link);
+          link.click();
+          link.remove();
+        }
+      } catch (err) {
+        // Ignora o erro se o usuário apenas clicou em "Cancelar" na janela
+        if (err.name !== 'AbortError') {
+          console.error('Erro ao salvar:', err);
+          alert('Não foi possível salvar o arquivo.');
+        }
+      }
+    }
+
+    function importarJSON(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        try {
+          const dadosJSON = JSON.parse(e.target.result);
+
+          if (dadosJSON.defeitosObs) {
+            defeitosObs = dadosJSON.defeitosObs;
+            salvarObs();
+          }
+
+          // _modo vem do Exportar ou do diagnostico.ps1
+          if (['pc', 'notebook', 'tv'].includes(dadosJSON._modo)) {
+            mudarModo(dadosJSON._modo);
+          }
+
+          if (dadosJSON.campo_data === undefined) document.getElementById('dataField').value = '';
+          aplicarDados(dadosJSON);
+          preencherDataSeVazia();
+          atualizarResumo();
+          salvar();
+          alert('Dados carregados com sucesso!');
+        } catch (error) {
+          alert('Erro ao ler o arquivo JSON. O arquivo pode estar corrompido.');
+          console.error(error);
+        }
+
+        // Permite importar o mesmo arquivo de novo
+        event.target.value = '';
+      };
+      reader.readAsText(file);
+    }
+
+
+    // =====================================================================
+    // MODAL
+    // =====================================================================
+
+    let _modalCallback = null;
+
+    function abrirModal(msg, callback) {
+      document.getElementById('modalMsg').textContent = msg;
+      document.getElementById('modalAviso').classList.add('show');
+      _modalCallback = callback;
+    }
+
+    function fecharModal(confirmou) {
+      document.getElementById('modalAviso').classList.remove('show');
+      if (_modalCallback) _modalCallback(confirmou);
+      _modalCallback = null;
+    }
+
+
+    // =====================================================================
+    // MENU FLUTUANTE
+    // =====================================================================
+
+    function alternarFab(abrir) {
+      const fab = document.getElementById('fab');
+      const aberto = typeof abrir === 'boolean' ? abrir : !fab.classList.contains('aberto');
+      fab.classList.toggle('aberto', aberto);
+      document.getElementById('fabBotao').setAttribute('aria-expanded', aberto);
+    }
+
+    // Ações que não são de preenchimento fecham o menu antes de rodar
+    function fabAcao(acao) {
+      alternarFab(false);
+      acao();
+    }
+
+    // O menu e a app bar compartilham o mesmo #colunaSelect
+    function escolherColunaFab(col) {
+      document.getElementById('colunaSelect').value = col;
+      sincronizarColunaFab();
+    }
+
+    function sincronizarColunaFab() {
+      const col = document.getElementById('colunaSelect').value;
+      document.querySelectorAll('.fab-colunas button').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.col === col);
+      });
+    }
+
+    function configurarFab() {
+      document.addEventListener('click', e => {
+        const fab = document.getElementById('fab');
+        if (fab.classList.contains('aberto') && !fab.contains(e.target)) alternarFab(false);
+      });
+
+      document.addEventListener('keydown', e => {
+        if (e.key === 'Escape') alternarFab(false);
+      });
+    }
+
+
+    // =====================================================================
+    // NAVEGAÇÃO POR TECLADO (Tab, Alt/Ctrl + setas)
+    // =====================================================================
+
+    function camposFocaveis(celula) {
+      return Array.from(celula.querySelectorAll('input:not([type="hidden"]), select, textarea'));
+    }
+
+    function configurarNavegacaoTeclado() {
+      document.addEventListener('keydown', function (e) {
+        const isTab = e.key === 'Tab';
+        const isSeta = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key);
+
+        // Exigir Tab ou (Alt/Ctrl + Seta)
+        if (!isTab && !(isSeta && (e.altKey || e.ctrlKey))) return;
+
+        const atual = document.activeElement;
+        // Só navegar se estiver focando em algum campo do laudo
+        if (!atual || (!atual.classList.contains('save') && !atual.classList.contains('input-tecnico'))) return;
+
+        const td = atual.closest('td');
+        const tr = td ? td.closest('tr') : null;
+        if (!td || !tr) return;
+
+        const irmaos = camposFocaveis(td);
+        const indexNestaCelula = irmaos.indexOf(atual);
+        const colIndex = td.cellIndex;
+        let alvo = null;
+
+        function pegarFocavel(linha, pegarUltimo) {
+          const celula = linha?.cells[colIndex];
+          if (!celula) return null;
+          const itens = camposFocaveis(celula);
+          if (itens.length === 0) return null;
+          return pegarUltimo ? itens[itens.length - 1] : itens[0];
+        }
+
+        // Ignora linhas invisíveis ou de cabeçalho
+        function proximaLinha(linha, direcao) {
+          let atualLinha = linha[direcao];
+          while (atualLinha && (atualLinha.style.display === 'none' || atualLinha.querySelector('th'))) {
+            atualLinha = atualLinha[direcao];
+          }
+          return atualLinha;
+        }
+
+        function campoNaCelulaVizinha(direcao) {
+          let vizinha = td[direcao];
+          while (vizinha) {
+            const itens = camposFocaveis(vizinha);
+            if (itens.length > 0) return itens[Math.min(Math.max(indexNestaCelula, 0), itens.length - 1)];
+            vizinha = vizinha[direcao];
+          }
+          return null;
+        }
+
+        // Tab normal se comporta igual ArrowDown. Shift+Tab igual ArrowUp
+        const indoParaBaixo = (e.key === 'ArrowDown') || (isTab && !e.shiftKey);
+        const indoParaCima = (e.key === 'ArrowUp') || (isTab && e.shiftKey);
+
+        if (indoParaBaixo) {
+          // Desce pro próximo item na MESMA célula (ex: combos do SSD) ou pra próxima linha
+          alvo = (indexNestaCelula >= 0 && indexNestaCelula < irmaos.length - 1)
+            ? irmaos[indexNestaCelula + 1]
+            : pegarFocavel(proximaLinha(tr, 'nextElementSibling'), false);
+        } else if (indoParaCima) {
+          alvo = indexNestaCelula > 0
+            ? irmaos[indexNestaCelula - 1]
+            : pegarFocavel(proximaLinha(tr, 'previousElementSibling'), true);
+        } else if (e.key === 'ArrowRight') {
+          alvo = campoNaCelulaVizinha('nextElementSibling');
+        } else if (e.key === 'ArrowLeft') {
+          alvo = campoNaCelulaVizinha('previousElementSibling');
+        }
+
+        // Se achou um alvo, foca nele e previne o comportamento padrão do navegador
+        if (alvo) {
+          e.preventDefault();
+          alvo.focus();
+          if (alvo.tagName === 'INPUT' && typeof alvo.select === 'function') {
+            alvo.select();
+          }
+        }
+      });
+    }
+
+
+    // =====================================================================
+    // INICIALIZAÇÃO
+    // =====================================================================
+
+    window.addEventListener('load', () => {
+      injetarOpcoes(document);
+      // A máscara roda antes do salvamento automático do campo
+      const campoData = document.getElementById('dataField');
+      campoData.addEventListener('input', () => {
+        mascararData(campoData);
+        // Enquanto digita, só some com o aviso; ele volta ao sair do campo se continuar errado
+        if (dataValida(campoData.value)) conferirData();
+      });
+      campoData.addEventListener('blur', conferirData);
+      document.querySelectorAll('.save').forEach(prepararCampo);
+      configurarNavegacaoTeclado();
+      configurarFab();
+      sincronizarColunaFab();
+
+      mudarModo(localStorage.getItem('modo_equipamento') || 'notebook');
+      aplicarTemaSalvo();
+
+      const dados = JSON.parse(localStorage.getItem('laudo'));
+      if (dados) aplicarDados(dados);
+      preencherDataSeVazia();
+
+      document.getElementById('avisosPendencia').addEventListener('click', e => {
+        const link = e.target.closest('.pendencia-link');
+        if (link) irParaPendencia(camposPendentes[link.dataset.pendencia]);
+      });
+
+      atualizarResumo();
+    });
+
+    // ====== BARRA DE FORMATAÇÃO (Parecer Técnico e OBS dos defeitos) ======
+    (function () {
+      const SELETOR = '#PARECERTECNICOField, .defeito-obs-input';
+      const paleta = [
+        '#000000', '#555555', '#999999', '#ffffff',
+        '#d32f2f', '#e91e63', '#f57c00', '#fbc02d',
+        '#388e3c', '#00897b', '#1976d2', '#3949ab',
+        '#7b1fa2', '#6d4c41', '#00acc1', '#8bc34a'
+      ];
+      const btn = (cmd, val, html, titulo, extra) =>
+        `<button type="button" data-cmd="${cmd}" data-val="${val || ''}" title="${titulo}" ${extra || ''}>${html}</button>`;
+
+      const barra = document.createElement('div');
+      barra.id = 'barraFormatacao';
+      barra.innerHTML =
+        btn('formatBlock', 'H1', 'T1', 'Título 1') +
+        btn('formatBlock', 'H2', 'T2', 'Título 2') +
+        btn('formatBlock', 'H3', 'T3', 'Título 3') +
+        btn('formatBlock', 'DIV', 'T', 'Texto normal') +
+        '<hr>' +
+        btn('justifyLeft', '', '<i class="fas fa-align-left"></i>', 'Esquerda') +
+        btn('justifyCenter', '', '<i class="fas fa-align-center"></i>', 'Centro') +
+        btn('justifyRight', '', '<i class="fas fa-align-right"></i>', 'Direita') +
+        btn('justifyFull', '', '<i class="fas fa-align-justify"></i>', 'Justificar') +
+        '<hr>' +
+        btn('bold', '', '<b>N</b>', 'Negrito') +
+        btn('italic', '', '<i>I</i>', 'Itálico') +
+        '<hr>' +
+        '<button type="button" id="btnCor" title="Cor do texto"><span class="cor-atual"></span></button>' +
+        '<div id="paletaCores">' +
+        '<div class="grade">' + paleta.map(c => btn('foreColor', c, '', c, `style="background:${c}"`)).join('') + '</div>' +
+        '<label class="personalizada">Personalizada<input type="color" id="corLivre" value="#000000"></label>' +
+        btn('removeFormat', '', 'Limpar formatação', 'Limpar formatação', 'class="limpar"') +
+        '</div>';
+      document.body.appendChild(barra);
+
+      const paletaEl = barra.querySelector('#paletaCores');
+      const corAtual = barra.querySelector('.cor-atual');
+      const corLivre = barra.querySelector('#corLivre');
+      corAtual.style.background = '#000000';
+
+      // Guarda a seleção para restaurar ao usar o seletor de cor nativo
+      let faixa = null;
+      document.addEventListener('selectionchange', () => {
+        const s = window.getSelection();
+        if (s.rangeCount && s.anchorNode) {
+          const el = s.anchorNode.nodeType === 1 ? s.anchorNode : s.anchorNode.parentElement;
+          if (el && el.closest(SELETOR)) faixa = s.getRangeAt(0).cloneRange();
+        }
+      });
+
+      function aplicar(cmd, val) {
+        if (faixa) {
+          const alvo = faixa.startContainer.nodeType === 1 ? faixa.startContainer : faixa.startContainer.parentElement;
+          const campo = alvo && alvo.closest(SELETOR);
+          if (campo && document.activeElement !== campo) campo.focus();
+          const s = window.getSelection();
+          s.removeAllRanges();
+          s.addRange(faixa);
+        }
+        document.execCommand('styleWithCSS', false, false);
+        document.execCommand(cmd, false, val || null);
+      }
+
+      // Botões não tiram o foco do campo (exceto o seletor de cor nativo)
+      barra.addEventListener('mousedown', e => {
+        if (!e.target.closest('input')) e.preventDefault();
+      });
+      barra.addEventListener('click', e => {
+        const b = e.target.closest('button');
+        if (!b) return;
+        if (b.id === 'btnCor') { paletaEl.classList.toggle('aberta'); return; }
+        aplicar(b.dataset.cmd, b.dataset.val);
+        if (b.dataset.cmd === 'foreColor') {
+          corAtual.style.background = b.dataset.val;
+          corLivre.value = b.dataset.val;
+          paletaEl.classList.remove('aberta');
+        }
+      });
+      corLivre.addEventListener('input', () => {
+        aplicar('foreColor', corLivre.value);
+        corAtual.style.background = corLivre.value;
+      });
+
+      let timer;
+      function atualizar() {
+        clearTimeout(timer);
+        timer = setTimeout(() => {
+          const a = document.activeElement;
+          const ativo = a && (a.matches(SELETOR) || barra.contains(a));
+          barra.classList.toggle('visivel', Boolean(ativo));
+          if (!ativo) paletaEl.classList.remove('aberta');
+        }, 120);
+      }
+      document.addEventListener('focusin', atualizar);
+      document.addEventListener('focusout', atualizar);
+    })();
   </script>
 
 </body>

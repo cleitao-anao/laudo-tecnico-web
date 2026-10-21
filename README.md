@@ -8,7 +8,7 @@ No aplicativo nativo, **Link do laudo** substitui a exportação de JSON. O téc
 
 Ao abrir um link na mesma OS, a página pede confirmação e preserva a outra fase, data e campos já preenchidos que não vieram no envio. Linhas extras de discos são mescladas sem perder seus outros resultados. Uma OS diferente exige confirmação antes de substituir o conteúdo. Links anteriores e importações antigas continuam compatíveis.
 
-No app, o link também pode ser aberto por **QR code** (celular ou PC do balcão) ou por **Enviar ao balcão**, que grava um atalho `.url` numa pasta compartilhada.
+No app, o link também pode ser aberto no celular pelo **QR code**.
 
 **Contrato de campos:** [`campos-laudo.json`](campos-laudo.json) lista os campos (`data-id`) e as opções de menu que o app preenche. O app embute uma cópia idêntica (`Diaginostico Tecnico/src/campos-laudo.json`). Ao renomear um campo ou mudar uma opção no `index.html`/`script.js`, atualize este arquivo e copie-o para o app. O teste do navegador falha se as cópias divergirem ou se um campo ou opção do contrato não existir na página.
 

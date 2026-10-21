@@ -69,6 +69,12 @@ function linhaVisivel(tr) {
 }
 
 // A primeira opção de todo select é o "vazio"
+// Campo escondido dentro de uma linha visível (parte só de um tipo de equipamento)
+function campoVisivel(el) {
+  const parte = el.closest('div[data-device]');
+  return !parte || parte.style.display !== 'none';
+}
+
 function selectVazio(select) {
   return select.selectedIndex <= 0;
 }
@@ -590,7 +596,7 @@ function verificarPendencias() {
     if (!linhaVisivel(tr) || tds.length !== COLUNAS.length + 1) return;
 
     COLUNAS.forEach(col => {
-      const selects = Array.from(tds[col].querySelectorAll('select'));
+      const selects = Array.from(tds[col].querySelectorAll('select')).filter(campoVisivel);
       if (selects.some(sel => !selectVazio(sel))) comecada[col] = true;
       const primeiroVazio = selects.find(selectVazio);
       if (primeiroVazio) pendentes[col].push({ item: nomeDoItem(tr), campo: primeiroVazio });
@@ -625,8 +631,9 @@ function mudarModo(modo) {
   document.querySelectorAll('.app-bar button').forEach(btn => btn.classList.remove('active'));
   document.getElementById('btn-' + modo)?.classList.add('active');
 
-  document.querySelectorAll('tbody tr[data-device]').forEach(tr => {
-    tr.style.display = tr.getAttribute('data-device').split(',').includes(modo) ? '' : 'none';
+  // Linhas inteiras e partes de uma linha (ex.: "Vídeo integrado" só no PC) que dependem do equipamento
+  document.querySelectorAll('tbody [data-device]').forEach(el => {
+    el.style.display = el.getAttribute('data-device').split(',').includes(modo) ? '' : 'none';
   });
 
   localStorage.setItem('modo_equipamento', modo);
@@ -1190,7 +1197,7 @@ function configurarFab() {
 // =====================================================================
 
 function camposFocaveis(celula) {
-  return Array.from(celula.querySelectorAll('input:not([type="hidden"]), select, textarea'));
+  return Array.from(celula.querySelectorAll('input:not([type="hidden"]), select, textarea')).filter(campoVisivel);
 }
 
 function configurarNavegacaoTeclado() {
