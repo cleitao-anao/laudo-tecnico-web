@@ -10,6 +10,8 @@ Ao abrir um link na mesma OS, a página pede confirmação e preserva a outra fa
 
 No app, o link também pode ser aberto no celular pelo **QR code**.
 
+**Arquivo único:** `Diagnóstico Técnico.HTML` é o laudo em um arquivo só, para abrir sem servidor ou mandar por mensagem. Ele é **gerado** a partir de `index.html`, `style.css` e `script.js`: depois de mudar o site, rode `python gerar-arquivo-unico.py`. O teste do navegador falha se ele estiver desatualizado. Como o site, ele busca na internet a fonte, os ícones e o pdf.js (sem internet, abre e funciona, mas sem ícones e sem importar de PDF).
+
 **Contrato de campos:** [`campos-laudo.json`](campos-laudo.json) lista os campos (`data-id`) e as opções de menu que o app preenche. O app embute uma cópia idêntica (`Diaginostico Tecnico/src/campos-laudo.json`). Ao renomear um campo ou mudar uma opção no `index.html`/`script.js`, atualize este arquivo e copie-o para o app. O teste do navegador falha se as cópias divergirem ou se um campo ou opção do contrato não existir na página.
 
 O link é uma cópia dos dados, não uma sincronização em tempo real, e pode ser lido por quem o receber. Para atualizar o endereço online, publique `index.html` e `script.js` juntos. A atualização local não publica o GitHub Pages automaticamente.

@@ -5,10 +5,16 @@ import os
 from pathlib import Path
 import re
 import subprocess
+import sys
 import tempfile
 import threading
 
 root = Path(__file__).resolve().parents[2]
+
+# O laudo em arquivo único precisa acompanhar o site (index.html + style.css + script.js)
+check = subprocess.run([sys.executable, str(root / 'laudo-tecnico-web' / 'gerar-arquivo-unico.py'), '--check'])
+if check.returncode != 0:
+    raise SystemExit(1)
 candidates = [Path(os.environ.get('PROGRAMFILES', 'C:/Program Files')) / 'Google/Chrome/Application/chrome.exe',
               Path(os.environ.get('PROGRAMFILES(X86)', 'C:/Program Files (x86)')) / 'Microsoft/Edge/Application/msedge.exe']
 browser = next((p for p in candidates if p.exists()), None)
