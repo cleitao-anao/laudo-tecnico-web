@@ -1673,9 +1673,9 @@ body.dark-mode .fab-defeito {
 
     <tbody>
 
-      <!-- ENERGIA -->
+      <!-- ENERGIA E ACIONAMENTO -->
       <tr data-device="pc,notebook,tv">
-        <td colspan="3" class="secao">ENERGIA</td>
+        <td colspan="3" class="secao">ENERGIA E ACIONAMENTO</td>
       </tr>
 
       <tr data-device="pc,notebook,tv">
@@ -1685,28 +1685,33 @@ body.dark-mode .fab-defeito {
       </tr>
 
       <tr data-device="notebook">
-        <td>BATERIA</td>
-        <td>
-          <select class="save" data-opt="opt1" data-id="campo_9"></select>
-          <hr>
-          <input type="text" class="save saude" placeholder="Saúde (%)" data-id="campo_10">
-        </td>
-        <td>
-          <div class="teste-rapido-container"><select class="save" data-opt="opt1" data-id="campo_11"></select><input type="checkbox" class="save check-atendente" data-id="check_11" title="Checklist Testes"></div>
-          <hr>
-          <input type="text" class="save saude" placeholder="Saúde (%)" data-id="campo_13">
-        </td>
-      </tr>
-
-      <tr data-device="notebook">
         <td>CONECTOR POWER JACK</td>
         <td><select class="save" data-opt="opt1" data-id="campo_15"></select></td>
         <td><div class="teste-rapido-container"><select class="save" data-opt="opt1" data-id="campo_16"></select><input type="checkbox" class="save check-atendente" data-id="check_16" title="Checklist Testes"></div></td>
       </tr>
 
-      <!-- ACIONAMENTO -->
-      <tr data-device="pc,notebook,tv">
-        <td colspan="3" class="secao">ACIONAMENTO</td>
+      <tr data-device="notebook">
+        <td>BATERIA</td>
+        <td>
+          <select class="save" data-opt="opt1" data-id="campo_9"></select>
+          <hr>
+          <input type="text" class="save saude" placeholder="Saúde (%)" data-id="campo_10">
+          <hr>
+          <input type="text" class="save" placeholder="S/N da bateria" data-id="campo_bat_serial_tec">
+        </td>
+        <td>
+          <div class="teste-rapido-container"><select class="save" data-opt="opt1" data-id="campo_11"></select><input type="checkbox" class="save check-atendente" data-id="check_11" title="Checklist Testes"></div>
+          <hr>
+          <input type="text" class="save saude" placeholder="Saúde (%)" data-id="campo_13">
+          <hr>
+          <input type="text" class="save" placeholder="S/N da bateria" data-id="campo_bat_serial_test">
+        </td>
+      </tr>
+
+      <tr data-device="pc,notebook">
+        <td>BATERIA CMOS</td>
+        <td><select class="save" data-opt="opt20" data-id="campo_cmos_tec"></select></td>
+        <td><div class="teste-rapido-container"><select class="save" data-opt="opt20" data-id="campo_cmos_test"></select><input type="checkbox" class="save check-atendente" data-id="check_cmos" title="Checklist Testes"></div></td>
       </tr>
 
       <tr data-device="pc,notebook,tv">
@@ -1715,9 +1720,9 @@ body.dark-mode .fab-defeito {
         <td><div class="teste-rapido-container"><select class="save" data-opt="opt2" data-id="campo_20"></select><input type="checkbox" class="save check-atendente" data-id="check_20" title="Checklist Testes"></div></td>
       </tr>
 
-      <!-- CARCAÇA -->
+      <!-- CARCAÇA E ESTRUTURA -->
       <tr data-device="pc,notebook,tv">
-        <td colspan="3" class="secao">CARCAÇA</td>
+        <td colspan="3" class="secao">CARCAÇA E ESTRUTURA</td>
       </tr>
 
       <tr data-device="pc,notebook,tv">
@@ -1726,15 +1731,29 @@ body.dark-mode .fab-defeito {
         <td><div class="teste-rapido-container"><select class="save" data-opt="opt3" data-id="campo_24"></select><input type="checkbox" class="save check-atendente" data-id="check_24" title="Checklist Testes"></div></td>
       </tr>
 
-      <!-- PLACA / PROCESSAMENTO -->
+      <tr data-device="notebook">
+        <td>DOBRADIÇAS / HASTES</td>
+        <td><select class="save" data-opt="opt21" data-id="campo_dobradicas_tec"></select></td>
+        <td><div class="teste-rapido-container"><select class="save" data-opt="opt21" data-id="campo_dobradicas_test"></select><input type="checkbox" class="save check-atendente" data-id="check_dobradicas" title="Checklist Testes"></div></td>
+      </tr>
+
+      <!-- HARDWARE / PROCESSAMENTO -->
       <tr data-device="pc,notebook,tv">
-        <td colspan="3" class="secao">PLACA / PROCESSAMENTO</td>
+        <td colspan="3" class="secao">HARDWARE / PROCESSAMENTO</td>
       </tr>
 
       <tr data-device="pc,notebook,tv">
         <td>PLACA MÃE / PLACA PRINCIPAL</td>
-        <td><select class="save" data-opt="opt2" data-id="campo_27"></select></td>
-        <td><div class="teste-rapido-container"><select class="save" data-opt="opt2" data-id="campo_28"></select><input type="checkbox" class="save check-atendente" data-id="check_28" title="Checklist Testes"></div></td>
+        <td>
+          <select class="save" data-opt="opt2" data-id="campo_27"></select>
+          <hr>
+          <input type="text" class="save" placeholder="Modelo da placa-mãe" data-id="campo_placa_modelo_tec">
+        </td>
+        <td>
+          <div class="teste-rapido-container"><select class="save" data-opt="opt2" data-id="campo_28"></select><input type="checkbox" class="save check-atendente" data-id="check_28" title="Checklist Testes"></div>
+          <hr>
+          <input type="text" class="save" placeholder="Modelo da placa-mãe" data-id="campo_placa_modelo_test">
+        </td>
       </tr>
 
       <tr data-device="pc,notebook">
@@ -1759,12 +1778,53 @@ body.dark-mode .fab-defeito {
           <select class="save" data-opt="opt2" data-id="campo_42"></select>
           <hr>
           <select class="save" data-opt="opt5" data-id="campo_43"></select>
+          <hr>
+          <input type="text" class="save" placeholder="S/N das memórias" data-id="campo_mem_serial_tec">
         </td>
         <td>
           <div class="teste-rapido-container"><select class="save" data-opt="opt2" data-id="campo_44"></select><input type="checkbox" class="save check-atendente" data-id="check_44" title="Checklist Testes"></div>
           <hr>
           <select class="save" data-opt="opt5" data-id="campo_46"></select>
+          <hr>
+          <input type="text" class="save" placeholder="S/N das memórias" data-id="campo_mem_serial_test">
         </td>
+      </tr>
+
+      <tr data-device="pc,notebook">
+        <td>PLACA GRÁFICA</td>
+        <td>
+          <select class="save" data-opt="opt1" data-id="campo_132"></select>
+          <hr>
+          <input type="text" class="save" placeholder="Modelo da placa de vídeo" data-id="campo_gpu_modelo_tec">
+        </td>
+        <td>
+          <div class="teste-rapido-container"><select class="save" data-opt="opt1" data-id="campo_133"></select><input type="checkbox" class="save check-atendente" data-id="check_133" title="Checklist Testes"></div>
+          <hr>
+          <input type="text" class="save" placeholder="Modelo da placa de vídeo" data-id="campo_gpu_modelo_test">
+        </td>
+      </tr>
+
+      <!-- REFRIGERAÇÃO -->
+      <tr data-device="pc,notebook">
+        <td colspan="3" class="secao">REFRIGERAÇÃO</td>
+      </tr>
+
+      <tr data-device="pc,notebook">
+        <td>COOLER</td>
+        <td><select class="save" data-opt="opt22" data-id="campo_cooler_tec"></select></td>
+        <td><div class="teste-rapido-container"><select class="save" data-opt="opt22" data-id="campo_cooler_test"></select><input type="checkbox" class="save check-atendente" data-id="check_cooler" title="Checklist Testes"></div></td>
+      </tr>
+
+      <tr data-device="pc,notebook">
+        <td>DISSIPADOR</td>
+        <td><select class="save" data-opt="opt23" data-id="campo_dissipador_tec"></select></td>
+        <td><div class="teste-rapido-container"><select class="save" data-opt="opt23" data-id="campo_dissipador_test"></select><input type="checkbox" class="save check-atendente" data-id="check_dissipador" title="Checklist Testes"></div></td>
+      </tr>
+
+      <tr data-device="pc">
+        <td>WATER COOLER / FANS DO GABINETE</td>
+        <td><select class="save" data-opt="opt24" data-id="campo_watercooler_tec"></select></td>
+        <td><div class="teste-rapido-container"><select class="save" data-opt="opt24" data-id="campo_watercooler_test"></select><input type="checkbox" class="save check-atendente" data-id="check_watercooler" title="Checklist Testes"></div></td>
       </tr>
 
       <!-- DISPLAY -->
@@ -1846,17 +1906,15 @@ body.dark-mode .fab-defeito {
         </td>
       </tr>
 
-      <!-- PORTAS / PERIFÉRICOS -->
+      <!-- PORTAS E CONECTIVIDADE -->
       <tr data-device="pc,notebook,tv">
-        <td colspan="3" class="secao">PORTAS / PERIFÉRICOS</td>
+        <td colspan="3" class="secao">PORTAS E CONECTIVIDADE</td>
       </tr>
-
 
       <tr data-device="pc,notebook,tv">
         <td>PAINEL</td>
         <td><select class="save" data-opt="opt1" data-id="campo_77"></select></td>
         <td><div class="teste-rapido-container"><select class="save" data-opt="opt1" data-id="campo_78"></select><input type="checkbox" class="save check-atendente" data-id="check_78" title="Checklist Testes"></div></td>
-
       </tr>
 
       <tr data-device="pc,notebook,tv">
@@ -1865,10 +1923,10 @@ body.dark-mode .fab-defeito {
         <td><div class="teste-rapido-container"><select class="save" data-opt="opt1" data-id="campo_78h"></select><input type="checkbox" class="save check-atendente" data-id="check_78h" title="Checklist Testes"></div></td>
       </tr>
 
-      <tr data-device="pc,notebook,tv">
-        <td>USB / USB-C</td>
-        <td><select class="save" data-opt="opt1" data-id="campo_81"></select></td>
-        <td><div class="teste-rapido-container"><select class="save" data-opt="opt1" data-id="campo_82"></select><input type="checkbox" class="save check-atendente" data-id="check_82" title="Checklist Testes"></div></td>
+      <tr data-device="pc,notebook">
+        <td>DISPLAYPORT</td>
+        <td><select class="save" data-opt="opt1" data-id="campo_dp_tec"></select></td>
+        <td><div class="teste-rapido-container"><select class="save" data-opt="opt1" data-id="campo_dp_test"></select><input type="checkbox" class="save check-atendente" data-id="check_dp" title="Checklist Testes"></div></td>
       </tr>
 
       <tr data-device="pc,notebook">
@@ -1876,6 +1934,19 @@ body.dark-mode .fab-defeito {
         <td><select class="save" data-opt="opt1" data-id="campo_85"></select></td>
         <td><div class="teste-rapido-container"><select class="save" data-opt="opt1" data-id="campo_86"></select><input type="checkbox" class="save check-atendente" data-id="check_86" title="Checklist Testes"></div></td>
       </tr>
+
+      <tr data-device="pc,notebook,tv">
+        <td>USB / USB-C</td>
+        <td><select class="save" data-opt="opt1" data-id="campo_81"></select></td>
+        <td><div class="teste-rapido-container"><select class="save" data-opt="opt1" data-id="campo_82"></select><input type="checkbox" class="save check-atendente" data-id="check_82" title="Checklist Testes"></div></td>
+      </tr>
+
+      <tr data-device="pc,notebook,tv">
+        <td>CONECTOR P2</td>
+        <td><select class="save" data-opt="opt1" data-id="campo_124"></select></td>
+        <td><div class="teste-rapido-container"><select class="save" data-opt="opt1" data-id="campo_125"></select><input type="checkbox" class="save check-atendente" data-id="check_125" title="Checklist Testes"></div></td>
+      </tr>
+
       <tr data-device="pc,notebook">
         <td>LAN</td>
         <td><select class="save" data-opt="opt1" data-id="campo_89"></select></td>
@@ -1894,6 +1965,10 @@ body.dark-mode .fab-defeito {
         <td><div class="teste-rapido-container"><select class="save" data-opt="opt1" data-id="campo_98"></select><input type="checkbox" class="save check-atendente" data-id="check_98" title="Checklist Testes"></div></td>
       </tr>
 
+      <!-- PERIFÉRICOS INTEGRADOS -->
+      <tr data-device="notebook,tv">
+        <td colspan="3" class="secao">PERIFÉRICOS INTEGRADOS</td>
+      </tr>
 
       <tr data-device="notebook">
         <td>TECLADO</td>
@@ -1910,9 +1985,21 @@ body.dark-mode .fab-defeito {
       </tr>
 
       <tr data-device="notebook">
+        <td>RETROILUMINAÇÃO DO TECLADO</td>
+        <td><select class="save" data-opt="opt1" data-id="campo_retro_teclado_tec"></select></td>
+        <td><div class="teste-rapido-container"><select class="save" data-opt="opt1" data-id="campo_retro_teclado_test"></select><input type="checkbox" class="save check-atendente" data-id="check_retro_teclado" title="Checklist Testes"></div></td>
+      </tr>
+
+      <tr data-device="notebook">
         <td>TOUCHPAD</td>
         <td><select class="save" data-opt="opt1" data-id="campo_108"></select></td>
         <td><div class="teste-rapido-container"><select class="save" data-opt="opt1" data-id="campo_109"></select><input type="checkbox" class="save check-atendente" data-id="check_109" title="Checklist Testes"></div></td>
+      </tr>
+
+      <tr data-device="notebook">
+        <td>LEITOR BIOMÉTRICO (DIGITAL)</td>
+        <td><select class="save" data-opt="opt1" data-id="campo_biometria_tec"></select></td>
+        <td><div class="teste-rapido-container"><select class="save" data-opt="opt1" data-id="campo_biometria_test"></select><input type="checkbox" class="save check-atendente" data-id="check_biometria" title="Checklist Testes"></div></td>
       </tr>
 
       <tr data-device="notebook">
@@ -1933,28 +2020,9 @@ body.dark-mode .fab-defeito {
         <td><div class="teste-rapido-container"><select class="save" data-opt="opt1" data-id="campo_121"></select><input type="checkbox" class="save check-atendente" data-id="check_121" title="Checklist Testes"></div></td>
       </tr>
 
-      <tr data-device="pc,notebook,tv">
-        <td>CONECTOR P2</td>
-        <td><select class="save" data-opt="opt1" data-id="campo_124"></select></td>
-        <td><div class="teste-rapido-container"><select class="save" data-opt="opt1" data-id="campo_125"></select><input type="checkbox" class="save check-atendente" data-id="check_125" title="Checklist Testes"></div></td>
-      </tr>
-
+      <!-- ARMAZENAMENTO E SISTEMA -->
       <tr data-device="pc,notebook">
-        <td>SISTEMA OPERACIONAL</td>
-        <td><select class="save" data-opt="opt16" data-id="campo_128"></select></td>
-        <td><div class="teste-rapido-container"><select class="save" data-opt="opt16" data-id="campo_129"></select><input type="checkbox" class="save check-atendente" data-id="check_129" title="Checklist Testes"></div></td>
-      </tr>
-
-      <!-- PLACA GRÁFICA -->
-      <tr data-device="pc,notebook">
-        <td>PLACA GRÁFICA</td>
-        <td><select class="save" data-opt="opt1" data-id="campo_132"></select></td>
-        <td><div class="teste-rapido-container"><select class="save" data-opt="opt1" data-id="campo_133"></select><input type="checkbox" class="save check-atendente" data-id="check_133" title="Checklist Testes"></div></td>
-      </tr>
-
-      <!-- ARMAZENAMENTO -->
-      <tr data-device="pc,notebook">
-        <td colspan="3" class="secao">ARMAZENAMENTO</td>
+        <td colspan="3" class="secao">ARMAZENAMENTO E SISTEMA</td>
       </tr>
 
       <tr data-device="pc,notebook" class="armazenamento-row">
@@ -1982,9 +2050,15 @@ body.dark-mode .fab-defeito {
         </td>
       </tr>
 
-      <!-- BACKUP -->
       <tr data-device="pc,notebook">
-        <td colspan="3" class="secao">BACKUP</td>
+        <td>SISTEMA OPERACIONAL</td>
+        <td><select class="save" data-opt="opt16" data-id="campo_128"></select></td>
+        <td><div class="teste-rapido-container"><select class="save" data-opt="opt16" data-id="campo_129"></select><input type="checkbox" class="save check-atendente" data-id="check_129" title="Checklist Testes"></div></td>
+      </tr>
+
+      <!-- BACKUP E FINALIZAÇÃO -->
+      <tr data-device="pc,notebook,tv">
+        <td colspan="3" class="secao">BACKUP E FINALIZAÇÃO</td>
       </tr>
 
       <tr data-device="pc,notebook">
@@ -1994,11 +2068,6 @@ body.dark-mode .fab-defeito {
           <textarea class="backup-input save" rows="2" placeholder="Usuário" data-id="campo_backup_usuario"></textarea>
           <textarea class="backup-input save" rows="2" placeholder="Disco D" data-id="campo_backup_d"></textarea>
         </td>
-      </tr>
-
-      <!-- FINALIZAÇÃO -->
-      <tr data-device="pc,notebook,tv">
-        <td colspan="3" class="secao">FINALIZAÇÃO</td>
       </tr>
 
       <tr data-device="pc,notebook,tv">
@@ -2130,7 +2199,12 @@ const optionsData = {
   'opt17': ['Tipo', 'SSD', 'NVMe', 'HD', 'NGFF(M2)'],
   'opt18': ['Selecione', 'Necessário', 'Realizada', 'Não necessária', 'Não realizada'],
 
-  'opt19': ['Vídeo integrado', 'Com vídeo integrado', 'Sem vídeo integrado']
+  'opt19': ['Vídeo integrado', 'Com vídeo integrado', 'Sem vídeo integrado'],
+  'opt20': ['Selecione', 'Funcionando', 'Descarregada', 'Com defeito', 'Não Testado', 'Não Se Aplica'],
+  'opt21': ['Selecione', 'Funcionando', 'Duras (risco de quebra)', 'Soltas ou quebradas', 'Com defeito', 'Não Testado'],
+  'opt22': ['Selecione', 'Funcionando', 'Ruído excessivo', 'Travado / Não gira', 'Com defeito', 'Não Testado', 'Não Se Aplica'],
+  'opt23': ['Selecione', 'Funcionando', 'Obstruído / Sujo', 'Com defeito', 'Não Testado', 'Não Se Aplica'],
+  'opt24': ['Selecione', 'Funcionando', 'Bomba com defeito', 'Fan parado / Ruído', 'Com defeito', 'Não Testado', 'Não Se Aplica']
 };
 
 // Valores que indicam problema em selects de display
@@ -2142,7 +2216,12 @@ const valoresDisplayProblema = [
 ];
 
 // Valores padrão de defeito
-const valoresDeDefeito = ['com defeito', 'corrompido', 'não inicializa'];
+const valoresDeDefeito = [
+  'com defeito', 'corrompido', 'não inicializa',
+  'descarregada', 'duras (risco de quebra)', 'soltas ou quebradas',
+  'ruído excessivo', 'travado / não gira', 'obstruído / sujo',
+  'bomba com defeito', 'fan parado / ruído'
+];
 
 // Valores pintados de verde
 const valoresOk = ['funcionando', 'imagem normal'];

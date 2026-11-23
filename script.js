@@ -26,7 +26,12 @@ const optionsData = {
   'opt17': ['Tipo', 'SSD', 'NVMe', 'HD', 'NGFF(M2)'],
   'opt18': ['Selecione', 'Necessário', 'Realizada', 'Não necessária', 'Não realizada'],
 
-  'opt19': ['Vídeo integrado', 'Com vídeo integrado', 'Sem vídeo integrado']
+  'opt19': ['Vídeo integrado', 'Com vídeo integrado', 'Sem vídeo integrado'],
+  'opt20': ['Selecione', 'Funcionando', 'Descarregada', 'Com defeito', 'Não Testado', 'Não Se Aplica'],
+  'opt21': ['Selecione', 'Funcionando', 'Duras (risco de quebra)', 'Soltas ou quebradas', 'Com defeito', 'Não Testado'],
+  'opt22': ['Selecione', 'Funcionando', 'Ruído excessivo', 'Travado / Não gira', 'Com defeito', 'Não Testado', 'Não Se Aplica'],
+  'opt23': ['Selecione', 'Funcionando', 'Obstruído / Sujo', 'Com defeito', 'Não Testado', 'Não Se Aplica'],
+  'opt24': ['Selecione', 'Funcionando', 'Bomba com defeito', 'Fan parado / Ruído', 'Com defeito', 'Não Testado', 'Não Se Aplica']
 };
 
 // Valores que indicam problema em selects de display
@@ -38,7 +43,12 @@ const valoresDisplayProblema = [
 ];
 
 // Valores padrão de defeito
-const valoresDeDefeito = ['com defeito', 'corrompido', 'não inicializa'];
+const valoresDeDefeito = [
+  'com defeito', 'corrompido', 'não inicializa',
+  'descarregada', 'duras (risco de quebra)', 'soltas ou quebradas',
+  'ruído excessivo', 'travado / não gira', 'obstruído / sujo',
+  'bomba com defeito', 'fan parado / ruído'
+];
 
 // Valores pintados de verde
 const valoresOk = ['funcionando', 'imagem normal'];
