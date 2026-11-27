@@ -30,7 +30,6 @@
     "lan":                { "tecnico": "campo_89",  "testes": "campo_90",  "check": "check_90",  "opcoes": "status" },
     "bateria":            { "tecnico": "campo_9",   "testes": "campo_11",  "check": "check_11",  "opcoes": "status" },
     "bateriaSaude":       { "tecnico": "campo_10",  "testes": "campo_13" },
-    "bateriaSerial":      { "tecnico": "campo_bat_serial_tec", "testes": "campo_bat_serial_test", "somenteNotebook": true },
     "placaMaeModelo":     { "tecnico": "campo_placa_modelo_tec", "testes": "campo_placa_modelo_test" },
     "sistema":            { "tecnico": "campo_128", "testes": "campo_129", "check": "check_129", "opcoes": "status" },
     "processador":        { "tecnico": "campo_34",  "testes": "campo_38",  "opcoes": "processador" },
